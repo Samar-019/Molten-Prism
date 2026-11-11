@@ -1171,9 +1171,96 @@ body {
   margin-bottom: 4px;
 }
 
+.card-tone-type {
+  margin-bottom: 6px;
+}
+
+.tone-badge {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  background: rgba(168, 85, 247, 0.15);
+  border: 1px solid rgba(168, 85, 247, 0.35);
+  color: #c084fc;
+}
+
 .card-info p {
   font-size: 0.85rem;
   color: var(--text-muted);
+}
+
+.card-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.card-tone-btn {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 10px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 12px;
+  color: var(--text-main);
+  font-size: 0.76rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  backdrop-filter: blur(8px);
+}
+
+.card-tone-btn:hover {
+  background: rgba(56, 189, 248, 0.16);
+  border-color: var(--prism-cyan);
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(56, 189, 248, 0.25);
+}
+
+.card-tone-btn.btn-download-tone:hover {
+  background: rgba(168, 85, 247, 0.2);
+  border-color: var(--prism-purple);
+  box-shadow: 0 4px 15px rgba(168, 85, 247, 0.3);
+}
+
+.card-tone-btn.playing {
+  background: rgba(56, 189, 248, 0.25);
+  border-color: var(--prism-cyan);
+  box-shadow: 0 0 15px rgba(56, 189, 248, 0.5);
+  color: #fff;
+}
+
+.molten-toast {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  padding: 12px 22px;
+  background: rgba(15, 23, 42, 0.92);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--prism-cyan);
+  border-radius: 16px;
+  color: #fff;
+  font-size: 0.88rem;
+  font-weight: 600;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 25px rgba(56, 189, 248, 0.35);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  animation: toastIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes toastIn {
+  from { transform: translateY(30px) scale(0.9); opacity: 0; }
+  to { transform: translateY(0) scale(1); opacity: 1; }
 }
 
 .card-bottom {

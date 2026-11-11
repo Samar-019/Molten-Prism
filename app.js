@@ -1,4 +1,4 @@
-// Molten Prism - Liquid Glass UI Interactive Engine & Audio Synthesizer
+// Molten Prism - Liquid Glass UI Interactive Engine & Melodic Instrumental Synthesizer
 
 document.addEventListener('DOMContentLoaded', () => {
   // Initialize Lucide Icons
@@ -10,73 +10,183 @@ document.addEventListener('DOMContentLoaded', () => {
   const yearEl = document.getElementById('year');
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-  // Curated Soundscape Library Data
+  // Musical Note to Frequency Helper (Base A4 = 432Hz / 440Hz)
+  const noteOffsets = {
+    'C': 0, 'C#': 1, 'Db': 1, 'D': 2, 'D#': 3, 'Eb': 3, 'E': 4,
+    'F': 5, 'F#': 6, 'Gb': 6, 'G': 7, 'G#': 8, 'Ab': 8, 'A': 9, 'A#': 10, 'Bb': 10, 'B': 11
+  };
+
+  function noteFreq(name, baseA4 = 432) {
+    if (!name || name === 'REST') return 0;
+    const match = name.match(/^([A-G][#b]?)([0-8])$/);
+    if (!match) return 432;
+    const semitones = noteOffsets[match[1]] + (parseInt(match[2], 10) + 1) * 12;
+    return baseA4 * Math.pow(2, (semitones - 69) / 12);
+  }
+
+  // Curated Instrumental Tracks & Ringtones Library Data
   const trackCatalog = [
     {
       id: 1,
       title: 'Vitreous Horizon',
       artist: 'Molten Prism • Vol. 1',
       genre: 'ambient',
+      toneTag: 'Lofi Piano & Chimes',
       duration: '3:45',
       durationSec: 225,
       frequency: '432 Hz',
+      baseA4: 432,
+      bpm: 74,
       gradient: 'linear-gradient(135deg, #0ea5e9, #6366f1)',
-      desc: 'Liquid acoustic reverb tuned to natural harmonic earth frequencies.'
+      desc: 'Serene Japanese-inspired lofi piano chords with shimmering crystal bells.',
+      instrument: 'rhodes',
+      chords: [
+        { bass: 'F#2', notes: ['F#3', 'A3', 'C#4', 'E4'] }, // F#m7
+        { bass: 'D2',  notes: ['D3', 'F#3', 'A3', 'C#4'] },  // Dmaj7
+        { bass: 'A2',  notes: ['E3', 'A3', 'B3', 'C#4'] },   // Aadd9
+        { bass: 'E2',  notes: ['E3', 'G#3', 'B3', 'D4'] }    // E7
+      ],
+      melody: [
+        { n: 'C#5', b: 1 }, { n: 'B4', b: 0.5 }, { n: 'A4', b: 0.5 }, { n: 'F#4', b: 1 }, { n: 'A4', b: 1 },
+        { n: 'C#5', b: 1 }, { n: 'E5', b: 1 }, { n: 'C#5', b: 1 }, { n: 'B4', b: 1 },
+        { n: 'A4', b: 0.75 }, { n: 'B4', b: 0.25 }, { n: 'C#5', b: 0.5 }, { n: 'E5', b: 0.5 }, { n: 'F#5', b: 1 }, { n: 'E5', b: 1 },
+        { n: 'C#5', b: 1.5 }, { n: 'B4', b: 0.5 }, { n: 'A4', b: 2 }
+      ]
     },
     {
       id: 2,
       title: 'Chromasphere Drift',
       artist: 'Prism Refractor',
       genre: 'synth',
+      toneTag: 'Cyber Synthwave Harp',
       duration: '4:12',
       durationSec: 252,
       frequency: '528 Hz',
+      baseA4: 440,
+      bpm: 104,
       gradient: 'linear-gradient(135deg, #a855f7, #ec4899)',
-      desc: 'Sub-bass pulse traveling through high-viscosity optic chambers.'
+      desc: 'Catchy 80s neon synthwave arpeggio hook with pulsing sub-bass.',
+      instrument: 'synthwave',
+      chords: [
+        { bass: 'C2',  notes: ['C3', 'G3', 'Bb3', 'Eb4'] }, // Cm7
+        { bass: 'Ab2', notes: ['Ab2', 'Eb3', 'C4', 'G4'] }, // Abmaj7
+        { bass: 'Bb2', notes: ['Bb2', 'F3', 'D4', 'F4'] },  // Bb
+        { bass: 'G2',  notes: ['G2', 'D3', 'Bb3', 'F4'] }   // Gm7
+      ],
+      melody: [
+        { n: 'G4', b: 0.5 }, { n: 'Bb4', b: 0.5 }, { n: 'C5', b: 0.5 }, { n: 'Eb5', b: 0.5 }, { n: 'D5', b: 1 }, { n: 'C5', b: 1 },
+        { n: 'Bb4', b: 0.5 }, { n: 'C5', b: 0.5 }, { n: 'D5', b: 1 }, { n: 'F5', b: 1 }, { n: 'Eb5', b: 1 },
+        { n: 'G5', b: 1 }, { n: 'F5', b: 0.5 }, { n: 'Eb5', b: 0.5 }, { n: 'D5', b: 1 }, { n: 'C5', b: 1 },
+        { n: 'D5', b: 1 }, { n: 'C5', b: 0.5 }, { n: 'Bb4', b: 0.5 }, { n: 'C5', b: 2 }
+      ]
     },
     {
       id: 3,
       title: 'Molten Silica Tide',
       artist: 'Hydros Sonics',
       genre: 'deep',
+      toneTag: 'Acoustic Kalimba',
       duration: '5:20',
       durationSec: 320,
       frequency: '639 Hz',
+      baseA4: 432,
+      bpm: 78,
       gradient: 'linear-gradient(135deg, #f59e0b, #ef4444)',
-      desc: 'Dense, warm analog pads submerged in shimmering thermal fluid.'
+      desc: 'Sunny acoustic thumb piano (kalimba) melody with organic harmonic waves.',
+      instrument: 'kalimba',
+      chords: [
+        { bass: 'D2',  notes: ['D3', 'A3', 'F4', 'C5'] },    // Dm7
+        { bass: 'Bb2', notes: ['Bb2', 'F3', 'D4', 'A4'] },   // Bbmaj7
+        { bass: 'G2',  notes: ['G2', 'D3', 'Bb3', 'F4'] },   // Gm7
+        { bass: 'C2',  notes: ['C3', 'G3', 'E4', 'D5'] }     // Cadd9
+      ],
+      melody: [
+        { n: 'F5', b: 0.75 }, { n: 'E5', b: 0.25 }, { n: 'D5', b: 0.5 }, { n: 'A4', b: 0.5 }, { n: 'C5', b: 1 }, { n: 'D5', b: 1 },
+        { n: 'F5', b: 1 }, { n: 'G5', b: 0.5 }, { n: 'A5', b: 0.5 }, { n: 'G5', b: 1 }, { n: 'F5', b: 1 },
+        { n: 'D5', b: 0.75 }, { n: 'E5', b: 0.25 }, { n: 'F5', b: 0.5 }, { n: 'G5', b: 0.5 }, { n: 'A5', b: 1 }, { n: 'C6', b: 1 },
+        { n: 'A5', b: 1.5 }, { n: 'F5', b: 0.5 }, { n: 'D5', b: 2 }
+      ]
     },
     {
       id: 4,
       title: 'Lucent Prism Echo',
       artist: 'Aura Glass',
       genre: 'ambient',
+      toneTag: 'Celesta Music Box',
       duration: '3:18',
       durationSec: 198,
       frequency: '741 Hz',
+      baseA4: 440,
+      bpm: 82,
       gradient: 'linear-gradient(135deg, #10b981, #06b6d4)',
-      desc: 'Crystalline bell tones refracting through floating prismatic droplets.'
+      desc: 'Dreamy, comforting music box bells — perfect luxury notification tone.',
+      instrument: 'celesta',
+      chords: [
+        { bass: 'E2',  notes: ['E3', 'B3', 'E4', 'G#4'] },  // E
+        { bass: 'D#2', notes: ['D#3', 'B3', 'F#4', 'D#5'] },// B/D#
+        { bass: 'C#2', notes: ['C#3', 'G#3', 'E4', 'B4'] }, // C#m7
+        { bass: 'A2',  notes: ['A2', 'E3', 'B3', 'C#4'] }   // Aadd9
+      ],
+      melody: [
+        { n: 'G#5', b: 1 }, { n: 'B5', b: 0.5 }, { n: 'F#5', b: 0.5 }, { n: 'E5', b: 1 }, { n: 'G#5', b: 1 },
+        { n: 'F#5', b: 1 }, { n: 'E5', b: 0.5 }, { n: 'D#5', b: 0.5 }, { n: 'E5', b: 2 },
+        { n: 'B5', b: 1 }, { n: 'C#6', b: 0.5 }, { n: 'B5', b: 0.5 }, { n: 'G#5', b: 1 }, { n: 'F#5', b: 1 },
+        { n: 'E5', b: 1 }, { n: 'F#5', b: 1 }, { n: 'E5', b: 2 }
+      ]
     },
     {
       id: 5,
       title: 'Glass Cascade Neon',
       artist: 'Vitreon BeatLab',
       genre: 'synth',
+      toneTag: 'Chillhop Marimba',
       duration: '3:50',
       durationSec: 230,
       frequency: '852 Hz',
+      baseA4: 432,
+      bpm: 90,
       gradient: 'linear-gradient(135deg, #8b5cf6, #3b82f6)',
-      desc: 'Hyper-fluid downtempo synth pulses with holographic delays.'
+      desc: 'Warm wooden marimba mallet groove with relaxing lofi cafe vibes.',
+      instrument: 'marimba',
+      chords: [
+        { bass: 'D2', notes: ['D3', 'A3', 'C4', 'E4', 'F4'] }, // Dm9
+        { bass: 'G2', notes: ['G2', 'D3', 'Bb3', 'F4'] },       // Gm7
+        { bass: 'A2', notes: ['A2', 'E3', 'C4', 'G4'] },        // Am7
+        { bass: 'Bb2',notes: ['Bb2', 'F3', 'D4', 'A4'] }        // Bbmaj7
+      ],
+      melody: [
+        { n: 'D5', b: 0.5 }, { n: 'F5', b: 0.5 }, { n: 'A5', b: 1 }, { n: 'G5', b: 0.5 }, { n: 'F5', b: 0.5 }, { n: 'E5', b: 1 },
+        { n: 'F5', b: 1 }, { n: 'D5', b: 1 }, { n: 'C5', b: 1 }, { n: 'D5', b: 1 },
+        { n: 'A5', b: 0.5 }, { n: 'C6', b: 0.5 }, { n: 'D6', b: 1 }, { n: 'C6', b: 0.5 }, { n: 'A5', b: 0.5 }, { n: 'G5', b: 1 },
+        { n: 'F5', b: 1 }, { n: 'G5', b: 0.5 }, { n: 'F5', b: 0.5 }, { n: 'D5', b: 2 }
+      ]
     },
     {
       id: 6,
       title: 'Deep Obsidian Flow',
       artist: 'Molten Prism Core',
       genre: 'deep',
+      toneTag: 'Tibetan Zen Bowl',
       duration: '4:45',
       durationSec: 285,
       frequency: '963 Hz',
+      baseA4: 432,
+      bpm: 52,
       gradient: 'linear-gradient(135deg, #64748b, #334155)',
-      desc: 'Subterranean binaural hum designed for deep focus and meditation.'
+      desc: 'Meditative Tibetan singing bowl harmonics with grounding deep cello drone.',
+      instrument: 'singingBowl',
+      chords: [
+        { bass: 'B1', notes: ['B2', 'F#3', 'D4', 'A4', 'C#5'] }, // Bm9
+        { bass: 'G1', notes: ['G2', 'D3', 'B3', 'F#4'] },         // Gmaj7
+        { bass: 'E1', notes: ['E2', 'B2', 'G3', 'D4', 'F#4'] },   // Em9
+        { bass: 'F#1',notes: ['F#2', 'C#3', 'A3', 'E4'] }         // F#m7
+      ],
+      melody: [
+        { n: 'F#4', b: 2 }, { n: 'A4', b: 1 }, { n: 'B4', b: 1 },
+        { n: 'D5', b: 2 }, { n: 'C#5', b: 1 }, { n: 'B4', b: 1 },
+        { n: 'A4', b: 2 }, { n: 'B4', b: 1 }, { n: 'F#4', b: 1 },
+        { n: 'E4', b: 2 }, { n: 'F#4', b: 2 }
+      ]
     }
   ];
 
@@ -86,117 +196,18 @@ document.addEventListener('DOMContentLoaded', () => {
   let currentTimeSec = 0;
   let sfxEnabled = true;
 
-  // Web Audio Context for Procedural Liquid Synthesizer & Soundscapes
+  // Web Audio Context
   let audioCtx = null;
   let masterGain = null;
   let sfxGain = null;
-  let synthActive = false;
+  let musicGain = null;
 
-  // Track Synth State (Procedural Generative Soundscape per track)
-  let trackOscs = [];
-  let trackFilterNode = null;
-  let trackArpTimer = null;
-  let trackChordIndex = 0;
+  // Active Instrumental Loop Timer & Nodes
+  let activeMusicTimer = null;
+  let activeNodes = [];
+  let previewingTrackId = null;
 
-  // Soundscape Musical Profiles for each track (Solfeggio tuned frequencies)
-  const trackAudioProfiles = [
-    {
-      // 1: Vitreous Horizon - 432Hz Calm Harmonic Pad & Chimes
-      rootFreq: 216,
-      scale: [216, 270, 324, 378, 432, 540],
-      droneWave: 'sine',
-      cutoff: 750,
-      filterQ: 2,
-      lfoSpeed: 0.12,
-      arpInterval: 1800,
-      bellWave: 'sine',
-      reverbLevel: 0.35
-    },
-    {
-      // 2: Chromasphere Drift - 528Hz Transformation Synth Wave
-      rootFreq: 132,
-      scale: [132, 165, 198, 247.5, 264, 330, 396, 528],
-      droneWave: 'triangle',
-      cutoff: 1100,
-      filterQ: 4,
-      lfoSpeed: 0.22,
-      arpInterval: 1300,
-      bellWave: 'triangle',
-      reverbLevel: 0.45
-    },
-    {
-      // 3: Molten Silica Tide - 639Hz Warm Analog Hydro Swell
-      rootFreq: 106.5,
-      scale: [106.5, 159.75, 213, 266.25, 319.5, 426, 639],
-      droneWave: 'sawtooth',
-      cutoff: 520,
-      filterQ: 1.8,
-      lfoSpeed: 0.08,
-      arpInterval: 2400,
-      bellWave: 'sine',
-      reverbLevel: 0.5
-    },
-    {
-      // 4: Lucent Prism Echo - 741Hz Crystal Bells & Refraction
-      rootFreq: 247,
-      scale: [247, 293.66, 370, 440, 494, 587.33, 741],
-      droneWave: 'sine',
-      cutoff: 1400,
-      filterQ: 3.5,
-      lfoSpeed: 0.28,
-      arpInterval: 950,
-      bellWave: 'triangle',
-      reverbLevel: 0.6
-    },
-    {
-      // 5: Glass Cascade Neon - 852Hz Pulsing Cyber Euphoria
-      rootFreq: 142,
-      scale: [142, 177.5, 213, 284, 355, 426, 568, 852],
-      droneWave: 'sawtooth',
-      cutoff: 950,
-      filterQ: 4.5,
-      lfoSpeed: 0.4,
-      arpInterval: 750,
-      bellWave: 'triangle',
-      reverbLevel: 0.4
-    },
-    {
-      // 6: Deep Obsidian Flow - 963Hz Subterranean Binaural Hum
-      rootFreq: 60.18,
-      scale: [60.18, 90.27, 120.36, 180.54, 240.72, 481.5, 963],
-      droneWave: 'sine',
-      cutoff: 380,
-      filterQ: 1.2,
-      lfoSpeed: 0.05,
-      arpInterval: 3000,
-      bellWave: 'sine',
-      reverbLevel: 0.6
-    }
-  ];
-
-  // DOM Elements
-  const playBtn = document.getElementById('btn-play');
-  const playIcon = document.getElementById('play-icon');
-  const heroPlayTrigger = document.getElementById('hero-play-trigger');
-  const artDisc = document.getElementById('art-disc');
-  const currentTitleEl = document.getElementById('current-title');
-  const currentArtistEl = document.getElementById('current-artist');
-  const seekFill = document.getElementById('seek-fill');
-  const currentTimeEl = document.getElementById('current-time');
-  const totalTimeEl = document.getElementById('total-time');
-  const seekTrack = document.getElementById('seek-track');
-  const floatingDock = document.getElementById('floating-dock');
-  const dockTitle = document.getElementById('dock-title');
-  const dockArtist = document.getElementById('dock-artist');
-  const dockPlayBtn = document.getElementById('dock-btn-play');
-  const trackGrid = document.getElementById('track-grid');
-  const filterBtns = document.querySelectorAll('.filter-btn');
-  const themeToggle = document.getElementById('theme-toggle');
-  const sfxToggleBtn = document.getElementById('sfx-toggle');
-  const paramViscosity = document.getElementById('param-viscosity');
-  const paramRefraction = document.getElementById('param-refraction');
-
-  // Initialize Web Audio Subsystem (Single Central Node)
+  // Initialize Web Audio Subsystem
   function initAudioNodes() {
     if (!audioCtx) {
       const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -204,18 +215,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // Master output bus with limiter compressor
       masterGain = audioCtx.createGain();
-      masterGain.gain.setValueAtTime(0.75, audioCtx.currentTime);
+      masterGain.gain.setValueAtTime(0.8, audioCtx.currentTime);
+
+      musicGain = audioCtx.createGain();
+      musicGain.gain.setValueAtTime(0.7, audioCtx.currentTime);
+      musicGain.connect(masterGain);
 
       sfxGain = audioCtx.createGain();
-      sfxGain.gain.setValueAtTime(sfxEnabled ? 0.7 : 0, audioCtx.currentTime);
+      sfxGain.gain.setValueAtTime(sfxEnabled ? 0.65 : 0, audioCtx.currentTime);
       sfxGain.connect(masterGain);
 
       const compressor = audioCtx.createDynamicsCompressor();
-      compressor.threshold.setValueAtTime(-16, audioCtx.currentTime);
+      compressor.threshold.setValueAtTime(-14, audioCtx.currentTime);
       compressor.knee.setValueAtTime(10, audioCtx.currentTime);
       compressor.ratio.setValueAtTime(4, audioCtx.currentTime);
       compressor.attack.setValueAtTime(0.005, audioCtx.currentTime);
-      compressor.release.setValueAtTime(0.2, audioCtx.currentTime);
+      compressor.release.setValueAtTime(0.25, audioCtx.currentTime);
 
       masterGain.connect(compressor);
       compressor.connect(audioCtx.destination);
@@ -238,7 +253,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const chimeNotes = [528, 594, 660, 792, 880, 1056, 1188, 1320];
   let chimeIndex = 0;
 
-  // Play High-Fidelity Crystalline Audio Tone
+  // UI Sound Effects
   function playUiTone(type = 'click') {
     if (!sfxEnabled) return;
     initAudioNodes();
@@ -247,7 +262,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const t = audioCtx.currentTime;
 
     if (type === 'hover') {
-      // Harmonic crystal glass bell chime
       const osc = audioCtx.createOscillator();
       const oscHarmonic = audioCtx.createOscillator();
       const gain = audioCtx.createGain();
@@ -273,7 +287,6 @@ document.addEventListener('DOMContentLoaded', () => {
       osc.stop(t + 0.18);
       oscHarmonic.stop(t + 0.18);
     } else if (type === 'click') {
-      // Crisp liquid droplet tap
       const osc = audioCtx.createOscillator();
       const gain = audioCtx.createGain();
 
@@ -290,7 +303,6 @@ document.addEventListener('DOMContentLoaded', () => {
       osc.start(t);
       osc.stop(t + 0.09);
     } else if (type === 'switch') {
-      // Prismatic upward light refraction sweep
       const osc = audioCtx.createOscillator();
       const gain = audioCtx.createGain();
 
@@ -306,7 +318,6 @@ document.addEventListener('DOMContentLoaded', () => {
       osc.start(t);
       osc.stop(t + 0.16);
     } else if (type === 'playChord') {
-      // Shimmering launch chord triad
       [432, 540, 648, 864].forEach((f, idx) => {
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
@@ -324,7 +335,6 @@ document.addEventListener('DOMContentLoaded', () => {
         osc.stop(t + 1.2);
       });
     } else if (type === 'tick') {
-      // Soft slider tick
       const osc = audioCtx.createOscillator();
       const gain = audioCtx.createGain();
       osc.type = 'triangle';
@@ -338,13 +348,481 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  // Toast Notification
+  function showToast(message) {
+    const existing = document.querySelector('.molten-toast');
+    if (existing) existing.remove();
+
+    const toast = document.createElement('div');
+    toast.className = 'molten-toast';
+    toast.innerHTML = `<i data-lucide="sparkles"></i> <span>${message}</span>`;
+    document.body.appendChild(toast);
+    if (window.lucide) lucide.createIcons();
+
+    setTimeout(() => {
+      toast.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+      toast.style.opacity = '0';
+      toast.style.transform = 'translateY(20px)';
+      setTimeout(() => toast.remove(), 400);
+    }, 2800);
+  }
+
+  // ==========================================
+  // REAL-TIME INSTRUMENT VOICE SYNTHESIZERS
+  // ==========================================
+
+  // Rhodes Electric Piano Voice
+  function synthRhodesNote(ctx, dest, freq, time, duration, vol = 0.09) {
+    if (freq <= 0) return;
+    const osc1 = ctx.createOscillator();
+    const osc2 = ctx.createOscillator();
+    const gain = ctx.createGain();
+    const filter = ctx.createBiquadFilter();
+
+    osc1.type = 'sine';
+    osc1.frequency.setValueAtTime(freq, time);
+
+    osc2.type = 'triangle';
+    osc2.frequency.setValueAtTime(freq * 2, time);
+
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(1600, time);
+    filter.frequency.exponentialRampToValueAtTime(450, time + duration);
+
+    gain.gain.setValueAtTime(0.001, time);
+    gain.gain.exponentialRampToValueAtTime(vol, time + 0.015);
+    gain.gain.exponentialRampToValueAtTime(0.0001, time + duration);
+
+    osc1.connect(filter);
+    osc2.connect(filter);
+    filter.connect(gain);
+    gain.connect(dest);
+
+    osc1.start(time);
+    osc2.start(time);
+    osc1.stop(time + duration);
+    osc2.stop(time + duration);
+  }
+
+  // Synthwave Pluck Voice
+  function synthPluckNote(ctx, dest, freq, time, duration, vol = 0.08) {
+    if (freq <= 0) return;
+    const osc = ctx.createOscillator();
+    const filter = ctx.createBiquadFilter();
+    const gain = ctx.createGain();
+
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(freq, time);
+
+    filter.type = 'lowpass';
+    filter.Q.setValueAtTime(4, time);
+    filter.frequency.setValueAtTime(2600, time);
+    filter.frequency.exponentialRampToValueAtTime(320, time + duration);
+
+    gain.gain.setValueAtTime(0.001, time);
+    gain.gain.exponentialRampToValueAtTime(vol, time + 0.01);
+    gain.gain.exponentialRampToValueAtTime(0.0001, time + duration);
+
+    osc.connect(filter);
+    filter.connect(gain);
+    gain.connect(dest);
+
+    osc.start(time);
+    osc.stop(time + duration);
+  }
+
+  // Acoustic Kalimba / Thumb Piano Voice
+  function synthKalimbaNote(ctx, dest, freq, time, duration, vol = 0.1) {
+    if (freq <= 0) return;
+    const osc = ctx.createOscillator();
+    const overtone = ctx.createOscillator();
+    const gain = ctx.createGain();
+
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(freq + 40, time);
+    osc.frequency.exponentialRampToValueAtTime(freq, time + 0.04);
+
+    overtone.type = 'triangle';
+    overtone.frequency.setValueAtTime(freq * 3, time);
+
+    gain.gain.setValueAtTime(0.001, time);
+    gain.gain.exponentialRampToValueAtTime(vol, time + 0.008);
+    gain.gain.exponentialRampToValueAtTime(0.0001, time + duration);
+
+    osc.connect(gain);
+    overtone.connect(gain);
+    gain.connect(dest);
+
+    osc.start(time);
+    overtone.start(time);
+    osc.stop(time + duration);
+    overtone.stop(time + duration);
+  }
+
+  // Celesta / Music Box Bell Voice
+  function synthCelestaNote(ctx, dest, freq, time, duration, vol = 0.07) {
+    if (freq <= 0) return;
+    const osc = ctx.createOscillator();
+    const bellOsc = ctx.createOscillator();
+    const gain = ctx.createGain();
+
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(freq, time);
+
+    bellOsc.type = 'sine';
+    bellOsc.frequency.setValueAtTime(freq * 2.76, time);
+
+    gain.gain.setValueAtTime(0.001, time);
+    gain.gain.exponentialRampToValueAtTime(vol, time + 0.006);
+    gain.gain.exponentialRampToValueAtTime(0.0001, time + duration);
+
+    osc.connect(gain);
+    bellOsc.connect(gain);
+    gain.connect(dest);
+
+    osc.start(time);
+    bellOsc.start(time);
+    osc.stop(time + duration);
+    bellOsc.stop(time + duration);
+  }
+
+  // Marimba Mallet Voice
+  function synthMarimbaNote(ctx, dest, freq, time, duration, vol = 0.11) {
+    if (freq <= 0) return;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(freq + 60, time);
+    osc.frequency.exponentialRampToValueAtTime(freq, time + 0.02);
+
+    gain.gain.setValueAtTime(0.001, time);
+    gain.gain.exponentialRampToValueAtTime(vol, time + 0.005);
+    gain.gain.exponentialRampToValueAtTime(0.0001, time + duration);
+
+    osc.connect(gain);
+    gain.connect(dest);
+
+    osc.start(time);
+    osc.stop(time + duration);
+  }
+
+  // Tibetan Singing Bowl Voice
+  function synthBowlNote(ctx, dest, freq, time, duration, vol = 0.09) {
+    if (freq <= 0) return;
+    const osc1 = ctx.createOscillator();
+    const osc2 = ctx.createOscillator();
+    const gain = ctx.createGain();
+
+    osc1.type = 'sine';
+    osc1.frequency.setValueAtTime(freq, time);
+
+    osc2.type = 'sine';
+    osc2.frequency.setValueAtTime(freq * 1.503, time);
+
+    gain.gain.setValueAtTime(0.001, time);
+    gain.gain.exponentialRampToValueAtTime(vol, time + 0.3);
+    gain.gain.exponentialRampToValueAtTime(0.0001, time + duration);
+
+    osc1.connect(gain);
+    osc2.connect(gain);
+    gain.connect(dest);
+
+    osc1.start(time);
+    osc2.start(time);
+    osc1.stop(time + duration);
+    osc2.stop(time + duration);
+  }
+
+  // Play Note by Instrument Type
+  function playInstrumentNote(inst, ctx, dest, freq, time, duration, vol) {
+    switch (inst) {
+      case 'synthwave':
+        synthPluckNote(ctx, dest, freq, time, duration, vol);
+        break;
+      case 'kalimba':
+        synthKalimbaNote(ctx, dest, freq, time, duration, vol);
+        break;
+      case 'celesta':
+        synthCelestaNote(ctx, dest, freq, time, duration, vol);
+        break;
+      case 'marimba':
+        synthMarimbaNote(ctx, dest, freq, time, duration, vol);
+        break;
+      case 'singingBowl':
+        synthBowlNote(ctx, dest, freq, time, duration, vol);
+        break;
+      case 'rhodes':
+      default:
+        synthRhodesNote(ctx, dest, freq, time, duration, vol);
+        break;
+    }
+  }
+
+  // Warm Sub-Bass Voice
+  function synthBassNote(ctx, dest, freq, time, duration, vol = 0.16) {
+    if (freq <= 0) return;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(freq, time);
+
+    gain.gain.setValueAtTime(0.001, time);
+    gain.gain.exponentialRampToValueAtTime(vol, time + 0.04);
+    gain.gain.exponentialRampToValueAtTime(0.0001, time + duration);
+
+    osc.connect(gain);
+    gain.connect(dest);
+
+    osc.start(time);
+    osc.stop(time + duration);
+  }
+
+  // Lush Harmonic Chord Pad
+  function synthChordPad(ctx, dest, chord, baseA4, time, duration, vol = 0.045) {
+    chord.notes.forEach((noteName, idx) => {
+      const f = noteFreq(noteName, baseA4);
+      if (f <= 0) return;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(f, time);
+
+      gain.gain.setValueAtTime(0.001, time);
+      gain.gain.exponentialRampToValueAtTime(vol / chord.notes.length, time + 0.4);
+      gain.gain.exponentialRampToValueAtTime(0.0001, time + duration);
+
+      osc.connect(gain);
+      gain.connect(dest);
+
+      osc.start(time);
+      osc.stop(time + duration);
+    });
+  }
+
+  // Schedule One Full Musical Loop (Chords + Bass + Melody)
+  function scheduleMelodicLoop(ctx, dest, track, startTime) {
+    const secondsPerBeat = 60 / track.bpm;
+    const baseA4 = track.baseA4 || 432;
+    const totalBars = 4;
+    const beatsPerBar = 4;
+    const loopDuration = totalBars * beatsPerBar * secondsPerBeat;
+
+    // 1. Chords & Bassline
+    track.chords.forEach((chord, barIdx) => {
+      const barStartTime = startTime + barIdx * beatsPerBar * secondsPerBeat;
+      const chordDuration = beatsPerBar * secondsPerBeat * 0.96;
+
+      // Bass note
+      const bassF = noteFreq(chord.bass, baseA4);
+      synthBassNote(ctx, dest, bassF, barStartTime, chordDuration, 0.18);
+
+      // Lush Chord Pad
+      synthChordPad(ctx, dest, chord, baseA4, barStartTime, chordDuration, 0.05);
+    });
+
+    // 2. Lead Instrumental Melody
+    let currentBeat = 0;
+    track.melody.forEach(item => {
+      const noteTime = startTime + currentBeat * secondsPerBeat;
+      const durationSeconds = item.b * secondsPerBeat * 0.9;
+      const f = noteFreq(item.n, baseA4);
+
+      playInstrumentNote(track.instrument, ctx, dest, f, noteTime, durationSeconds, 0.12);
+
+      currentBeat += item.b;
+    });
+
+    return loopDuration;
+  }
+
+  // Stop any active music or ringtone preview
+  function stopActiveMusic() {
+    if (activeMusicTimer) {
+      clearInterval(activeMusicTimer);
+      activeMusicTimer = null;
+    }
+    previewingTrackId = null;
+    document.querySelectorAll('.card-tone-btn.btn-preview-tone').forEach(b => {
+      b.classList.remove('playing');
+      b.querySelector('span').textContent = 'Preview Ringtone';
+    });
+  }
+
+  // Start continuous instrumental player stream
+  function startCurrentSoundscape() {
+    initAudioNodes();
+    stopActiveMusic();
+
+    const track = trackCatalog[currentTrackIndex];
+    const loopSec = (16 * 60) / track.bpm;
+
+    // Immediate first loop
+    scheduleMelodicLoop(audioCtx, musicGain, track, audioCtx.currentTime + 0.05);
+
+    // Continuous loop timer
+    activeMusicTimer = setInterval(() => {
+      if (!isPlaying || !audioCtx) return;
+      scheduleMelodicLoop(audioCtx, musicGain, track, audioCtx.currentTime + 0.05);
+    }, loopSec * 1000 - 150);
+  }
+
+  // ==========================================
+  // RINGTONE PREVIEW & OFFLINE WAV EXPORT
+  // ==========================================
+
+  // Play 15s Ringtone Hook Preview
+  function previewRingtone(trackId) {
+    initAudioNodes();
+    const track = trackCatalog.find(t => t.id === trackId);
+    if (!track) return;
+
+    if (previewingTrackId === trackId) {
+      stopActiveMusic();
+      playUiTone('click');
+      return;
+    }
+
+    // Stop main playback if running
+    if (isPlaying) {
+      pausePlayback();
+    }
+    stopActiveMusic();
+
+    previewingTrackId = trackId;
+    const btn = document.querySelector(`.btn-preview-tone[data-id="${trackId}"]`);
+    if (btn) {
+      btn.classList.add('playing');
+      btn.querySelector('span').textContent = 'Stop Tone';
+    }
+
+    playUiTone('click');
+    showToast(`Playing Ringtone: ${track.title} (${track.toneTag})`);
+
+    const loopSec = scheduleMelodicLoop(audioCtx, musicGain, track, audioCtx.currentTime + 0.05);
+
+    // Auto reset button after ringtone loop completes
+    setTimeout(() => {
+      if (previewingTrackId === trackId) {
+        stopActiveMusic();
+      }
+    }, loopSec * 1000);
+  }
+
+  // Convert AudioBuffer to standard 16-bit PCM WAV Blob
+  function audioBufferToWavBlob(buffer) {
+    const numChannels = buffer.numberOfChannels;
+    const sampleRate = buffer.sampleRate;
+    const format = 1; // PCM
+    const bitDepth = 16;
+    const bytesPerSample = bitDepth / 8;
+    const blockAlign = numChannels * bytesPerSample;
+    const length = buffer.length;
+    const dataSize = length * blockAlign;
+    const totalSize = 44 + dataSize;
+    const arrayBuffer = new ArrayBuffer(totalSize);
+    const view = new DataView(arrayBuffer);
+
+    function writeString(offset, string) {
+      for (let i = 0; i < string.length; i++) {
+        view.setUint8(offset + i, string.charCodeAt(i));
+      }
+    }
+
+    writeString(0, 'RIFF');
+    view.setUint32(4, 36 + dataSize, true);
+    writeString(8, 'WAVE');
+    writeString(12, 'fmt ');
+    view.setUint32(16, 16, true);
+    view.setUint16(20, format, true);
+    view.setUint16(22, numChannels, true);
+    view.setUint32(24, sampleRate, true);
+    view.setUint32(28, sampleRate * blockAlign, true);
+    view.setUint16(32, blockAlign, true);
+    view.setUint16(34, bitDepth, true);
+    writeString(36, 'data');
+    view.setUint32(40, dataSize, true);
+
+    let offset = 44;
+    const channelData = [];
+    for (let ch = 0; ch < numChannels; ch++) {
+      channelData.push(buffer.getChannelData(ch));
+    }
+
+    for (let i = 0; i < length; i++) {
+      for (let ch = 0; ch < numChannels; ch++) {
+        let sample = channelData[ch][i];
+        sample = Math.max(-1, Math.min(1, sample));
+        const intSample = sample < 0 ? sample * 0x8000 : sample * 0x7FFF;
+        view.setInt16(offset, intSample, true);
+        offset += 2;
+      }
+    }
+
+    return new Blob([view], { type: 'audio/wav' });
+  }
+
+  // Synthesize and Download Studio Quality .WAV Ringtone in-browser
+  async function downloadRingtone(trackId) {
+    const track = trackCatalog.find(t => t.id === trackId);
+    if (!track) return;
+
+    playUiTone('click');
+    showToast(`Synthesizing HD Ringtone: ${track.title}.wav...`);
+
+    try {
+      const sampleRate = 44100;
+      const loopDuration = (16 * 60) / track.bpm;
+      const totalDuration = loopDuration + 1.2; // include reverb tail
+
+      const OfflineCtx = window.OfflineAudioContext || window.webkitOfflineAudioContext;
+      const offlineCtx = new OfflineCtx(2, Math.ceil(sampleRate * totalDuration), sampleRate);
+
+      const offGain = offlineCtx.createGain();
+      offGain.gain.setValueAtTime(0.85, 0);
+
+      const comp = offlineCtx.createDynamicsCompressor();
+      offGain.connect(comp);
+      comp.connect(offlineCtx.destination);
+
+      scheduleMelodicLoop(offlineCtx, offGain, track, 0.05);
+
+      const renderedBuffer = await offlineCtx.startRendering();
+      const wavBlob = audioBufferToWavBlob(renderedBuffer);
+
+      const url = URL.createObjectURL(wavBlob);
+      const a = document.createElement('a');
+      const filename = `MoltenPrism_${track.title.replace(/\s+/g, '')}_Ringtone.wav`;
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(() => {
+        a.remove();
+        URL.revokeObjectURL(url);
+      }, 1000);
+
+      showToast(`✨ Ringtone downloaded: ${filename}`);
+    } catch (err) {
+      console.error('Error generating WAV ringtone:', err);
+      showToast(`Error rendering audio: ${err.message}`);
+    }
+  }
+
+  // ==========================================
+  // UI CONTROLS & EVENT LISTENERS
+  // ==========================================
+
   // SFX Toggle button logic
+  const sfxToggleBtn = document.getElementById('sfx-toggle');
   if (sfxToggleBtn) {
     sfxToggleBtn.addEventListener('click', () => {
       initAudioNodes();
       sfxEnabled = !sfxEnabled;
       if (sfxGain && audioCtx) {
-        sfxGain.gain.setValueAtTime(sfxEnabled ? 0.7 : 0, audioCtx.currentTime);
+        sfxGain.gain.setValueAtTime(sfxEnabled ? 0.65 : 0, audioCtx.currentTime);
       }
       playUiTone('click');
       const textEl = document.getElementById('sfx-text');
@@ -353,8 +831,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Render Track Catalog Cards
+  // Render Track Catalog Cards with Tone Preview & Download Buttons
   function renderCatalog(filter = 'all') {
+    const trackGrid = document.getElementById('track-grid');
     if (!trackGrid) return;
     trackGrid.innerHTML = '';
     const filtered = filter === 'all' 
@@ -367,7 +846,7 @@ document.addEventListener('DOMContentLoaded', () => {
       card.innerHTML = `
         <div class="card-art-preview" style="background: ${track.gradient}">
           <img src="icon.png" alt="Molten Orb" class="card-art-orb-watermark">
-          <div class="card-meta-tag">${track.frequency}</div>
+          <div class="card-meta-tag"><i data-lucide="music" style="width:12px; height:12px;"></i> ${track.frequency}</div>
           <div class="card-play-hover">
             <i data-lucide="play" class="fill-current"></i>
           </div>
@@ -377,19 +856,45 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
         <div class="card-info">
           <h4>${track.title}</h4>
+          <div class="card-tone-type"><span class="tone-badge">♫ ${track.toneTag}</span></div>
           <p>${track.desc}</p>
+        </div>
+        <div class="card-actions">
+          <button class="card-tone-btn btn-preview-tone" data-id="${track.id}" title="Listen to 15s Catchy Instrumental Ringtone">
+            <i data-lucide="bell"></i> <span>Preview Ringtone</span>
+          </button>
+          <button class="card-tone-btn btn-download-tone" data-id="${track.id}" title="Download Instrumental Ringtone as .WAV file">
+            <i data-lucide="download"></i> <span>Get Tone</span>
+          </button>
         </div>
         <div class="card-bottom">
           <span class="duration-pill"><i data-lucide="clock" style="width:12px; height:12px; vertical-align:middle; margin-right:4px;"></i>${track.duration}</span>
-          <span class="yt-badge"><i data-lucide="youtube" style="width:14px; height:14px;"></i> YT Music</span>
+          <span class="yt-badge"><i data-lucide="sparkles" style="width:14px; height:14px;"></i> ${track.bpm} BPM</span>
         </div>
       `;
 
       card.addEventListener('mouseenter', () => playUiTone('hover'));
-      card.addEventListener('click', () => {
+
+      // Card click opens player
+      card.addEventListener('click', (e) => {
+        if (e.target.closest('.card-actions')) return;
         playUiTone('click');
         const index = trackCatalog.findIndex(t => t.id === track.id);
         selectTrack(index, true);
+      });
+
+      // Preview Tone Button
+      const previewBtn = card.querySelector('.btn-preview-tone');
+      previewBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        previewRingtone(track.id);
+      });
+
+      // Download Tone Button
+      const downloadBtn = card.querySelector('.btn-download-tone');
+      downloadBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        downloadRingtone(track.id);
       });
 
       trackGrid.appendChild(card);
@@ -401,6 +906,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Filter Buttons
+  const filterBtns = document.querySelectorAll('.filter-btn');
   filterBtns.forEach(btn => {
     btn.addEventListener('mouseenter', () => playUiTone('hover'));
     btn.addEventListener('click', () => {
@@ -412,11 +918,25 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // Track Selection and Playback
+  const currentTitleEl = document.getElementById('current-title');
+  const currentArtistEl = document.getElementById('current-artist');
+  const totalTimeEl = document.getElementById('total-time');
+  const dockTitle = document.getElementById('dock-title');
+  const dockArtist = document.getElementById('dock-artist');
+  const seekFill = document.getElementById('seek-fill');
+  const currentTimeEl = document.getElementById('current-time');
+  const artDisc = document.getElementById('art-disc');
+  const playBtn = document.getElementById('btn-play');
+  const dockPlayBtn = document.getElementById('dock-btn-play');
+  const floatingDock = document.getElementById('floating-dock');
+  const heroPlayTrigger = document.getElementById('hero-play-trigger');
+  const seekTrack = document.getElementById('seek-track');
+
   function selectTrack(index, autoPlay = true) {
     currentTrackIndex = index;
     const track = trackCatalog[currentTrackIndex];
     if (currentTitleEl) currentTitleEl.textContent = track.title;
-    if (currentArtistEl) currentArtistEl.textContent = track.artist;
+    if (currentArtistEl) currentArtistEl.textContent = `${track.artist} • ${track.toneTag}`;
     if (totalTimeEl) totalTimeEl.textContent = track.duration;
     if (dockTitle) dockTitle.textContent = track.title;
     if (dockArtist) dockArtist.textContent = track.artist;
@@ -439,141 +959,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const pct = (currentTimeSec / track.durationSec) * 100;
     if (seekFill) seekFill.style.width = `${pct}%`;
     if (currentTimeEl) currentTimeEl.textContent = formatTime(currentTimeSec);
-  }
-
-  // Stop currently playing soundscape
-  function stopCurrentSoundscape() {
-    if (trackArpTimer) {
-      clearInterval(trackArpTimer);
-      trackArpTimer = null;
-    }
-    trackOscs.forEach(node => {
-      try {
-        if (node.gain && audioCtx) {
-          node.gain.gain.setTargetAtTime(0, audioCtx.currentTime, 0.3);
-        }
-        setTimeout(() => {
-          try {
-            if (node.osc) {
-              node.osc.stop();
-              node.osc.disconnect();
-            }
-          } catch (e) {}
-        }, 400);
-      } catch (e) {}
-    });
-    trackOscs = [];
-  }
-
-  // Start rich procedural Soundscape for selected track
-  function startCurrentSoundscape() {
-    initAudioNodes();
-    stopCurrentSoundscape();
-
-    const profile = trackAudioProfiles[currentTrackIndex] || trackAudioProfiles[0];
-    const t = audioCtx.currentTime;
-
-    // Resonant Filter
-    trackFilterNode = audioCtx.createBiquadFilter();
-    trackFilterNode.type = 'lowpass';
-    const viscMod = paramViscosity ? (paramViscosity.value / 100) : 0.65;
-    trackFilterNode.frequency.setValueAtTime(profile.cutoff * (0.6 + viscMod * 0.8), t);
-    trackFilterNode.Q.setValueAtTime(profile.filterQ, t);
-
-    const droneGain = audioCtx.createGain();
-    droneGain.gain.setValueAtTime(0.001, t);
-    droneGain.gain.exponentialRampToValueAtTime(0.14, t + 1.2);
-
-    trackFilterNode.connect(droneGain);
-    droneGain.connect(masterGain);
-
-    // Fundamental Voice
-    const osc1 = audioCtx.createOscillator();
-    osc1.type = profile.droneWave;
-    osc1.frequency.setValueAtTime(profile.rootFreq, t);
-
-    // 5th Harmonic Shimmer
-    const osc2 = audioCtx.createOscillator();
-    osc2.type = 'sine';
-    osc2.frequency.setValueAtTime(profile.rootFreq * 1.503, t);
-
-    // Deep Sub
-    const oscSub = audioCtx.createOscillator();
-    oscSub.type = 'sine';
-    oscSub.frequency.setValueAtTime(profile.rootFreq * 0.5, t);
-
-    // Organic LFO
-    const lfo = audioCtx.createOscillator();
-    const lfoGain = audioCtx.createGain();
-    lfo.type = 'sine';
-    lfo.frequency.setValueAtTime(profile.lfoSpeed, t);
-    lfoGain.gain.setValueAtTime(profile.cutoff * 0.3, t);
-    lfo.connect(lfoGain);
-    lfoGain.connect(trackFilterNode.frequency);
-    lfo.start(t);
-
-    osc1.connect(trackFilterNode);
-    osc2.connect(trackFilterNode);
-    oscSub.connect(trackFilterNode);
-
-    osc1.start(t);
-    osc2.start(t);
-    oscSub.start(t);
-
-    trackOscs.push(
-      { osc: osc1, gain: droneGain },
-      { osc: osc2, gain: droneGain },
-      { osc: oscSub, gain: droneGain },
-      { osc: lfo, gain: lfoGain }
-    );
-
-    // Procedural Prismatic Chimes
-    trackChordIndex = 0;
-    const playBellTone = () => {
-      if (!isPlaying || !audioCtx) return;
-      const noteFreq = profile.scale[trackChordIndex % profile.scale.length];
-      trackChordIndex++;
-
-      const bellOsc = audioCtx.createOscillator();
-      const bellGain = audioCtx.createGain();
-      const now = audioCtx.currentTime;
-
-      bellOsc.type = profile.bellWave;
-      const bellPitch = noteFreq > 380 ? noteFreq : noteFreq * 2;
-      bellOsc.frequency.setValueAtTime(bellPitch, now);
-
-      bellGain.gain.setValueAtTime(0.04, now);
-      bellGain.gain.exponentialRampToValueAtTime(0.0001, now + 1.6);
-
-      bellOsc.connect(bellGain);
-      bellGain.connect(masterGain);
-
-      bellOsc.start(now);
-      bellOsc.stop(now + 1.6);
-    };
-
-    setTimeout(playBellTone, 200);
-    const refractMod = paramRefraction ? (1.3 - (paramRefraction.value / 100) * 0.6) : 1;
-    trackArpTimer = setInterval(playBellTone, profile.arpInterval * refractMod);
-  }
-
-  // Real-time slider soundscape modulation
-  if (paramViscosity) {
-    paramViscosity.addEventListener('input', () => {
-      playUiTone('tick');
-      if (trackFilterNode && audioCtx) {
-        const profile = trackAudioProfiles[currentTrackIndex] || trackAudioProfiles[0];
-        const val = paramViscosity.value / 100;
-        trackFilterNode.frequency.setTargetAtTime(profile.cutoff * (0.4 + val * 1.2), audioCtx.currentTime, 0.05);
-        trackFilterNode.Q.setTargetAtTime(1 + val * 6, audioCtx.currentTime, 0.05);
-      }
-    });
-  }
-
-  if (paramRefraction) {
-    paramRefraction.addEventListener('input', () => {
-      playUiTone('tick');
-    });
   }
 
   function startPlayback() {
@@ -602,7 +987,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (artDisc) artDisc.classList.remove('spinning');
     updatePlayIcons(false);
     clearInterval(playProgressInterval);
-    stopCurrentSoundscape();
+    stopActiveMusic();
     playUiTone('click');
   }
 
@@ -654,7 +1039,6 @@ document.addEventListener('DOMContentLoaded', () => {
     selectTrack((currentTrackIndex - 1 + trackCatalog.length) % trackCatalog.length, isPlaying);
   });
 
-  // Seek bar interaction
   if (seekTrack) {
     seekTrack.addEventListener('click', (e) => {
       playUiTone('click');
@@ -667,7 +1051,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Dynamic Multi-Color Spectrum Waveform Canvas Animation
+  // Dynamic Spectrum Visualizer Canvas Animation
   const waveCanvas = document.getElementById('waveform-canvas');
   if (waveCanvas) {
     const waveCtx = waveCanvas.getContext('2d');
@@ -692,7 +1076,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       for (let i = 0; i < numBars; i++) {
         let barHeight;
-        if (isPlaying) {
+        if (isPlaying || previewingTrackId !== null) {
           const wave1 = Math.sin(waveStep * 0.08 + i * 0.28);
           const wave2 = Math.cos(waveStep * 0.05 + i * 0.18);
           const wave3 = Math.sin(waveStep * 0.12 + i * 0.45);
@@ -719,7 +1103,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         waveCtx.fillStyle = grad;
         waveCtx.shadowColor = 'rgba(56, 189, 248, 0.4)';
-        waveCtx.shadowBlur = isPlaying ? 8 : 2;
+        waveCtx.shadowBlur = (isPlaying || previewingTrackId) ? 8 : 2;
         waveCtx.beginPath();
         if (waveCtx.roundRect) {
           waveCtx.roundRect(x, y, barWidth, barHeight, 3);
@@ -735,7 +1119,7 @@ document.addEventListener('DOMContentLoaded', () => {
     drawWaveform();
   }
 
-  // Background Liquid Fluid Canvas Simulation with Caustic Ripples
+  // Background Fluid Canvas Simulation
   const fluidCanvas = document.getElementById('liquid-canvas');
   if (fluidCanvas) {
     const fluidCtx = fluidCanvas.getContext('2d');
@@ -755,7 +1139,6 @@ document.addEventListener('DOMContentLoaded', () => {
       { x: 150, y: 700, vx: 0.4, vy: -0.4, radius: 220, color: 'rgba(52, 211, 153, 0.12)' }
     ];
 
-    // Interactive pointer fluid particles
     const pointerParticles = [];
     let lastPointerX = 0;
     let lastPointerY = 0;
@@ -780,7 +1163,6 @@ document.addEventListener('DOMContentLoaded', () => {
     function animateFluid() {
       fluidCtx.clearRect(0, 0, fluidWidth, fluidHeight);
 
-      // Blobs
       fluidBlobs.forEach(b => {
         b.x += b.vx;
         b.y += b.vy;
@@ -798,7 +1180,6 @@ document.addEventListener('DOMContentLoaded', () => {
         fluidCtx.fill();
       });
 
-      // Pointer Liquid Sparkles
       for (let i = pointerParticles.length - 1; i >= 0; i--) {
         const p = pointerParticles[i];
         p.x += p.vx;
@@ -925,7 +1306,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Prismatic Refraction Theme Toggle
+  // Theme Toggle
+  const themeToggle = document.getElementById('theme-toggle');
   if (themeToggle) {
     themeToggle.addEventListener('mouseenter', () => playUiTone('hover'));
     themeToggle.addEventListener('click', () => {
@@ -946,7 +1328,6 @@ document.addEventListener('DOMContentLoaded', () => {
       const xPct = (x / rect.width) * 100;
       const yPct = (y / rect.height) * 100;
 
-      // 3D Tilt angles (-6deg to +6deg)
       const rotX = ((y / rect.height) - 0.5) * -10;
       const rotY = ((x / rect.width) - 0.5) * 10;
 
