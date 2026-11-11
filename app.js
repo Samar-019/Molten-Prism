@@ -1377,6 +1377,84 @@ document.addEventListener('DOMContentLoaded', () => {
     drawDockVisualizer();
   }
 
+  // 4. Dedicated Dock Spectrum Waveform Visualizer
+  const dockWaveCanvas = document.getElementById('dock-waveform-canvas');
+  if (dockWaveCanvas) {
+    const dockWaveCtx = dockWaveCanvas.getContext('2d');
+    const dpr = window.devicePixelRatio || 1;
+    dockWaveCanvas.width = 120 * dpr;
+    dockWaveCanvas.height = 28 * dpr;
+    dockWaveCtx.scale(dpr, dpr);
+
+    let dockWaveStep = 0;
+    const dockNumBars = 18;
+    const dockPeaks = new Array(dockNumBars).fill(0);
+
+    function drawDockWaveform() {
+      dockWaveCtx.clearRect(0, 0, 120, 28);
+      const width = 120;
+      const height = 28;
+      const centerY = height / 2;
+      const gap = 2;
+      const barW = (width - (dockNumBars * gap)) / dockNumBars;
+
+      let freqData = null;
+      if (analyser && analyserData && isPlaying) {
+        freqData = analyserData;
+      }
+
+      for (let i = 0; i < dockNumBars; i++) {
+        let bHeight;
+        if (freqData) {
+          const bin = Math.min(Math.floor((i / dockNumBars) * freqData.length), freqData.length - 1);
+          const raw = freqData[bin] / 255;
+          bHeight = Math.max(3, (raw * 0.88 + 0.1) * height);
+        } else if (isPlaying) {
+          const w = Math.sin(dockWaveStep * 0.1 + i * 0.4);
+          bHeight = Math.max(3, (Math.abs(w) * 0.75 + 0.15) * height);
+        } else {
+          bHeight = Math.max(2, (Math.sin(dockWaveStep * 0.03 + i * 0.3) * 0.1 + 0.12) * height);
+        }
+
+        if (bHeight > dockPeaks[i]) {
+          dockPeaks[i] = bHeight;
+        } else {
+          dockPeaks[i] = Math.max(2, dockPeaks[i] - 0.4);
+        }
+
+        const x = i * (barW + gap);
+        const y = centerY - bHeight / 2;
+
+        const grad = dockWaveCtx.createLinearGradient(0, y, 0, y + bHeight);
+        grad.addColorStop(0, '#38bdf8');
+        grad.addColorStop(0.6, '#a855f7');
+        grad.addColorStop(1, '#ec4899');
+
+        dockWaveCtx.fillStyle = grad;
+        dockWaveCtx.shadowColor = isPlaying ? '#38bdf8' : 'transparent';
+        dockWaveCtx.shadowBlur = isPlaying ? 5 : 0;
+        
+        dockWaveCtx.beginPath();
+        if (dockWaveCtx.roundRect) {
+          dockWaveCtx.roundRect(x, y, barW, bHeight, 2);
+        } else {
+          dockWaveCtx.rect(x, y, barW, bHeight);
+        }
+        dockWaveCtx.fill();
+
+        // Little floating peak point
+        if (isPlaying) {
+          dockWaveCtx.fillStyle = '#ffffff';
+          dockWaveCtx.fillRect(x, Math.max(1, centerY - dockPeaks[i] / 2 - 2), barW, 1.5);
+        }
+      }
+
+      dockWaveStep++;
+      requestAnimationFrame(drawDockWaveform);
+    }
+    drawDockWaveform();
+  }
+
   // Background Fluid Canvas Simulation
   const fluidCanvas = document.getElementById('liquid-canvas');
   if (fluidCanvas) {

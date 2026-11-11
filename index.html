@@ -19,7 +19,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=5.0">
+  <link rel="stylesheet" href="style.css?v=6.0">
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
 </head>
@@ -292,9 +292,12 @@
           <span class="dock-artist" id="dock-artist">Molten Prism</span>
         </div>
       </div>
-      <div class="dock-visualizer-bars-inline" id="dock-bars">
-        <span></span><span></span><span></span><span></span><span></span>
+      
+      <!-- Dock Dedicated Glass Waveform Visualizer -->
+      <div class="dock-visualizer-container">
+        <canvas id="dock-waveform-canvas" class="dock-waveform-canvas" width="120" height="28"></canvas>
       </div>
+
       <div class="dock-controls">
         <button class="dock-icon-btn" id="dock-btn-shuffle" title="Fluid Shuffle"><i data-lucide="shuffle"></i></button>
         <button class="dock-icon-btn" id="dock-btn-prev" title="Previous Track"><i data-lucide="skip-back"></i></button>
