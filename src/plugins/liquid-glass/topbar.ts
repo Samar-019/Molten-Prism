@@ -289,7 +289,7 @@ export class TopBar {
     if (this.appIcon?.isConnected) return;
     const icon = el('div', 'lg-app-icon');
     icon.innerHTML = APP_ICON_SVG;
-    icon.append(el('span', 'lg-app-name', 'MusicSense'));
+    icon.append(el('span', 'lg-app-name', 'Molten Prism'));
     icon.setAttribute('aria-hidden', 'true');
     document.body.append(icon);
     this.appIcon = icon;
