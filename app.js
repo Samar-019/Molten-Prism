@@ -1345,114 +1345,122 @@ document.addEventListener('DOMContentLoaded', () => {
   const dockVizCanvas = document.getElementById('dock-visualizer-canvas');
   if (dockVizCanvas) {
     const dockVizCtx = dockVizCanvas.getContext('2d');
+    const dpr = window.devicePixelRatio || 1;
+    dockVizCanvas.width = 60 * dpr;
+    dockVizCanvas.height = 60 * dpr;
+    dockVizCtx.scale(dpr, dpr);
+
     let dockAngle = 0;
 
     function drawDockVisualizer() {
-      dockVizCtx.clearRect(0, 0, 46, 46);
-      const cx = 23;
-      const cy = 23;
-      const r = 19;
+      dockVizCtx.clearRect(0, 0, 60, 60);
+      const cx = 30;
+      const cy = 30;
+      const r = 18;
       const points = 24;
+
+      let freqData = null;
+      if (analyser && analyserData && (isPlaying || previewingTrackId !== null)) {
+        freqData = analyserData;
+      }
 
       for (let i = 0; i < points; i++) {
         const theta = (i / points) * Math.PI * 2 + dockAngle;
-        let len = isPlaying ? (2 + Math.abs(Math.sin(dockAngle * 3 + i * 0.5)) * 4) : 1;
+        let len = 2;
+        if (freqData) {
+          const bin = Math.floor((i / points) * freqData.length);
+          len = 2 + (freqData[bin] / 255) * 8;
+        } else if (isPlaying || previewingTrackId) {
+          len = 2 + Math.abs(Math.sin(dockAngle * 3 + i * 0.5)) * 6;
+        } else {
+          len = 1.5;
+        }
+
         const x1 = cx + Math.cos(theta) * r;
         const y1 = cy + Math.sin(theta) * r;
         const x2 = cx + Math.cos(theta) * (r + len);
         const y2 = cy + Math.sin(theta) * (r + len);
 
-        dockVizCtx.strokeStyle = isPlaying ? '#38bdf8' : 'rgba(255,255,255,0.2)';
-        dockVizCtx.lineWidth = 1.5;
+        const hue = (i / points) * 360 + (dockAngle * 30);
+        dockVizCtx.strokeStyle = isPlaying ? `hsla(${hue % 360}, 90%, 65%, 0.95)` : 'rgba(255,255,255,0.2)';
+        dockVizCtx.lineWidth = 1.8;
         dockVizCtx.lineCap = 'round';
+        dockVizCtx.shadowColor = isPlaying ? `hsla(${hue % 360}, 90%, 65%, 0.8)` : 'transparent';
+        dockVizCtx.shadowBlur = isPlaying ? 6 : 0;
         dockVizCtx.beginPath();
         dockVizCtx.moveTo(x1, y1);
         dockVizCtx.lineTo(x2, y2);
         dockVizCtx.stroke();
       }
 
-      dockAngle += isPlaying ? 0.03 : 0.008;
+      dockAngle += isPlaying ? 0.025 : 0.006;
       requestAnimationFrame(drawDockVisualizer);
     }
     drawDockVisualizer();
   }
 
-  // 4. Dedicated Dock Spectrum Waveform Visualizer
-  const dockWaveCanvas = document.getElementById('dock-waveform-canvas');
-  if (dockWaveCanvas) {
-    const dockWaveCtx = dockWaveCanvas.getContext('2d');
+  // 4. Prominent Real-time Dock Spectrum Waveform Visualizer
+  const dockSpectrumCanvas = document.getElementById('dock-spectrum-canvas');
+  if (dockSpectrumCanvas) {
+    const dockSpecCtx = dockSpectrumCanvas.getContext('2d');
     const dpr = window.devicePixelRatio || 1;
-    dockWaveCanvas.width = 120 * dpr;
-    dockWaveCanvas.height = 28 * dpr;
-    dockWaveCtx.scale(dpr, dpr);
+    dockSpectrumCanvas.width = 130 * dpr;
+    dockSpectrumCanvas.height = 28 * dpr;
+    dockSpecCtx.scale(dpr, dpr);
 
-    let dockWaveStep = 0;
-    const dockNumBars = 18;
-    const dockPeaks = new Array(dockNumBars).fill(0);
+    const dockBarsCount = 18;
+    const dockGap = 3;
+    const dockBarW = (130 - (dockBarsCount * dockGap)) / dockBarsCount;
+    let dockStep = 0;
 
-    function drawDockWaveform() {
-      dockWaveCtx.clearRect(0, 0, 120, 28);
-      const width = 120;
-      const height = 28;
-      const centerY = height / 2;
-      const gap = 2;
-      const barW = (width - (dockNumBars * gap)) / dockNumBars;
+    function drawDockSpectrum() {
+      dockSpecCtx.clearRect(0, 0, 130, 28);
+      const h = 28;
+      const centerY = h / 2;
 
       let freqData = null;
-      if (analyser && analyserData && isPlaying) {
+      if (analyser && analyserData && (isPlaying || previewingTrackId !== null || synthActive)) {
+        analyser.getByteFrequencyData(analyserData);
         freqData = analyserData;
       }
 
-      for (let i = 0; i < dockNumBars; i++) {
+      for (let i = 0; i < dockBarsCount; i++) {
         let bHeight;
         if (freqData) {
-          const bin = Math.min(Math.floor((i / dockNumBars) * freqData.length), freqData.length - 1);
-          const raw = freqData[bin] / 255;
-          bHeight = Math.max(3, (raw * 0.88 + 0.1) * height);
-        } else if (isPlaying) {
-          const w = Math.sin(dockWaveStep * 0.1 + i * 0.4);
-          bHeight = Math.max(3, (Math.abs(w) * 0.75 + 0.15) * height);
+          const bin = Math.min(Math.floor((i / dockBarsCount) * freqData.length), freqData.length - 1);
+          bHeight = (freqData[bin] / 255) * (h - 4) + 4;
+        } else if (isPlaying || previewingTrackId) {
+          const w = Math.sin(dockStep * 0.12 + i * 0.45);
+          bHeight = Math.abs(w) * (h - 8) + 4;
         } else {
-          bHeight = Math.max(2, (Math.sin(dockWaveStep * 0.03 + i * 0.3) * 0.1 + 0.12) * height);
+          bHeight = Math.sin(dockStep * 0.04 + i * 0.3) * 2 + 3;
         }
 
-        if (bHeight > dockPeaks[i]) {
-          dockPeaks[i] = bHeight;
-        } else {
-          dockPeaks[i] = Math.max(2, dockPeaks[i] - 0.4);
-        }
-
-        const x = i * (barW + gap);
+        const x = i * (dockBarW + dockGap);
         const y = centerY - bHeight / 2;
 
-        const grad = dockWaveCtx.createLinearGradient(0, y, 0, y + bHeight);
+        const grad = dockSpecCtx.createLinearGradient(0, y, 0, y + bHeight);
         grad.addColorStop(0, '#38bdf8');
-        grad.addColorStop(0.6, '#a855f7');
+        grad.addColorStop(0.5, '#c084fc');
         grad.addColorStop(1, '#ec4899');
 
-        dockWaveCtx.fillStyle = grad;
-        dockWaveCtx.shadowColor = isPlaying ? '#38bdf8' : 'transparent';
-        dockWaveCtx.shadowBlur = isPlaying ? 5 : 0;
-        
-        dockWaveCtx.beginPath();
-        if (dockWaveCtx.roundRect) {
-          dockWaveCtx.roundRect(x, y, barW, bHeight, 2);
-        } else {
-          dockWaveCtx.rect(x, y, barW, bHeight);
-        }
-        dockWaveCtx.fill();
+        dockSpecCtx.fillStyle = grad;
+        dockSpecCtx.shadowColor = (isPlaying || previewingTrackId) ? 'rgba(56, 189, 248, 0.7)' : 'transparent';
+        dockSpecCtx.shadowBlur = (isPlaying || previewingTrackId) ? 8 : 0;
 
-        // Little floating peak point
-        if (isPlaying) {
-          dockWaveCtx.fillStyle = '#ffffff';
-          dockWaveCtx.fillRect(x, Math.max(1, centerY - dockPeaks[i] / 2 - 2), barW, 1.5);
+        dockSpecCtx.beginPath();
+        if (dockSpecCtx.roundRect) {
+          dockSpecCtx.roundRect(x, y, dockBarW, bHeight, 2);
+        } else {
+          dockSpecCtx.rect(x, y, dockBarW, bHeight);
         }
+        dockSpecCtx.fill();
       }
 
-      dockWaveStep++;
-      requestAnimationFrame(drawDockWaveform);
+      dockStep++;
+      requestAnimationFrame(drawDockSpectrum);
     }
-    drawDockWaveform();
+    drawDockSpectrum();
   }
 
   // Background Fluid Canvas Simulation
