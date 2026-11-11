@@ -84,12 +84,92 @@ document.addEventListener('DOMContentLoaded', () => {
   let playProgressInterval = null;
   let currentTimeSec = 0;
 
-  // Web Audio Context for Procedural Liquid Synthesizer & Visualizer
+  // Web Audio Context for Procedural Liquid Synthesizer & Soundscapes
   let audioCtx = null;
-  let ambientOsc1 = null;
-  let ambientOsc2 = null;
-  let ambientGain = null;
+  let masterGain = null;
   let synthActive = false;
+
+  // Track Synth State (Procedural Generative Soundscape per track)
+  let trackOscs = [];
+  let trackFilters = [];
+  let trackArpTimer = null;
+  let trackChordIndex = 0;
+
+  // Soundscape Musical Profiles for each track
+  const trackAudioProfiles = [
+    {
+      // 1: Vitreous Horizon - 432Hz Calm Harmonic Pad & Chimes
+      rootFreq: 216, // A3 tuned harmonic
+      scale: [216, 270, 324, 378, 432, 540], // Natural overtone series
+      droneWave: 'sine',
+      cutoff: 750,
+      filterQ: 2,
+      lfoSpeed: 0.12,
+      arpInterval: 2200,
+      bellWave: 'sine',
+      reverbLevel: 0.35
+    },
+    {
+      // 2: Chromasphere Drift - 528Hz Transformation / Solfeggio Synth Wave
+      rootFreq: 132, // C3
+      scale: [132, 165, 198, 247.5, 264, 330, 396, 528], // Lydian / Solfeggio shimmer
+      droneWave: 'triangle',
+      cutoff: 1100,
+      filterQ: 4,
+      lfoSpeed: 0.22,
+      arpInterval: 1400,
+      bellWave: 'triangle',
+      reverbLevel: 0.45
+    },
+    {
+      // 3: Molten Silica Tide - 639Hz Warm Analog Hydro Swell
+      rootFreq: 106.5, // Warm F2/F3
+      scale: [106.5, 159.75, 213, 266.25, 319.5, 426, 639], // Pentatonic warm tide
+      droneWave: 'sawtooth',
+      cutoff: 480,
+      filterQ: 1.5,
+      lfoSpeed: 0.08,
+      arpInterval: 2800,
+      bellWave: 'sine',
+      reverbLevel: 0.5
+    },
+    {
+      // 4: Lucent Prism Echo - 741Hz Crystal Bells & Refraction
+      rootFreq: 247, // B3
+      scale: [247, 293.66, 370, 440, 494, 587.33, 741], // Shimmering Crystal
+      droneWave: 'sine',
+      cutoff: 1400,
+      filterQ: 3.5,
+      lfoSpeed: 0.3,
+      arpInterval: 1000,
+      bellWave: 'triangle',
+      reverbLevel: 0.6
+    },
+    {
+      // 5: Glass Cascade Neon - 852Hz Pulsing Cyber Euphoria
+      rootFreq: 142, // D3
+      scale: [142, 177.5, 213, 284, 355, 426, 568, 852], // Minor pentatonic neon
+      droneWave: 'sawtooth',
+      cutoff: 920,
+      filterQ: 5,
+      lfoSpeed: 0.45,
+      arpInterval: 800,
+      bellWave: 'triangle',
+      reverbLevel: 0.4
+    },
+    {
+      // 6: Deep Obsidian Flow - 963Hz Subterranean Binaural Hum
+      rootFreq: 60.18, // Deep Sub B1
+      scale: [60.18, 90.27, 120.36, 180.54, 240.72, 481.5, 963], // Deep Sub Binaural
+      droneWave: 'sine',
+      cutoff: 350,
+      filterQ: 1.2,
+      lfoSpeed: 0.05,
+      arpInterval: 3400,
+      bellWave: 'sine',
+      reverbLevel: 0.6
+    }
+  ];
 
   // DOM Elements
   const playBtn = document.getElementById('btn-play');
@@ -140,7 +220,12 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
       `;
 
+      card.addEventListener('mouseenter', () => {
+        playUiTone('hover');
+      });
+
       card.addEventListener('click', () => {
+        playUiTone('switch');
         const index = trackCatalog.findIndex(t => t.id === track.id);
         selectTrack(index, true);
       });
@@ -155,7 +240,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Filter Buttons
   filterBtns.forEach(btn => {
+    btn.addEventListener('mouseenter', () => playUiTone('hover'));
     btn.addEventListener('click', () => {
+      playUiTone('click');
       filterBtns.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       renderCatalog(btn.dataset.genre);
@@ -192,16 +279,204 @@ document.addEventListener('DOMContentLoaded', () => {
     currentTimeEl.textContent = formatTime(currentTimeSec);
   }
 
+  // Initialize Web Audio Subsystem
+  function initAudioNodes() {
+    if (!audioCtx) {
+      const AudioContext = window.AudioContext || window.webkitAudioContext;
+      audioCtx = new AudioContext();
+
+      // Master output with soft limiter / compressor
+      masterGain = audioCtx.createGain();
+      masterGain.gain.setValueAtTime(0.7, audioCtx.currentTime);
+
+      const compressor = audioCtx.createDynamicsCompressor();
+      compressor.threshold.setValueAtTime(-18, audioCtx.currentTime);
+      compressor.knee.setValueAtTime(12, audioCtx.currentTime);
+      compressor.ratio.setValueAtTime(4, audioCtx.currentTime);
+      compressor.attack.setValueAtTime(0.01, audioCtx.currentTime);
+      compressor.release.setValueAtTime(0.25, audioCtx.currentTime);
+
+      masterGain.connect(compressor);
+      compressor.connect(audioCtx.destination);
+    }
+    if (audioCtx.state === 'suspended') {
+      audioCtx.resume();
+    }
+  }
+
+  // Play Subtle Crystalline UI Audio Feedback
+  function playUiTone(type = 'click') {
+    if (!audioCtx) initAudioNodes();
+    if (!audioCtx) return;
+
+    const t = audioCtx.currentTime;
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+
+    if (type === 'click') {
+      // Crisp glass droplet tap
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(880, t);
+      osc.frequency.exponentialRampToValueAtTime(1760, t + 0.04);
+      osc.frequency.exponentialRampToValueAtTime(440, t + 0.08);
+
+      gain.gain.setValueAtTime(0.06, t);
+      gain.gain.exponentialRampToValueAtTime(0.001, t + 0.08);
+
+      osc.connect(gain);
+      gain.connect(masterGain);
+      osc.start(t);
+      osc.stop(t + 0.08);
+    } else if (type === 'hover') {
+      // Extremely gentle soft glass resonance
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(1200 + Math.random() * 200, t);
+      gain.gain.setValueAtTime(0.012, t);
+      gain.gain.exponentialRampToValueAtTime(0.0005, t + 0.05);
+
+      osc.connect(gain);
+      gain.connect(masterGain);
+      osc.start(t);
+      osc.stop(t + 0.05);
+    } else if (type === 'switch') {
+      // Prismatic frequency shift sweep
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(320, t);
+      osc.frequency.exponentialRampToValueAtTime(960, t + 0.14);
+
+      gain.gain.setValueAtTime(0.08, t);
+      gain.gain.exponentialRampToValueAtTime(0.001, t + 0.15);
+
+      osc.connect(gain);
+      gain.connect(masterGain);
+      osc.start(t);
+      osc.stop(t + 0.15);
+    }
+  }
+
+  // Stop currently playing soundscape
+  function stopCurrentSoundscape() {
+    if (trackArpTimer) {
+      clearInterval(trackArpTimer);
+      trackArpTimer = null;
+    }
+    trackOscs.forEach(node => {
+      try {
+        if (node.gain) {
+          node.gain.gain.setTargetAtTime(0, audioCtx.currentTime, 0.4);
+        }
+        setTimeout(() => {
+          try {
+            if (node.osc) {
+              node.osc.stop();
+              node.osc.disconnect();
+            }
+          } catch (e) {}
+        }, 500);
+      } catch (e) {}
+    });
+    trackOscs = [];
+  }
+
+  // Start rich procedural Soundscape for selected track
+  function startCurrentSoundscape() {
+    initAudioNodes();
+    stopCurrentSoundscape();
+
+    const profile = trackAudioProfiles[currentTrackIndex] || trackAudioProfiles[0];
+    const t = audioCtx.currentTime;
+
+    // 1. Dual Warm Harmonic Drone with Lowpass Filter
+    const filter = audioCtx.createBiquadFilter();
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(profile.cutoff, t);
+    filter.Q.setValueAtTime(profile.filterQ, t);
+
+    const droneGain = audioCtx.createGain();
+    droneGain.gain.setValueAtTime(0.001, t);
+    droneGain.gain.exponentialRampToValueAtTime(0.12, t + 1.5);
+
+    filter.connect(droneGain);
+    droneGain.connect(masterGain);
+
+    // Fundamental Voice
+    const osc1 = audioCtx.createOscillator();
+    osc1.type = profile.droneWave;
+    osc1.frequency.setValueAtTime(profile.rootFreq, t);
+
+    // Perfect 5th Harmonics Voice (subtle detune for acoustic shimmer)
+    const osc2 = audioCtx.createOscillator();
+    osc2.type = 'sine';
+    osc2.frequency.setValueAtTime(profile.rootFreq * 1.502, t);
+
+    // Sub Octave / Undertone for deep warmth
+    const oscSub = audioCtx.createOscillator();
+    oscSub.type = 'sine';
+    oscSub.frequency.setValueAtTime(profile.rootFreq * 0.5, t);
+
+    // Slow organic LFO modulating cutoff for fluid wave sensation
+    const lfo = audioCtx.createOscillator();
+    const lfoGain = audioCtx.createGain();
+    lfo.type = 'sine';
+    lfo.frequency.setValueAtTime(profile.lfoSpeed, t);
+    lfoGain.gain.setValueAtTime(profile.cutoff * 0.35, t);
+    lfo.connect(lfoGain);
+    lfoGain.connect(filter.frequency);
+    lfo.start(t);
+
+    osc1.connect(filter);
+    osc2.connect(filter);
+    oscSub.connect(filter);
+
+    osc1.start(t);
+    osc2.start(t);
+    oscSub.start(t);
+
+    trackOscs.push(
+      { osc: osc1, gain: droneGain },
+      { osc: osc2, gain: droneGain },
+      { osc: oscSub, gain: droneGain },
+      { osc: lfo, gain: lfoGain }
+    );
+
+    // 2. Procedural Prismatic Bell Arpeggiator (tuned to track harmonic scale)
+    trackChordIndex = 0;
+    const playBellTone = () => {
+      if (!isPlaying || !audioCtx) return;
+      const noteFreq = profile.scale[trackChordIndex % profile.scale.length];
+      trackChordIndex++;
+
+      const bellOsc = audioCtx.createOscillator();
+      const bellGain = audioCtx.createGain();
+      const now = audioCtx.currentTime;
+
+      bellOsc.type = profile.bellWave;
+      // Octave harmonic transposition for bell chime
+      const bellPitch = noteFreq > 400 ? noteFreq : noteFreq * 2;
+      bellOsc.frequency.setValueAtTime(bellPitch, now);
+
+      bellGain.gain.setValueAtTime(0.045, now);
+      bellGain.gain.exponentialRampToValueAtTime(0.0001, now + 1.8);
+
+      bellOsc.connect(bellGain);
+      bellGain.connect(masterGain);
+
+      bellOsc.start(now);
+      bellOsc.stop(now + 1.8);
+    };
+
+    // Initial note chime
+    setTimeout(playBellTone, 300);
+    trackArpTimer = setInterval(playBellTone, profile.arpInterval);
+  }
+
   function startPlayback() {
     isPlaying = true;
     artDisc.classList.add('spinning');
     updatePlayIcons(true);
     floatingDock.classList.add('visible');
-    initAudioNodes();
 
-    if (ambientGain) {
-      ambientGain.gain.setTargetAtTime(0.08, audioCtx.currentTime, 0.5);
-    }
+    startCurrentSoundscape();
 
     clearInterval(playProgressInterval);
     playProgressInterval = setInterval(() => {
@@ -221,13 +496,11 @@ document.addEventListener('DOMContentLoaded', () => {
     artDisc.classList.remove('spinning');
     updatePlayIcons(false);
     clearInterval(playProgressInterval);
-
-    if (ambientGain && audioCtx) {
-      ambientGain.gain.setTargetAtTime(0, audioCtx.currentTime, 0.4);
-    }
+    stopCurrentSoundscape();
   }
 
   function togglePlayback() {
+    playUiTone('click');
     if (isPlaying) {
       pausePlayback();
     } else {
@@ -247,26 +520,32 @@ document.addEventListener('DOMContentLoaded', () => {
   playBtn.addEventListener('click', togglePlayback);
   dockPlayBtn.addEventListener('click', togglePlayback);
   heroPlayTrigger.addEventListener('click', () => {
+    playUiTone('click');
     if (!isPlaying) startPlayback();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 
   document.getElementById('btn-next').addEventListener('click', () => {
+    playUiTone('switch');
     selectTrack((currentTrackIndex + 1) % trackCatalog.length, isPlaying);
   });
   document.getElementById('dock-btn-next').addEventListener('click', () => {
+    playUiTone('switch');
     selectTrack((currentTrackIndex + 1) % trackCatalog.length, isPlaying);
   });
 
   document.getElementById('btn-prev').addEventListener('click', () => {
+    playUiTone('switch');
     selectTrack((currentTrackIndex - 1 + trackCatalog.length) % trackCatalog.length, isPlaying);
   });
   document.getElementById('dock-btn-prev').addEventListener('click', () => {
+    playUiTone('switch');
     selectTrack((currentTrackIndex - 1 + trackCatalog.length) % trackCatalog.length, isPlaying);
   });
 
   // Seek bar interaction
   seekTrack.addEventListener('click', (e) => {
+    playUiTone('click');
     const rect = seekTrack.getBoundingClientRect();
     const clickX = e.clientX - rect.left;
     const pct = Math.max(0, Math.min(1, clickX / rect.width));
@@ -405,8 +684,12 @@ document.addEventListener('DOMContentLoaded', () => {
   let padOsc = null;
   let padGain = null;
 
+  let padFilter = null;
+  let padHarmonicOsc = null;
+
   toggleSynthBtn.addEventListener('click', () => {
     initAudioNodes();
+    playUiTone('click');
     synthActive = !synthActive;
     if (synthActive) {
       toggleSynthBtn.classList.add('primary-glow');
@@ -436,14 +719,29 @@ document.addEventListener('DOMContentLoaded', () => {
     if (synthActive && audioCtx) {
       if (!padOsc) {
         padOsc = audioCtx.createOscillator();
+        padHarmonicOsc = audioCtx.createOscillator();
+        padFilter = audioCtx.createBiquadFilter();
         padGain = audioCtx.createGain();
+
+        padFilter.type = 'lowpass';
+        padFilter.frequency.setValueAtTime(1200, audioCtx.currentTime);
+        padFilter.Q.setValueAtTime(3, audioCtx.currentTime);
+
         padOsc.type = 'sine';
-        padOsc.connect(padGain);
-        padGain.connect(audioCtx.destination);
+        padHarmonicOsc.type = 'triangle';
+
+        padOsc.connect(padFilter);
+        padHarmonicOsc.connect(padFilter);
+        padFilter.connect(padGain);
+        padGain.connect(masterGain || audioCtx.destination);
+
         padOsc.start();
+        padHarmonicOsc.start();
       }
-      padOsc.frequency.setTargetAtTime(freq, audioCtx.currentTime, 0.05);
-      padGain.gain.setTargetAtTime(0.08, audioCtx.currentTime, 0.05);
+      padOsc.frequency.setTargetAtTime(freq, audioCtx.currentTime, 0.04);
+      padHarmonicOsc.frequency.setTargetAtTime(freq * 1.5, audioCtx.currentTime, 0.04);
+      padFilter.frequency.setTargetAtTime(600 + normY * 1800, audioCtx.currentTime, 0.04);
+      padGain.gain.setTargetAtTime(0.09, audioCtx.currentTime, 0.04);
     }
   });
 
@@ -485,7 +783,9 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // Prismatic Refraction Theme Toggle
+  themeToggle.addEventListener('mouseenter', () => playUiTone('hover'));
   themeToggle.addEventListener('click', () => {
+    playUiTone('switch');
     document.body.classList.toggle('prism-refract-mode');
   });
 
@@ -505,7 +805,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Smooth Navigation Scroll
   document.querySelectorAll('.nav-btn').forEach(btn => {
+    btn.addEventListener('mouseenter', () => playUiTone('hover'));
     btn.addEventListener('click', () => {
+      playUiTone('click');
       document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       const tab = btn.dataset.tab;
