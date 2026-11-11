@@ -749,6 +749,22 @@ body {
   position: relative;
   width: 124px;
   height: 124px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.circular-aura-canvas {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 190px;
+  height: 190px;
+  pointer-events: none;
+  z-index: 0;
+}
+  height: 124px;
 }
 
 .art-glow {
@@ -865,14 +881,55 @@ body {
 
 .waveform-container {
   width: 100%;
-  height: 80px;
-  background: rgba(0, 0, 0, 0.35);
-  border-radius: 16px;
-  padding: 10px;
-  border: 1px solid rgba(56, 189, 248, 0.18);
-  box-shadow: inset 0 2px 12px rgba(0, 0, 0, 0.6), 0 0 20px rgba(56, 189, 248, 0.1);
+  height: 96px;
+  background: rgba(8, 12, 22, 0.65);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 18px;
+  padding: 12px;
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  box-shadow: inset 0 2px 14px rgba(0, 0, 0, 0.7), 0 0 25px rgba(56, 189, 248, 0.15);
   position: relative;
   overflow: hidden;
+}
+
+.visualizer-overlay-modes {
+  position: absolute;
+  top: 8px;
+  left: 12px;
+  right: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  pointer-events: none;
+}
+
+.viz-mode-badge,
+.viz-freq-readout,
+.viz-fps-badge {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.8px;
+  color: rgba(255, 255, 255, 0.45);
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  text-shadow: 0 0 8px rgba(0, 0, 0, 0.8);
+}
+
+.viz-mode-badge i {
+  width: 11px;
+  height: 11px;
+  color: var(--prism-cyan);
+}
+
+.viz-fps-badge {
+  color: var(--prism-cyan);
+  background: rgba(56, 189, 248, 0.12);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  padding: 2px 7px;
+  border-radius: 6px;
 }
 
 #waveform-canvas {
@@ -1554,12 +1611,51 @@ body {
 }
 
 .dock-disc-mini {
-  width: 34px;
-  height: 34px;
+  position: relative;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #38bdf8, #a855f7);
-  animation: spinVinyl 6s linear infinite;
-  box-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dock-viz-canvas {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 46px;
+  height: 46px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.dock-visualizer-bars-inline {
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 18px;
+  padding: 0 8px;
+}
+
+.dock-visualizer-bars-inline span {
+  width: 3px;
+  height: 4px;
+  background: linear-gradient(180deg, var(--prism-cyan), var(--prism-purple));
+  border-radius: 2px;
+  transition: height 0.1s ease;
+}
+
+.dock-visualizer-bars-inline.active span:nth-child(1) { animation: dockBarAnim 0.7s ease-in-out infinite alternate; }
+.dock-visualizer-bars-inline.active span:nth-child(2) { animation: dockBarAnim 0.9s ease-in-out infinite 0.15s alternate; }
+.dock-visualizer-bars-inline.active span:nth-child(3) { animation: dockBarAnim 0.6s ease-in-out infinite 0.3s alternate; }
+.dock-visualizer-bars-inline.active span:nth-child(4) { animation: dockBarAnim 0.85s ease-in-out infinite 0.2s alternate; }
+.dock-visualizer-bars-inline.active span:nth-child(5) { animation: dockBarAnim 0.75s ease-in-out infinite 0.4s alternate; }
+
+@keyframes dockBarAnim {
+  0% { height: 4px; opacity: 0.4; }
+  100% { height: 18px; opacity: 1; filter: drop-shadow(0 0 6px #38bdf8); }
 }
 
 .dock-labels {

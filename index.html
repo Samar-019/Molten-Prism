@@ -19,7 +19,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=4.2">
+  <link rel="stylesheet" href="style.css?v=5.0">
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
 </head>
@@ -125,6 +125,8 @@
             <!-- Dynamic Album Art / Specimen -->
             <div class="deck-visualizer-container">
               <div class="album-art-wrap">
+                <!-- Circular Particle & Ripple Aura Canvas -->
+                <canvas id="circular-visualizer-canvas" class="circular-aura-canvas"></canvas>
                 <div class="art-glow" id="art-glow"></div>
                 <div class="art-disc" id="art-disc">
                   <div class="prism-refraction"></div>
@@ -148,6 +150,10 @@
             <!-- Waveform Canvas / Visualizer -->
             <div class="waveform-container">
               <canvas id="waveform-canvas"></canvas>
+              <div class="visualizer-overlay-modes">
+                <span class="viz-mode-badge"><i data-lucide="activity"></i> FFT REALTIME SPECTRUM</span>
+                <span class="viz-fps-badge" id="viz-freq-readout">432Hz HARMONIC</span>
+              </div>
             </div>
 
             <!-- Progress Bar -->
@@ -278,12 +284,16 @@
     <div class="liquid-dock" id="floating-dock">
       <div class="dock-track-info">
         <div class="dock-disc-mini" id="dock-disc">
+          <canvas id="dock-visualizer-canvas" class="dock-viz-canvas" width="46" height="46"></canvas>
           <img src="icon.png" alt="Dock Orb" class="dock-orb-img">
         </div>
         <div class="dock-labels">
           <span class="dock-title" id="dock-title">Vitreous Horizon</span>
           <span class="dock-artist" id="dock-artist">Molten Prism</span>
         </div>
+      </div>
+      <div class="dock-visualizer-bars-inline" id="dock-bars">
+        <span></span><span></span><span></span><span></span><span></span>
       </div>
       <div class="dock-controls">
         <button class="dock-icon-btn" id="dock-btn-shuffle" title="Fluid Shuffle"><i data-lucide="shuffle"></i></button>

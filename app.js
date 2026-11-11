@@ -201,6 +201,8 @@ document.addEventListener('DOMContentLoaded', () => {
   let masterGain = null;
   let sfxGain = null;
   let musicGain = null;
+  let analyser = null;
+  let analyserData = null;
 
   // Active Instrumental Loop Timer & Nodes
   let activeMusicTimer = null;
@@ -212,6 +214,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!audioCtx) {
       const AudioContext = window.AudioContext || window.webkitAudioContext;
       audioCtx = new AudioContext();
+
+      // Analyser Node for Real-time FFT Visualizer
+      analyser = audioCtx.createAnalyser();
+      analyser.fftSize = 128; // 64 frequency bins
+      analyser.smoothingTimeConstant = 0.82;
+      analyserData = new Uint8Array(analyser.frequencyBinCount);
 
       // Master output bus with limiter compressor
       masterGain = audioCtx.createGain();
@@ -232,7 +240,8 @@ document.addEventListener('DOMContentLoaded', () => {
       compressor.attack.setValueAtTime(0.005, audioCtx.currentTime);
       compressor.release.setValueAtTime(0.25, audioCtx.currentTime);
 
-      masterGain.connect(compressor);
+      masterGain.connect(analyser);
+      analyser.connect(compressor);
       compressor.connect(audioCtx.destination);
     }
     if (audioCtx.state === 'suspended') {
@@ -1057,6 +1066,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (artDisc) artDisc.classList.add('spinning');
     updatePlayIcons(true);
     if (floatingDock) floatingDock.classList.add('visible');
+    const dockBars = document.getElementById('dock-bars');
+    if (dockBars) dockBars.classList.add('active');
 
     playUiTone('playChord');
     startCurrentSoundscape();
@@ -1077,6 +1088,8 @@ document.addEventListener('DOMContentLoaded', () => {
     isPlaying = false;
     if (artDisc) artDisc.classList.remove('spinning');
     updatePlayIcons(false);
+    const dockBars = document.getElementById('dock-bars');
+    if (dockBars) dockBars.classList.remove('active');
     clearInterval(playProgressInterval);
     stopActiveMusic();
     playUiTone('click');
@@ -1142,8 +1155,19 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Dynamic Spectrum Visualizer Canvas Animation
+  // ==========================================
+  // REAL-TIME AUDIO SPECTRUM & AURA VISUALIZERS
+  // ==========================================
+
+  // 1. Dynamic Spectrum Visualizer Canvas Animation (Waveform container)
   const waveCanvas = document.getElementById('waveform-canvas');
+  const vizFreqReadout = document.getElementById('viz-freq-readout');
+
+  // Peak caps array for high-end audio visualizer bounce effect
+  const numBars = 48;
+  const peakCaps = new Array(numBars).fill(0);
+  const capSpeeds = new Array(numBars).fill(0.6);
+
   if (waveCanvas) {
     const waveCtx = waveCanvas.getContext('2d');
     let waveStep = 0;
@@ -1161,40 +1185,67 @@ document.addEventListener('DOMContentLoaded', () => {
       const height = waveCanvas.height;
       const centerY = height / 2;
 
-      const numBars = 52;
       const gap = 3;
       const barWidth = Math.max(2, (width - (numBars * gap)) / numBars);
 
+      let freqData = null;
+      let hasRealAudio = false;
+
+      if (analyser && analyserData && (isPlaying || previewingTrackId !== null || synthActive)) {
+        analyser.getByteFrequencyData(analyserData);
+        freqData = analyserData;
+        hasRealAudio = true;
+      }
+
       for (let i = 0; i < numBars; i++) {
         let barHeight;
-        if (isPlaying || previewingTrackId !== null) {
+        if (hasRealAudio && freqData) {
+          const binIndex = Math.min(Math.floor((i / numBars) * freqData.length), freqData.length - 1);
+          const rawVal = freqData[binIndex] / 255; // 0 to 1
+          // Combine real FFT data with slight organic molten breathing
+          barHeight = (rawVal * 0.85 + 0.08) * height;
+        } else if (isPlaying || previewingTrackId !== null) {
           const wave1 = Math.sin(waveStep * 0.08 + i * 0.28);
           const wave2 = Math.cos(waveStep * 0.05 + i * 0.18);
           const wave3 = Math.sin(waveStep * 0.12 + i * 0.45);
           barHeight = (Math.abs(wave1 * 0.5 + wave2 * 0.35 + wave3 * 0.15) * 0.72 + 0.12) * height;
         } else {
-          barHeight = (Math.sin(waveStep * 0.03 + i * 0.2) * 0.12 + 0.18) * height;
+          barHeight = (Math.sin(waveStep * 0.03 + i * 0.2) * 0.1 + 0.14) * height;
+        }
+
+        // Peak cap physics (falls gracefully like high-end DJ equipment)
+        if (barHeight > peakCaps[i]) {
+          peakCaps[i] = barHeight;
+          capSpeeds[i] = 0.5;
+        } else {
+          capSpeeds[i] += 0.08;
+          peakCaps[i] = Math.max(0, peakCaps[i] - capSpeeds[i]);
         }
 
         const x = i * (barWidth + gap);
         const y = centerY - barHeight / 2;
 
+        // Vivid Prismatic Gradient
         const grad = waveCtx.createLinearGradient(0, y, 0, y + barHeight);
-        const colorOffset = (i / numBars + (waveStep * 0.005)) % 1;
+        const colorOffset = (i / numBars + (waveStep * 0.006)) % 1;
         if (colorOffset < 0.33) {
           grad.addColorStop(0, '#38bdf8');
+          grad.addColorStop(0.5, '#818cf8');
           grad.addColorStop(1, '#6366f1');
         } else if (colorOffset < 0.66) {
           grad.addColorStop(0, '#a855f7');
-          grad.addColorStop(1, '#ec4899');
+          grad.addColorStop(0.5, '#ec4899');
+          grad.addColorStop(1, '#f43f5e');
         } else {
-          grad.addColorStop(0, '#f43f5e');
+          grad.addColorStop(0, '#34d399');
+          grad.addColorStop(0.5, '#06b6d4');
           grad.addColorStop(1, '#38bdf8');
         }
 
         waveCtx.fillStyle = grad;
-        waveCtx.shadowColor = 'rgba(56, 189, 248, 0.4)';
-        waveCtx.shadowBlur = (isPlaying || previewingTrackId) ? 8 : 2;
+        waveCtx.shadowColor = (isPlaying || previewingTrackId) ? 'rgba(56, 189, 248, 0.6)' : 'rgba(56, 189, 248, 0.2)';
+        waveCtx.shadowBlur = (isPlaying || previewingTrackId) ? 10 : 3;
+
         waveCtx.beginPath();
         if (waveCtx.roundRect) {
           waveCtx.roundRect(x, y, barWidth, barHeight, 3);
@@ -1202,12 +1253,128 @@ document.addEventListener('DOMContentLoaded', () => {
           waveCtx.rect(x, y, barWidth, barHeight);
         }
         waveCtx.fill();
+
+        // Draw Peak Floating Cap
+        if (isPlaying || previewingTrackId) {
+          const capY = centerY - peakCaps[i] / 2 - 3;
+          waveCtx.fillStyle = '#ffffff';
+          waveCtx.shadowColor = '#38bdf8';
+          waveCtx.shadowBlur = 6;
+          waveCtx.fillRect(x, Math.max(2, capY), barWidth, 2);
+        }
+      }
+
+      // Update frequency readout live badge
+      if (waveStep % 30 === 0 && vizFreqReadout) {
+        const track = trackCatalog[currentTrackIndex];
+        if (isPlaying) {
+          vizFreqReadout.textContent = `${track.frequency} TUNED`;
+        } else {
+          vizFreqReadout.textContent = 'STANDBY';
+        }
       }
 
       waveStep++;
       requestAnimationFrame(drawWaveform);
     }
     drawWaveform();
+  }
+
+  // 2. Circular Holographic Aura Visualizer Canvas (Surrounding Hero Glass Orb)
+  const auraCanvas = document.getElementById('circular-visualizer-canvas');
+  if (auraCanvas) {
+    const auraCtx = auraCanvas.getContext('2d');
+    const dpr = window.devicePixelRatio || 1;
+    auraCanvas.width = 190 * dpr;
+    auraCanvas.height = 190 * dpr;
+    auraCtx.scale(dpr, dpr);
+
+    let auraAngle = 0;
+    const numRays = 42;
+
+    function drawCircularAura() {
+      auraCtx.clearRect(0, 0, 190, 190);
+      const cx = 95;
+      const cy = 95;
+      const baseRadius = 66; // wraps snugly around 124px disc
+
+      let freqData = null;
+      if (analyser && analyserData && (isPlaying || previewingTrackId !== null)) {
+        freqData = analyserData;
+      }
+
+      for (let i = 0; i < numRays; i++) {
+        const angle = (i / numRays) * Math.PI * 2 + auraAngle;
+        let rayLen;
+
+        if (freqData) {
+          const bin = Math.floor((i / numRays) * freqData.length);
+          const val = freqData[bin] / 255;
+          rayLen = 4 + val * 24;
+        } else if (isPlaying || previewingTrackId) {
+          rayLen = 4 + Math.sin(auraAngle * 2 + i * 0.4) * 8 + 6;
+        } else {
+          rayLen = 2 + Math.sin(auraAngle * 0.5 + i * 0.3) * 2;
+        }
+
+        const x1 = cx + Math.cos(angle) * baseRadius;
+        const y1 = cy + Math.sin(angle) * baseRadius;
+        const x2 = cx + Math.cos(angle) * (baseRadius + rayLen);
+        const y2 = cy + Math.sin(angle) * (baseRadius + rayLen);
+
+        const hue = (i / numRays) * 360 + (auraAngle * 20);
+        auraCtx.strokeStyle = `hsla(${hue % 360}, 90%, 65%, ${isPlaying ? 0.85 : 0.25})`;
+        auraCtx.lineWidth = 2.2;
+        auraCtx.lineCap = 'round';
+        auraCtx.shadowColor = `hsla(${hue % 360}, 90%, 65%, 0.8)`;
+        auraCtx.shadowBlur = isPlaying ? 8 : 2;
+
+        auraCtx.beginPath();
+        auraCtx.moveTo(x1, y1);
+        auraCtx.lineTo(x2, y2);
+        auraCtx.stroke();
+      }
+
+      auraAngle += isPlaying ? 0.018 : 0.005;
+      requestAnimationFrame(drawCircularAura);
+    }
+    drawCircularAura();
+  }
+
+  // 3. Mini Dock Circular Radial Visualizer (Wraps around dock orb)
+  const dockVizCanvas = document.getElementById('dock-visualizer-canvas');
+  if (dockVizCanvas) {
+    const dockVizCtx = dockVizCanvas.getContext('2d');
+    let dockAngle = 0;
+
+    function drawDockVisualizer() {
+      dockVizCtx.clearRect(0, 0, 46, 46);
+      const cx = 23;
+      const cy = 23;
+      const r = 19;
+      const points = 24;
+
+      for (let i = 0; i < points; i++) {
+        const theta = (i / points) * Math.PI * 2 + dockAngle;
+        let len = isPlaying ? (2 + Math.abs(Math.sin(dockAngle * 3 + i * 0.5)) * 4) : 1;
+        const x1 = cx + Math.cos(theta) * r;
+        const y1 = cy + Math.sin(theta) * r;
+        const x2 = cx + Math.cos(theta) * (r + len);
+        const y2 = cy + Math.sin(theta) * (r + len);
+
+        dockVizCtx.strokeStyle = isPlaying ? '#38bdf8' : 'rgba(255,255,255,0.2)';
+        dockVizCtx.lineWidth = 1.5;
+        dockVizCtx.lineCap = 'round';
+        dockVizCtx.beginPath();
+        dockVizCtx.moveTo(x1, y1);
+        dockVizCtx.lineTo(x2, y2);
+        dockVizCtx.stroke();
+      }
+
+      dockAngle += isPlaying ? 0.03 : 0.008;
+      requestAnimationFrame(drawDockVisualizer);
+    }
+    drawDockVisualizer();
   }
 
   // Background Fluid Canvas Simulation
