@@ -193,61 +193,72 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  filter: drop-shadow(0 0 16px rgba(168, 85, 247, 0.7));
+  overflow: hidden;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.12) 0%, rgba(13, 17, 23, 0.4) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 0 16px rgba(168, 85, 247, 0.4);
   animation: orbFloatPulse 5s ease-in-out infinite alternate;
 }
 
 .brand-orb-img {
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: cover;
   border-radius: 50%;
+  display: block;
 }
 
 @keyframes orbFloatPulse {
-  0% { transform: scale(0.96) rotate(0deg); filter: drop-shadow(0 0 12px rgba(56, 189, 248, 0.6)); }
-  100% { transform: scale(1.06) rotate(6deg); filter: drop-shadow(0 0 24px rgba(244, 63, 94, 0.8)); }
+  0% { transform: scale(0.96); box-shadow: 0 0 12px rgba(56, 189, 248, 0.5); }
+  100% { transform: scale(1.05); box-shadow: 0 0 22px rgba(244, 63, 94, 0.7); }
 }
 
 .player-icon-orb {
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: cover;
   border-radius: 50%;
-  mix-blend-mode: screen;
-  filter: drop-shadow(0 0 14px rgba(168, 85, 247, 0.8));
   display: block;
+  box-shadow: 0 0 20px rgba(168, 85, 247, 0.6);
 }
 
-.brand-orb-img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
+.dock-disc-mini {
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
-  mix-blend-mode: screen;
+  overflow: hidden;
+  position: relative;
+  border: 1.5px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 0 14px rgba(56, 189, 248, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: spinVinyl 6s linear infinite;
 }
 
 .dock-orb-img {
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: cover;
   border-radius: 50%;
-  mix-blend-mode: screen;
+  display: block;
 }
 
 .card-art-orb-watermark {
   position: absolute;
-  width: 85px;
-  height: 85px;
-  object-fit: contain;
-  mix-blend-mode: screen;
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  object-fit: cover;
   opacity: 0.45;
-  filter: drop-shadow(0 0 14px rgba(168, 85, 247, 0.6));
+  filter: drop-shadow(0 0 16px rgba(168, 85, 247, 0.6));
   transition: var(--transition-smooth);
 }
 
 .track-card:hover .card-art-orb-watermark {
   transform: scale(1.15) rotate(15deg);
+  opacity: 0.75;
+}
   opacity: 0.55;
 }
 
@@ -653,22 +664,22 @@ body {
 }
 
 .liquid-core {
-  width: 68px;
-  height: 68px;
+  width: 76px;
+  height: 76px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, rgba(20, 25, 45, 0.6) 100%);
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, rgba(10, 15, 28, 0.8) 100%);
   backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.4);
+  border: 1.5px solid rgba(255, 255, 255, 0.45);
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
   overflow: hidden;
-  box-shadow: 0 0 20px rgba(168, 85, 247, 0.4);
+  box-shadow: 0 0 25px rgba(168, 85, 247, 0.5), inset 0 0 10px rgba(255, 255, 255, 0.2);
 }
 
 .liquid-core.orb-core {
-  padding: 4px;
+  padding: 0;
 }
 
 .deck-status-badge {
