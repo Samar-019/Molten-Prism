@@ -40,13 +40,12 @@ nsis:
   oneClick: false
   allowToChangeInstallationDirectory: true
   runAfterFinish: true
-  # MusicSense: nombre visible (productName no se cambia: de él depende la
-  # carpeta de datos con la sesión y los ajustes)
-  shortcutName: MusicSense
-  uninstallDisplayName: MusicSense
-  artifactName: MusicSense-Setup-${version}.${ext}
+  # Molten Prism: nombre visible del instalador y acceso directo
+  shortcutName: Molten Prism
+  uninstallDisplayName: Molten Prism
+  artifactName: Molten-Prism-Setup-${version}.${ext}
 portable:
-  artifactName: MusicSense-${version}-portable.${ext}
+  artifactName: Molten-Prism-${version}-portable.${ext}
 linux:
   icon: assets/generated/icons/png
   category: AudioVideo

@@ -69,10 +69,10 @@ Menú lateral flotante con tus playlists, álbumes y artistas, en lista o en **c
 
 ## Descargar e instalar
 
-En [Releases](https://github.com/bbernalm/MusicSense/releases/latest) hay dos opciones para Windows de 64 bits:
+En [Releases](https://github.com/Samar-019/Molten-Prism/releases/latest) hay dos opciones para Windows de 64 bits:
 
-- **MusicSense-Setup.exe**: instalador (crea el acceso directo y te deja elegir la carpeta).
-- **MusicSense-portable.exe**: se abre sin instalar nada.
+- **Molten-Prism-Setup.exe**: instalador (crea el acceso directo y te deja elegir la carpeta).
+- **Molten-Prism-portable.exe**: se abre sin instalar nada.
 
 El programa no lleva firma digital: si Windows muestra "Windows protegió su PC", pulsa **Más información → Ejecutar de todas formas**.
 
