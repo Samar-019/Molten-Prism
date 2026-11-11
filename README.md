@@ -24,6 +24,10 @@ Translucent frosted glass, word-by-word shining synced lyrics, audio visualizer,
 
 [**⬇ Download Molten Prism v0.1.0 for Windows**](https://github.com/Samar-019/Molten-Prism/releases/tag/v0.1.0)
 
+<br/>
+
+<img src="docs/screenshots/player.jpg" alt="Player screen with visualizer around album art" width="100%">
+
 </div>
 
 > [!IMPORTANT]
@@ -35,6 +39,8 @@ Translucent frosted glass, word-by-word shining synced lyrics, audio visualizer,
 
 Letra sincronizada, grande y centrada en la canción. Cada palabra se ilumina justo cuando se canta, sube un poco y brilla en las notas largas. Debajo de cada línea aparece la traducción a tu idioma.
 
+<img src="docs/screenshots/lyrics.jpg" alt="Modo letras con relleno palabra por palabra y traducción" width="100%">
+
 ### Sonido a tu gusto, sin salir del reproductor
 
 El botón de ajustes rápidos de la cápsula abre un panel de vidrio con todo el audio:
@@ -45,9 +51,13 @@ El botón de ajustes rápidos de la cápsula abre un panel de vidrio con todo el
 - **Salas** de reverberación: estudio, sala y auditorio.
 - Estilo del fondo, de la barra de progreso y traducción de letras.
 
+<img src="docs/screenshots/quick.jpg" alt="Panel de ajustes rápidos con el desplegable del ecualizador" width="100%">
+
 ### Tu biblioteca a un clic
 
 Menú lateral flotante con tus playlists, álbumes y artistas, en lista o en **cuadrícula de portadas grandes**. Barra superior con Inicio, Explorar y Biblioteca, buscador en píldora y el historial.
+
+<img src="docs/screenshots/home.jpg" alt="Inicio con el menú lateral en cuadrícula de artistas" width="100%">
 
 ### Discord y Last.fm integrados
 
