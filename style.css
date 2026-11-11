@@ -955,6 +955,94 @@ body {
   box-shadow: 0 0 35px rgba(168, 85, 247, 0.7);
 }
 
+/* Volume Control Wrapper & Floating Glass Popover */
+.volume-control-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ctrl-btn.muted,
+.dock-icon-btn.muted {
+  color: #ef4444 !important;
+  border-color: rgba(239, 68, 68, 0.4) !important;
+  background: rgba(239, 68, 68, 0.15) !important;
+  box-shadow: 0 0 12px rgba(239, 68, 68, 0.35) !important;
+}
+
+.ctrl-btn.shuffle-active,
+.dock-icon-btn.shuffle-active {
+  color: var(--prism-cyan) !important;
+  border-color: rgba(56, 189, 248, 0.5) !important;
+  background: rgba(56, 189, 248, 0.18) !important;
+  box-shadow: 0 0 15px rgba(56, 189, 248, 0.4) !important;
+}
+
+.glass-volume-popover {
+  position: absolute;
+  bottom: calc(100% + 14px);
+  left: 50%;
+  transform: translateX(-50%) translateY(8px);
+  background: rgba(15, 23, 42, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-top-color: rgba(255, 255, 255, 0.45);
+  border-radius: 16px;
+  padding: 14px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.65), 0 0 25px rgba(56, 189, 248, 0.25);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.22s ease, transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.22s;
+  z-index: 100;
+  width: 48px;
+}
+
+.volume-control-wrap:hover .glass-volume-popover,
+.glass-volume-popover.active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0);
+}
+
+.popover-arrow {
+  position: absolute;
+  bottom: -6px;
+  left: 50%;
+  transform: translateX(-50%) rotate(45deg);
+  width: 10px;
+  height: 10px;
+  background: rgba(15, 23, 42, 0.95);
+  border-right: 1px solid rgba(255, 255, 255, 0.2);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.glass-volume-range {
+  -webkit-appearance: slider-vertical;
+  writing-mode: bt-lr;
+  width: 8px;
+  height: 100px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 6px;
+  cursor: pointer;
+  accent-color: var(--prism-cyan);
+}
+
+.volume-percent {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--prism-cyan);
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
 .liquid-parameters {
   background: rgba(255, 255, 255, 0.02);
   border: 1px solid rgba(255, 255, 255, 0.06);

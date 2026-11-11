@@ -19,7 +19,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=4.0">
+  <link rel="stylesheet" href="style.css?v=4.2">
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
 </head>
@@ -76,7 +76,7 @@
     <main class="main-container">
       
       <!-- Hero Section: Liquid Specimen & Player Showcase -->
-      <section class="hero-section">
+      <section class="hero-section" id="stream">
         <div class="hero-left">
           <div class="glass-tag">
             <span class="pulse-dot"></span> Next-Gen YouTube Music & Ambient Engine
@@ -162,13 +162,20 @@
 
             <!-- Control Bar -->
             <div class="player-controls">
-              <button class="ctrl-btn" id="btn-shuffle" title="Fluid Shuffle"><i data-lucide="shuffle"></i></button>
+              <button class="ctrl-btn" id="btn-shuffle" title="Fluid Shuffle (Randomize Track)"><i data-lucide="shuffle"></i></button>
               <button class="ctrl-btn" id="btn-prev" title="Previous Track"><i data-lucide="skip-back"></i></button>
               <button class="ctrl-btn play-major" id="btn-play" title="Play / Pause">
                 <i data-lucide="play" id="play-icon"></i>
               </button>
               <button class="ctrl-btn" id="btn-next" title="Next Track"><i data-lucide="skip-forward"></i></button>
-              <button class="ctrl-btn" id="btn-volume" title="Volume / Fluidity"><i data-lucide="volume-2"></i></button>
+              <div class="volume-control-wrap">
+                <button class="ctrl-btn" id="btn-volume" title="Volume / Mute Toggle"><i data-lucide="volume-2" id="vol-icon"></i></button>
+                <div class="glass-volume-popover" id="volume-popover">
+                  <div class="popover-arrow"></div>
+                  <input type="range" id="volume-slider" min="0" max="100" value="85" class="glass-volume-range" orient="vertical">
+                  <span id="volume-text" class="volume-percent">85%</span>
+                </div>
+              </div>
             </div>
 
             <!-- Quick Fluid Mode Sliders inside Glass Drawer -->
@@ -279,9 +286,11 @@
         </div>
       </div>
       <div class="dock-controls">
-        <button class="dock-icon-btn" id="dock-btn-prev"><i data-lucide="skip-back"></i></button>
-        <button class="dock-icon-btn dock-play" id="dock-btn-play"><i data-lucide="play" id="dock-play-icon"></i></button>
-        <button class="dock-icon-btn" id="dock-btn-next"><i data-lucide="skip-forward"></i></button>
+        <button class="dock-icon-btn" id="dock-btn-shuffle" title="Fluid Shuffle"><i data-lucide="shuffle"></i></button>
+        <button class="dock-icon-btn" id="dock-btn-prev" title="Previous Track"><i data-lucide="skip-back"></i></button>
+        <button class="dock-icon-btn dock-play" id="dock-btn-play" title="Play / Pause"><i data-lucide="play" id="dock-play-icon"></i></button>
+        <button class="dock-icon-btn" id="dock-btn-next" title="Next Track"><i data-lucide="skip-forward"></i></button>
+        <button class="dock-icon-btn" id="dock-btn-volume" title="Volume / Mute"><i data-lucide="volume-2" id="dock-vol-icon"></i></button>
       </div>
     </div>
 

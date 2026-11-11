@@ -932,6 +932,97 @@ document.addEventListener('DOMContentLoaded', () => {
   const heroPlayTrigger = document.getElementById('hero-play-trigger');
   const seekTrack = document.getElementById('seek-track');
 
+  // Volume & Shuffle state
+  let currentVolume = 0.85;
+  let isMuted = false;
+  let isShuffle = false;
+
+  const btnVolume = document.getElementById('btn-volume');
+  const dockBtnVolume = document.getElementById('dock-btn-volume');
+  const volumeSlider = document.getElementById('volume-slider');
+  const volumeText = document.getElementById('volume-text');
+  const btnShuffle = document.getElementById('btn-shuffle');
+  const dockBtnShuffle = document.getElementById('dock-btn-shuffle');
+
+  function updateVolumeUI() {
+    initAudioNodes();
+    const effectiveVol = isMuted ? 0 : currentVolume;
+    if (masterGain && audioCtx) {
+      masterGain.gain.setValueAtTime(effectiveVol, audioCtx.currentTime);
+    }
+
+    const pct = Math.round(effectiveVol * 100);
+    if (volumeSlider) volumeSlider.value = pct;
+    if (volumeText) volumeText.textContent = `${pct}%`;
+
+    const iconName = isMuted || effectiveVol === 0 ? 'volume-x' : (effectiveVol < 0.45 ? 'volume-1' : 'volume-2');
+    if (btnVolume) {
+      btnVolume.innerHTML = `<i data-lucide="${iconName}"></i>`;
+      btnVolume.classList.toggle('muted', isMuted || effectiveVol === 0);
+    }
+    if (dockBtnVolume) {
+      dockBtnVolume.innerHTML = `<i data-lucide="${iconName}"></i>`;
+      dockBtnVolume.classList.toggle('muted', isMuted || effectiveVol === 0);
+    }
+    if (window.lucide) {
+      lucide.createIcons();
+    }
+  }
+
+  function toggleMute() {
+    initAudioNodes();
+    isMuted = !isMuted;
+    playUiTone(isMuted ? 'click' : 'switch');
+    showToast(isMuted ? '🔇 Audio Muted' : `🔊 Volume: ${Math.round(currentVolume * 100)}%`);
+    updateVolumeUI();
+  }
+
+  if (btnVolume) {
+    btnVolume.addEventListener('click', (e) => {
+      // Toggle mute on click
+      toggleMute();
+    });
+  }
+
+  if (dockBtnVolume) {
+    dockBtnVolume.addEventListener('click', toggleMute);
+  }
+
+  if (volumeSlider) {
+    volumeSlider.addEventListener('input', (e) => {
+      initAudioNodes();
+      const val = parseInt(e.target.value, 10);
+      currentVolume = val / 100;
+      if (currentVolume > 0 && isMuted) {
+        isMuted = false;
+      }
+      updateVolumeUI();
+    });
+  }
+
+  // Shuffle Tracks
+  function triggerShuffle() {
+    playUiTone('switch');
+    isShuffle = !isShuffle;
+    if (btnShuffle) btnShuffle.classList.toggle('shuffle-active', isShuffle);
+    if (dockBtnShuffle) dockBtnShuffle.classList.toggle('shuffle-active', isShuffle);
+
+    let nextIndex;
+    if (trackCatalog.length > 1) {
+      do {
+        nextIndex = Math.floor(Math.random() * trackCatalog.length);
+      } while (nextIndex === currentTrackIndex);
+    } else {
+      nextIndex = 0;
+    }
+
+    showToast(`🔀 Shuffled to: ${trackCatalog[nextIndex].title}`);
+    selectTrack(nextIndex, isPlaying);
+  }
+
+  if (btnShuffle) btnShuffle.addEventListener('click', triggerShuffle);
+  if (dockBtnShuffle) dockBtnShuffle.addEventListener('click', triggerShuffle);
+
   function selectTrack(index, autoPlay = true) {
     currentTrackIndex = index;
     const track = trackCatalog[currentTrackIndex];
