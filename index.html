@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Molten Prism | Liquid Glass Audio Experience</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+  <!-- Ambient Liquid Canvas Background -->
+  <div class="background-effects">
+    <canvas id="liquid-canvas"></canvas>
+    <div class="liquid-orb orb-1"></div>
+    <div class="liquid-orb orb-2"></div>
+    <div class="liquid-orb orb-3"></div>
+    <div class="liquid-orb orb-4"></div>
+    <div class="noise-overlay"></div>
+  </div>
+
+  <div class="app-layout">
+    <!-- Liquid Glass Navigation / Header -->
+    <header class="glass-nav">
+      <div class="brand">
+        <div class="logo-gem">
+          <div class="gem-inner"></div>
+        </div>
+        <div class="brand-text">
+          <span class="title">MOLTEN PRISM</span>
+          <span class="badge">LIQUID CLIENT</span>
+        </div>
+      </div>
+
+      <nav class="nav-links">
+        <button class="nav-btn active" data-tab="stream"><i data-lucide="waves"></i> Atmosphere</button>
+        <button class="nav-btn" data-tab="catalog"><i data-lucide="disc-3"></i> Soundscapes</button>
+        <button class="nav-btn" data-tab="specs"><i data-lucide="sparkles"></i> Glass Tech</button>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="https://github.com/Samar-019/Molten-Prism" target="_blank" rel="noreferrer" class="glass-pill-btn github-link">
+          <i data-lucide="github"></i>
+          <span>GitHub</span>
+        </a>
+        <button id="theme-toggle" class="glass-icon-btn" title="Toggle Prism Refraction">
+          <i data-lucide="prism"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="main-container">
+      
+      <!-- Hero Section: Liquid Specimen & Player Showcase -->
+      <section class="hero-section">
+        <div class="hero-left">
+          <div class="glass-tag">
+            <span class="pulse-dot"></span> Next-Gen YouTube Music & Ambient Engine
+          </div>
+          <h1 class="hero-headline">
+            Audio Refracted Through <span class="gradient-text">Liquid Glass</span>.
+          </h1>
+          <p class="hero-subtext">
+            Immersive soundscapes that blend innovation, emotion, and fluid physics. From cinematic molten atmospheres to prism-tuned frequencies, experience audio reimagined.
+          </p>
+          <div class="hero-cta-group">
+            <button class="liquid-btn primary-glow" id="hero-play-trigger">
+              <span class="liquid-fill"></span>
+              <span class="btn-content"><i data-lucide="play" class="fill-current"></i> Launch Stream</span>
+            </button>
+            <a href="#catalog" class="liquid-btn glass-secondary">
+              <span class="btn-content"><i data-lucide="layers"></i> Explore Library</span>
+            </a>
+          </div>
+
+          <!-- Mini Metrics Glass Bar -->
+          <div class="metrics-glass-shelf">
+            <div class="metric-item">
+              <span class="metric-value">384<small>kHz</small></span>
+              <span class="metric-label">Vitreous Depth</span>
+            </div>
+            <div class="metric-divider"></div>
+            <div class="metric-item">
+              <span class="metric-value">0.0<small>ms</small></span>
+              <span class="metric-label">Prism Jitter</span>
+            </div>
+            <div class="metric-divider"></div>
+            <div class="metric-item">
+              <span class="metric-value">Spatial</span>
+              <span class="metric-label">Hydro-Acoustics</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hero Right: Interactive Liquid Player Card -->
+        <div class="hero-right">
+          <div class="liquid-card player-deck">
+            <div class="glass-glare"></div>
+            <div class="glass-rim"></div>
+            
+            <!-- Dynamic Album Art / Specimen -->
+            <div class="deck-visualizer-container">
+              <div class="album-art-wrap">
+                <div class="art-glow" id="art-glow"></div>
+                <div class="art-disc" id="art-disc">
+                  <div class="prism-refraction"></div>
+                  <div class="liquid-core">
+                    <i data-lucide="disc-3" class="spinning-disc-icon"></i>
+                  </div>
+                </div>
+              </div>
+              <div class="deck-status-badge">
+                <span class="indicator-wave"><span></span><span></span><span></span></span>
+                <span id="deck-status-text">PRISM ACTIVE</span>
+              </div>
+            </div>
+
+            <!-- Track Info -->
+            <div class="track-details">
+              <h3 id="current-title">Vitreous Horizon</h3>
+              <p id="current-artist">Molten Prism • Liquid Soundscape Vol. 1</p>
+            </div>
+
+            <!-- Waveform Canvas / Visualizer -->
+            <div class="waveform-container">
+              <canvas id="waveform-canvas"></canvas>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="progress-box">
+              <div class="time-readout" id="current-time">0:00</div>
+              <div class="glass-slider-track" id="seek-track">
+                <div class="glass-slider-fill" id="seek-fill"></div>
+                <div class="glass-slider-thumb" id="seek-thumb"></div>
+              </div>
+              <div class="time-readout" id="total-time">3:45</div>
+            </div>
+
+            <!-- Control Bar -->
+            <div class="player-controls">
+              <button class="ctrl-btn" id="btn-shuffle" title="Fluid Shuffle"><i data-lucide="shuffle"></i></button>
+              <button class="ctrl-btn" id="btn-prev" title="Previous Track"><i data-lucide="skip-back"></i></button>
+              <button class="ctrl-btn play-major" id="btn-play" title="Play / Pause">
+                <i data-lucide="play" id="play-icon"></i>
+              </button>
+              <button class="ctrl-btn" id="btn-next" title="Next Track"><i data-lucide="skip-forward"></i></button>
+              <button class="ctrl-btn" id="btn-volume" title="Volume / Fluidity"><i data-lucide="volume-2"></i></button>
+            </div>
+
+            <!-- Quick Fluid Mode Sliders inside Glass Drawer -->
+            <div class="liquid-parameters">
+              <div class="param-row">
+                <span><i data-lucide="droplets"></i> Viscosity</span>
+                <input type="range" id="param-viscosity" min="1" max="100" value="65" class="glass-range">
+              </div>
+              <div class="param-row">
+                <span><i data-lucide="sun"></i> Refraction</span>
+                <input type="range" id="param-refraction" min="1" max="100" value="80" class="glass-range">
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 2: Soundscapes & Sound Streams Grid -->
+      <section class="section-container" id="catalog">
+        <div class="section-header">
+          <div>
+            <span class="subhead-pill">Curated Atmospheres</span>
+            <h2 class="section-title">Molten Prismatic Channels</h2>
+          </div>
+          <div class="filter-pills">
+            <button class="filter-btn active" data-genre="all">All Fluids</button>
+            <button class="filter-btn" data-genre="ambient">Liquid Ambient</button>
+            <button class="filter-btn" data-genre="synth">Prism Wave</button>
+            <button class="filter-btn" data-genre="deep">Deep Silica</button>
+          </div>
+        </div>
+
+        <div class="cards-grid" id="track-grid">
+          <!-- Populated by JS for dynamic liquid interaction -->
+        </div>
+      </section>
+
+      <!-- Section 3: Liquid Glass Technology Feature Cards -->
+      <section class="section-container" id="specs">
+        <div class="section-header text-center">
+          <span class="subhead-pill">Aesthetic Architecture</span>
+          <h2 class="section-title">Crafted with High-Index Vitreous Glass</h2>
+          <p class="section-desc">Every element reflects, bends, and shimmers according to real-time pointer physics and harmonic frequencies.</p>
+        </div>
+
+        <div class="feature-grid">
+          <div class="feature-card liquid-card">
+            <div class="feature-icon"><i data-lucide="waves"></i></div>
+            <h3>Real-time Fluid Dynamics</h3>
+            <p>Procedural WebGL shader computations create an organic, ever-shifting backdrop responding to the audio spectrum and pointer movements.</p>
+            <div class="card-refract-light"></div>
+          </div>
+
+          <div class="feature-card liquid-card">
+            <div class="feature-icon"><i data-lucide="sparkles"></i></div>
+            <h3>Chromatically Dispersed UI</h3>
+            <p>Multi-layered frosted glass filters simulate prism refraction, casting caustic color fringes along container rims and borders.</p>
+            <div class="card-refract-light"></div>
+          </div>
+
+          <div class="feature-card liquid-card">
+            <div class="feature-icon"><i data-lucide="youtube"></i></div>
+            <h3>YouTube Music Integration</h3>
+            <p>Designed as the companion client for YouTube Music streams, custom audio visualizer nodes, and binaural sound stages.</p>
+            <div class="card-refract-light"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 4: Live Ambient Sound Generator & Interactive Audio Node -->
+      <section class="section-container interactive-station">
+        <div class="liquid-card station-panel">
+          <div class="station-header">
+            <div>
+              <h3>Interactive Prismatic Synthesizer</h3>
+              <p>Move your cursor across the glass surface to generate harmonic binaural liquid tones directly in your browser.</p>
+            </div>
+            <div class="sound-toggle-wrap">
+              <button id="toggle-synth-btn" class="liquid-btn glass-secondary">
+                <i data-lucide="radio"></i> <span>Enable Pure Audio Node</span>
+              </button>
+            </div>
+          </div>
+          
+          <div class="glass-synth-pad" id="synth-pad">
+            <div class="synth-ripple-container" id="ripple-box"></div>
+            <div class="pad-overlay">
+              <span class="pad-hint"><i data-lucide="mouse-pointer"></i> Tap or Drag anywhere to refract sound</span>
+              <div class="coords-display" id="coords-text">X: 0Hz | Y: 0Hz</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Floating Dock / Sticky Mini-Player -->
+    <div class="liquid-dock" id="floating-dock">
+      <div class="dock-track-info">
+        <div class="dock-disc-mini" id="dock-disc"></div>
+        <div class="dock-labels">
+          <span class="dock-title" id="dock-title">Vitreous Horizon</span>
+          <span class="dock-artist" id="dock-artist">Molten Prism</span>
+        </div>
+      </div>
+      <div class="dock-controls">
+        <button class="dock-icon-btn" id="dock-btn-prev"><i data-lucide="skip-back"></i></button>
+        <button class="dock-icon-btn dock-play" id="dock-btn-play"><i data-lucide="play" id="dock-play-icon"></i></button>
+        <button class="dock-icon-btn" id="dock-btn-next"><i data-lucide="skip-forward"></i></button>
+      </div>
+    </div>
+
+    <!-- Liquid Glass Footer -->
+    <footer class="glass-footer">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <div class="brand-text">
+            <span class="title">MOLTEN PRISM</span>
+            <p class="tagline">Liquid Glass Client & Ambient Soundscapes</p>
+          </div>
+        </div>
+        <div class="footer-links">
+          <a href="https://github.com/Samar-019/Molten-Prism" target="_blank" rel="noreferrer"><i data-lucide="github"></i> GitHub Repository</a>
+          <a href="#stream"><i data-lucide="music"></i> Sound Client</a>
+          <a href="#specs"><i data-lucide="layers"></i> Architecture</a>
+        </div>
+        <div class="footer-copy">
+          <p>© <span id="year"></span> Samar-019 / Molten Prism. Released under MIT License.</p>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
