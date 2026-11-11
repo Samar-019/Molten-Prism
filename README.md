@@ -24,10 +24,6 @@ Translucent frosted glass, word-by-word shining synced lyrics, audio visualizer,
 
 [**⬇ Download Molten Prism v0.1.0 for Windows**](https://github.com/Samar-019/Molten-Prism/releases/tag/v0.1.0)
 
-<br/>
-
-<img src="docs/screenshots/player.jpg" alt="Player screen with visualizer around album art" width="100%">
-
 </div>
 
 > [!IMPORTANT]
