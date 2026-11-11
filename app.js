@@ -124,6 +124,7 @@ document.addEventListener('DOMContentLoaded', () => {
       card.innerHTML = `
         <div class="glass-glare"></div>
         <div class="card-art" style="background: ${track.gradient}">
+          <img src="icon.png" alt="Molten Orb" class="card-art-orb-watermark">
           <div class="card-meta-tag">${track.frequency}</div>
           <div class="card-play-hover">
             <i data-lucide="play" class="fill-current"></i>
