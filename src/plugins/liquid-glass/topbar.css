@@ -16,19 +16,26 @@ body.liquid-glass ytmusic-nav-bar .center-content {
 .lg-app-icon {
   position: fixed;
   z-index: 2050;
-  top: 6px;
+  top: 5px;
   left: 16px;
-  height: 22px;
+  height: 24px;
   display: flex;
   align-items: center;
   gap: 8px;
   pointer-events: none;
-  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.35));
+  filter: drop-shadow(0 2px 8px rgba(0, 229, 255, 0.45));
 }
 
 .lg-app-icon svg {
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
+  overflow: visible;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.3s ease;
+}
+
+.lg-app-icon:hover svg {
+  transform: scale(1.15) rotate(5deg);
+  filter: drop-shadow(0 0 12px rgba(0, 240, 255, 0.8));
 }
 
 .lg-app-name {
