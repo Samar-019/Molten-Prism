@@ -1,5 +1,9 @@
 <div align="center">
 
+<img src="docs/screenshots/banner.svg" alt="Molten Prism Banner" width="100%">
+
+<br/><br/>
+
 <a href="https://github.com/Samar-019/Molten-Prism">
   <img src="assets/icon.svg" alt="Molten Prism Icon" width="130" height="130">
 </a>
