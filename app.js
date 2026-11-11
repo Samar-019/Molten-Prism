@@ -1172,29 +1172,34 @@ document.addEventListener('DOMContentLoaded', () => {
     const waveCtx = waveCanvas.getContext('2d');
     let waveStep = 0;
 
+    let canvasW = 380;
+    let canvasH = 96;
+
     function resizeWaveCanvas() {
-      const rect = waveCanvas.getBoundingClientRect();
-      const w = rect.width || waveCanvas.parentElement.clientWidth || 320;
-      const h = rect.height || 64;
+      const parent = waveCanvas.parentElement;
+      const rect = parent ? parent.getBoundingClientRect() : waveCanvas.getBoundingClientRect();
+      canvasW = Math.max(280, Math.floor(rect.width || 380));
+      canvasH = Math.max(70, Math.floor(rect.height || 96));
       const dpr = window.devicePixelRatio || 1;
-      waveCanvas.width = Math.floor(w * dpr);
-      waveCanvas.height = Math.floor(h * dpr);
-      waveCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      waveCanvas.width = Math.floor(canvasW * dpr);
+      waveCanvas.height = Math.floor(canvasH * dpr);
+      waveCtx.resetTransform ? waveCtx.resetTransform() : waveCtx.setTransform(1, 0, 0, 1, 0, 0);
+      waveCtx.scale(dpr, dpr);
     }
     window.addEventListener('resize', resizeWaveCanvas);
-    setTimeout(resizeWaveCanvas, 50);
+    setTimeout(resizeWaveCanvas, 100);
+    setTimeout(resizeWaveCanvas, 500);
     resizeWaveCanvas();
 
     function drawWaveform() {
-      const rect = waveCanvas.getBoundingClientRect();
-      const width = rect.width || 320;
-      const height = rect.height || 64;
+      const width = canvasW;
+      const height = canvasH;
 
       waveCtx.clearRect(0, 0, width, height);
-      const centerY = height / 2;
+      const centerY = height * 0.58; // slightly lowered to leave room for the top badges
 
       const gap = 3;
-      const barWidth = Math.max(2, (width - (numBars * gap)) / numBars);
+      const barWidth = Math.max(3, (width - (numBars * gap)) / numBars);
 
       let freqData = null;
       let hasRealAudio = false;
@@ -1210,19 +1215,18 @@ document.addEventListener('DOMContentLoaded', () => {
         if (hasRealAudio && freqData) {
           const binIndex = Math.min(Math.floor((i / numBars) * freqData.length), freqData.length - 1);
           const rawVal = freqData[binIndex] / 255; // 0 to 1
-          // Combine real FFT data with slight organic molten breathing
-          barHeight = Math.max(4, (rawVal * 0.85 + 0.12) * height);
+          barHeight = Math.max(6, (rawVal * 0.72 + 0.12) * height);
         } else if (isPlaying || previewingTrackId !== null) {
           const wave1 = Math.sin(waveStep * 0.08 + i * 0.28);
           const wave2 = Math.cos(waveStep * 0.05 + i * 0.18);
           const wave3 = Math.sin(waveStep * 0.12 + i * 0.45);
-          barHeight = Math.max(4, (Math.abs(wave1 * 0.5 + wave2 * 0.35 + wave3 * 0.15) * 0.72 + 0.14) * height);
+          barHeight = Math.max(6, (Math.abs(wave1 * 0.5 + wave2 * 0.35 + wave3 * 0.15) * 0.65 + 0.15) * height);
         } else {
-          // Animated standby state when paused so user always sees the vibrant visualizer!
-          barHeight = Math.max(3, (Math.sin(waveStep * 0.04 + i * 0.22) * 0.16 + 0.24) * height);
+          // Continuous animated ambient rhythm when in standby
+          barHeight = Math.max(5, (Math.sin(waveStep * 0.05 + i * 0.25) * 0.2 + 0.28) * (height * 0.75));
         }
 
-        // Peak cap physics (falls gracefully like high-end DJ equipment)
+        // Peak cap physics
         if (barHeight > peakCaps[i]) {
           peakCaps[i] = barHeight;
           capSpeeds[i] = 0.5;
@@ -1236,7 +1240,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Vivid Prismatic Gradient
         const grad = waveCtx.createLinearGradient(0, y, 0, y + barHeight);
-        const colorOffset = (i / numBars + (waveStep * 0.006)) % 1;
+        const colorOffset = (i / numBars + (waveStep * 0.007)) % 1;
         if (colorOffset < 0.33) {
           grad.addColorStop(0, '#38bdf8');
           grad.addColorStop(0.5, '#818cf8');
@@ -1252,8 +1256,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         waveCtx.fillStyle = grad;
-        waveCtx.shadowColor = (isPlaying || previewingTrackId) ? 'rgba(56, 189, 248, 0.6)' : 'rgba(56, 189, 248, 0.2)';
-        waveCtx.shadowBlur = (isPlaying || previewingTrackId) ? 10 : 3;
+        waveCtx.shadowColor = (isPlaying || previewingTrackId) ? 'rgba(56, 189, 248, 0.7)' : 'rgba(56, 189, 248, 0.35)';
+        waveCtx.shadowBlur = (isPlaying || previewingTrackId) ? 10 : 4;
 
         waveCtx.beginPath();
         if (waveCtx.roundRect) {
@@ -1264,22 +1268,20 @@ document.addEventListener('DOMContentLoaded', () => {
         waveCtx.fill();
 
         // Draw Peak Floating Cap
-        if (isPlaying || previewingTrackId) {
-          const capY = centerY - peakCaps[i] / 2 - 3;
-          waveCtx.fillStyle = '#ffffff';
-          waveCtx.shadowColor = '#38bdf8';
-          waveCtx.shadowBlur = 6;
-          waveCtx.fillRect(x, Math.max(2, capY), barWidth, 2);
-        }
+        const capY = centerY - peakCaps[i] / 2 - 3;
+        waveCtx.fillStyle = '#ffffff';
+        waveCtx.shadowColor = '#38bdf8';
+        waveCtx.shadowBlur = 6;
+        waveCtx.fillRect(x, Math.max(2, capY), barWidth, 2);
       }
 
       // Update frequency readout live badge
-      if (waveStep % 30 === 0 && vizFreqReadout) {
+      if (waveStep % 25 === 0 && vizFreqReadout) {
         const track = trackCatalog[currentTrackIndex];
         if (isPlaying) {
           vizFreqReadout.textContent = `${track.frequency} TUNED`;
         } else {
-          vizFreqReadout.textContent = 'STANDBY';
+          vizFreqReadout.textContent = 'STANDBY ACTIVE';
         }
       }
 

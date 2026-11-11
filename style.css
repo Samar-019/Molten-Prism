@@ -882,26 +882,28 @@ body {
 .waveform-container {
   width: 100%;
   height: 96px;
-  background: rgba(8, 12, 22, 0.65);
+  background: rgba(8, 12, 22, 0.75);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-radius: 18px;
-  padding: 8px 12px;
+  padding: 10px 14px;
   border: 1px solid rgba(56, 189, 248, 0.25);
   box-shadow: inset 0 2px 14px rgba(0, 0, 0, 0.7), 0 0 25px rgba(56, 189, 248, 0.15);
   position: relative;
   overflow: hidden;
-  display: flex;
-  flex-direction: column;
+  display: block;
 }
 
 .visualizer-overlay-modes {
+  position: absolute;
+  top: 8px;
+  left: 14px;
+  right: 14px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   pointer-events: none;
-  margin-bottom: 4px;
-  z-index: 2;
+  z-index: 5;
 }
 
 .viz-mode-badge,
@@ -911,7 +913,7 @@ body {
   font-size: 0.66rem;
   font-weight: 600;
   letter-spacing: 0.8px;
-  color: rgba(255, 255, 255, 0.45);
+  color: rgba(255, 255, 255, 0.55);
   display: inline-flex;
   align-items: center;
   gap: 5px;
@@ -926,17 +928,20 @@ body {
 
 .viz-fps-badge {
   color: var(--prism-cyan);
-  background: rgba(56, 189, 248, 0.12);
-  border: 1px solid rgba(56, 189, 248, 0.3);
+  background: rgba(56, 189, 248, 0.18);
+  border: 1px solid rgba(56, 189, 248, 0.4);
   padding: 2px 7px;
   border-radius: 6px;
 }
 
 #waveform-canvas {
-  width: 100%;
-  flex: 1;
+  width: 100% !important;
+  height: 100% !important;
   display: block;
-  z-index: 1;
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 2;
 }
 
 .progress-box {
