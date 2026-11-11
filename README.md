@@ -1,26 +1,32 @@
 <div align="center">
 
-<img src="docs/screenshots/icon.png" alt="Icono de MusicSense" width="128" height="128">
+<img src="docs/screenshots/banner.svg" alt="Molten Prism Banner" width="100%">
 
-# MusicSense
+<br/><br/>
 
-**YouTube Music en tu escritorio, con el estilo de Apple Music.**
-Vidrio translúcido, letras que brillan palabra por palabra, un visualizador que late con la música y audio con ecualizador, salas y sonido espacial.
+<a href="https://github.com/Samar-019/Molten-Prism">
+  <img src="assets/icon.svg" alt="Molten Prism Icon" width="140" height="140">
+</a>
 
-[![Última versión](https://img.shields.io/github/v/release/bbernalm/MusicSense?label=versi%C3%B3n&color=ff6fae&style=for-the-badge)](https://github.com/bbernalm/MusicSense/releases/latest)
-[![Descargas](https://img.shields.io/github/downloads/bbernalm/MusicSense/total?label=descargas&color=7b5cff&style=for-the-badge)](https://github.com/bbernalm/MusicSense/releases)
-[![Windows](https://img.shields.io/badge/Windows-10%20%7C%2011-0078D4?logo=windows11&logoColor=white&style=for-the-badge)](https://github.com/bbernalm/MusicSense/releases/latest)
+# 🎵 Molten Prism
+### 🌊💎 Liquid Glass Client | ▶️🎶 YouTube Music Desktop
 
-[![Comprobaciones](https://img.shields.io/github/actions/workflow/status/bbernalm/MusicSense/musicsense-checks.yml?branch=main&label=comprobaciones&style=flat-square)](https://github.com/bbernalm/MusicSense/actions/workflows/musicsense-checks.yml)
+**YouTube Music on your desktop reimagined with Apple Music aesthetics & fluid Liquid Glass.**  
+Translucent frosted glass, word-by-word shining synced lyrics, audio visualizer, 10-band equalizer, and spatial acoustic rooms.
+
+[![Latest Version](https://img.shields.io/github/v/release/Samar-019/Molten-Prism?label=version&color=00f5d4&style=for-the-badge)](https://github.com/Samar-019/Molten-Prism/releases/latest)
+[![Downloads](https://img.shields.io/github/downloads/Samar-019/Molten-Prism/total?label=downloads&color=7b2cbf&style=for-the-badge)](https://github.com/Samar-019/Molten-Prism/releases)
+[![Windows](https://img.shields.io/badge/Windows-10%20%7C%2011-0078D4?logo=windows11&logoColor=white&style=for-the-badge)](https://github.com/Samar-019/Molten-Prism/releases/latest)
+
 ![Electron](https://img.shields.io/badge/Electron-47848F?logo=electron&logoColor=white&style=flat-square)
 ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white&style=flat-square)
-![Licencia MIT](https://img.shields.io/badge/licencia-MIT-green?style=flat-square)
-![Basado en Pear Desktop](https://img.shields.io/badge/basado%20en-Pear%20Desktop-a3c639?style=flat-square)
-![Hecho con IA](https://img.shields.io/badge/hecho%20con-Claude%20Code-d97757?logo=anthropic&logoColor=white&style=flat-square)
+![License MIT](https://img.shields.io/badge/license-MIT-green?style=flat-square)
 
-[**⬇ Descargar para Windows**](https://github.com/bbernalm/MusicSense/releases/latest)
+[**⬇ Download Molten Prism v0.1.0 for Windows**](https://github.com/Samar-019/Molten-Prism/releases/tag/v0.1.0)
 
-<img src="docs/screenshots/player.jpg" alt="Pantalla del reproductor con el visualizador alrededor de la portada" width="100%">
+<br/>
+
+<img src="docs/screenshots/player.jpg" alt="Player screen with visualizer around album art" width="100%">
 
 </div>
 

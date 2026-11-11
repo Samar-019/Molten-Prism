@@ -1,0 +1,157 @@
+<svg width="1280" height="420" viewBox="0 0 1280 420" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Background Gradient -->
+    <radialGradient id="bg-glow" cx="50%" cy="40%" r="70%">
+      <stop offset="0%" stop-color="#1b1233"/>
+      <stop offset="50%" stop-color="#0e0a1f"/>
+      <stop offset="100%" stop-color="#07050d"/>
+    </radialGradient>
+
+    <radialGradient id="prism-ambient" cx="240" cy="210" r="280" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#8034eb" stop-opacity="0.45"/>
+      <stop offset="50%" stop-color="#00e5ff" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#07050d" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Filters -->
+    <filter id="glass-blur" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="18" result="blur"/>
+      <feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7"/>
+    </filter>
+
+    <filter id="neon-glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="14" result="g1"/>
+      <feGaussianBlur stdDeviation="5" result="g2"/>
+      <feMerge>
+        <feMergeNode in="g1"/>
+        <feMergeNode in="g2"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <linearGradient id="liquid-glass-border" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00f5d4" stop-opacity="0.8"/>
+      <stop offset="40%" stop-color="#7b2cbf" stop-opacity="0.4"/>
+      <stop offset="70%" stop-color="#f72585" stop-opacity="0.7"/>
+      <stop offset="100%" stop-color="#4cc9f0" stop-opacity="0.9"/>
+    </linearGradient>
+
+    <linearGradient id="orb-gradient" x1="20%" y1="10%" x2="80%" y2="90%">
+      <stop offset="0%" stop-color="#60efff"/>
+      <stop offset="35%" stop-color="#7000ff"/>
+      <stop offset="70%" stop-color="#d0006f"/>
+      <stop offset="100%" stop-color="#140152"/>
+    </linearGradient>
+
+    <linearGradient id="text-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#00f5d4"/>
+      <stop offset="40%" stop-color="#b5179e"/>
+      <stop offset="80%" stop-color="#7209b7"/>
+      <stop offset="100%" stop-color="#4361ee"/>
+    </linearGradient>
+
+    <style>
+      @keyframes float-orb {
+        0%, 100% { transform: translateY(0px) scale(1); filter: drop-shadow(0 0 30px rgba(0, 245, 212, 0.4)); }
+        50% { transform: translateY(-12px) scale(1.03); filter: drop-shadow(0 0 50px rgba(247, 37, 133, 0.6)); }
+      }
+      @keyframes spin-ring {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+      @keyframes star-flare {
+        0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.85; }
+        50% { transform: scale(1.25) rotate(25deg); opacity: 1; }
+      }
+      @keyframes wave-motion {
+        0% { transform: translateX(0px); }
+        50% { transform: translateX(-40px); }
+        100% { transform: translateX(0px); }
+      }
+      .banner-orb-group {
+        transform-origin: 240px 210px;
+        animation: float-orb 5s ease-in-out infinite;
+      }
+      .banner-ring {
+        transform-origin: 240px 210px;
+        animation: spin-ring 12s linear infinite;
+      }
+      .banner-star {
+        transform-origin: 240px 210px;
+        animation: star-flare 2.5s ease-in-out infinite;
+      }
+    </style>
+  </defs>
+
+  <!-- Banner Background -->
+  <rect width="1280" height="420" rx="20" fill="url(#bg-glow)"/>
+  <circle cx="240" cy="210" r="280" fill="url(#prism-ambient)"/>
+
+  <!-- Liquid Glass Background Card Backdrop -->
+  <rect x="30" y="30" width="1220" height="360" rx="28" fill="rgba(255, 255, 255, 0.03)" stroke="url(#liquid-glass-border)" stroke-width="1.8"/>
+
+  <!-- Ambient Wave Graphic in Background -->
+  <path d="M 60 340 Q 250 280, 480 330 T 900 310 T 1220 330" fill="none" stroke="#7209b7" stroke-width="3" stroke-dasharray="12 18" opacity="0.4"/>
+  <path d="M 60 360 Q 270 300, 520 345 T 950 325 T 1220 350" fill="none" stroke="#00f5d4" stroke-width="2" stroke-dasharray="8 24" opacity="0.45"/>
+
+  <!-- Molten Prism Liquid Glass Animated Orb Graphic -->
+  <g class="banner-orb-group">
+    <!-- Outer Orbit Ring -->
+    <g class="banner-ring" filter="url(#neon-glow)">
+      <circle cx="240" cy="210" r="140" stroke="url(#liquid-glass-border)" stroke-width="6" fill="none" stroke-linecap="round" stroke-dasharray="640 100" opacity="0.9"/>
+      <circle cx="240" cy="210" r="162" stroke="#4cc9f0" stroke-width="1.5" fill="none" stroke-dasharray="10 40" opacity="0.45"/>
+    </g>
+
+    <!-- Glowing Crescent Wave Arc -->
+    <path d="M 130 190 C 130 120, 185 70, 250 70 C 310 70, 350 115, 348 170 C 346 195, 328 200, 320 185 C 312 140, 278 105, 236 105 C 186 105, 150 143, 150 199 C 150 243, 182 279, 226 289 C 246 293, 242 305, 222 305 C 166 305, 130 253, 130 190 Z"
+          fill="url(#liquid-glass-border)" opacity="0.9" filter="url(#neon-glow)"/>
+
+    <!-- Orb Core Sphere -->
+    <circle cx="240" cy="210" r="105" fill="url(#orb-gradient)" filter="url(#neon-glow)"/>
+
+    <!-- Liquid Specular Glass Arc Highlight -->
+    <path d="M 160 160 C 170 120, 210 105, 260 105 C 300 105, 320 118, 305 130 C 275 130, 225 140, 190 170 C 175 185, 155 190, 160 160 Z"
+          fill="#ffffff" opacity="0.75"/>
+
+    <!-- Orbital Cosmic Beads -->
+    <circle cx="120" cy="130" r="6" fill="#00f5d4" filter="url(#neon-glow)"/>
+    <circle cx="365" cy="145" r="7" fill="#f72585" filter="url(#neon-glow)"/>
+    <circle cx="345" cy="295" r="5" fill="#b5179e" filter="url(#neon-glow)"/>
+    <circle cx="145" cy="325" r="7" fill="#4cc9f0" filter="url(#neon-glow)"/>
+
+    <!-- Central Diamond Star Flare -->
+    <g class="banner-star" filter="url(#neon-glow)">
+      <path d="M 240 165 Q 240 210, 285 210 Q 240 210, 240 255 Q 240 210, 195 210 Q 240 210, 240 165 Z" fill="#ffffff"/>
+      <circle cx="240" cy="210" r="7" fill="#ffffff"/>
+    </g>
+  </g>
+
+  <!-- Typography Content -->
+  <g transform="translate(480, 0)">
+    <!-- Pill Badge -->
+    <rect x="0" y="75" width="230" height="32" rx="16" fill="rgba(0, 245, 212, 0.12)" stroke="#00f5d4" stroke-width="1.2"/>
+    <text x="24" y="96" fill="#00f5d4" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="13" font-weight="700" letter-spacing="1.5">LIQUID GLASS CLIENT</text>
+
+    <!-- Main Title -->
+    <text x="0" y="170" fill="url(#liquid-glass-border)" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="56" font-weight="800" letter-spacing="-0.5">Molten Prism</text>
+
+    <!-- Subtitle / Tagline -->
+    <text x="0" y="215" fill="#f0f4fc" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="20" font-weight="500" opacity="0.95">Next-Generation Liquid Glass YouTube Music Desktop Experience</text>
+
+    <!-- Feature Description -->
+    <text x="0" y="258" fill="#a4b3d6" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="15" font-weight="400">✨ Apple Music Aesthetics  •  🌊 Translucent Frosted Glass  •  🎶 Word-by-Word Live Lyrics</text>
+    <text x="0" y="284" fill="#a4b3d6" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="15" font-weight="400">🎚️ 10-Band EQ &amp; Spatial Rooms  •  🚀 Discord Rich Presence  •  💎 Fluid Animations</text>
+
+    <!-- Bottom Tags / Tech Stack -->
+    <g transform="translate(0, 320)">
+      <rect x="0" y="0" width="110" height="26" rx="6" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+      <text x="14" y="17" fill="#ffffff" font-family="sans-serif" font-size="12" font-weight="600">⚡ v0.1.0</text>
+
+      <rect x="125" y="0" width="130" height="26" rx="6" fill="rgba(0, 245, 212, 0.08)" stroke="rgba(0, 245, 212, 0.3)" stroke-width="1"/>
+      <text x="139" y="17" fill="#00f5d4" font-family="sans-serif" font-size="12" font-weight="600">📦 Setup &amp; Portable</text>
+
+      <rect x="270" y="0" width="120" height="26" rx="6" fill="rgba(114, 9, 183, 0.15)" stroke="rgba(114, 9, 183, 0.4)" stroke-width="1"/>
+      <text x="284" y="17" fill="#e0aaff" font-family="sans-serif" font-size="12" font-weight="600">🛡️ MIT License</text>
+    </g>
+  </g>
+</svg>
