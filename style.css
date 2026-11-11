@@ -1586,13 +1586,13 @@ body {
   letter-spacing: 1px;
 }
 
-/* Floating Dock Mini-Player */
+/* Floating Dock Mini-Player (Always On) */
 .liquid-dock {
   position: fixed;
   bottom: 24px;
   left: 50%;
-  transform: translateX(-50%) translateY(120%);
-  background: rgba(18, 23, 38, 0.75);
+  transform: translateX(-50%) translateY(0);
+  background: rgba(18, 23, 38, 0.82);
   backdrop-filter: var(--glass-backdrop-blur);
   -webkit-backdrop-filter: var(--glass-backdrop-blur);
   border: 1px solid var(--glass-border);
@@ -1604,7 +1604,7 @@ body {
   gap: 28px;
   box-shadow: 0 20px 45px rgba(0, 0, 0, 0.7), 0 0 30px rgba(56, 189, 248, 0.2);
   z-index: 99;
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
 }
 
 .liquid-dock.visible {
