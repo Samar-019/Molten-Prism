@@ -934,6 +934,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const dockArtist = document.getElementById('dock-artist');
   const seekFill = document.getElementById('seek-fill');
   const currentTimeEl = document.getElementById('current-time');
+  const dockCurrentTimeEl = document.getElementById('dock-current-time');
+  const dockTotalTimeEl = document.getElementById('dock-total-time');
+  const dockSeekFill = document.getElementById('dock-seek-fill');
+  const dockSeekTrack = document.getElementById('dock-seek-track');
   const artDisc = document.getElementById('art-disc');
   const playBtn = document.getElementById('btn-play');
   const dockPlayBtn = document.getElementById('dock-btn-play');
@@ -1040,6 +1044,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (totalTimeEl) totalTimeEl.textContent = track.duration;
     if (dockTitle) dockTitle.textContent = track.title;
     if (dockArtist) dockArtist.textContent = track.artist;
+    if (dockTotalTimeEl) dockTotalTimeEl.textContent = track.duration;
     currentTimeSec = 0;
     updateProgressUI();
 
@@ -1058,7 +1063,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const track = trackCatalog[currentTrackIndex];
     const pct = (currentTimeSec / track.durationSec) * 100;
     if (seekFill) seekFill.style.width = `${pct}%`;
+    if (dockSeekFill) dockSeekFill.style.width = `${pct}%`;
     if (currentTimeEl) currentTimeEl.textContent = formatTime(currentTimeSec);
+    if (dockCurrentTimeEl) dockCurrentTimeEl.textContent = formatTime(currentTimeSec);
   }
 
   function startPlayback() {
@@ -1147,6 +1154,18 @@ document.addEventListener('DOMContentLoaded', () => {
     seekTrack.addEventListener('click', (e) => {
       playUiTone('click');
       const rect = seekTrack.getBoundingClientRect();
+      const clickX = e.clientX - rect.left;
+      const pct = Math.max(0, Math.min(1, clickX / rect.width));
+      const track = trackCatalog[currentTrackIndex];
+      currentTimeSec = Math.floor(pct * track.durationSec);
+      updateProgressUI();
+    });
+  }
+
+  if (dockSeekTrack) {
+    dockSeekTrack.addEventListener('click', (e) => {
+      playUiTone('click');
+      const rect = dockSeekTrack.getBoundingClientRect();
       const clickX = e.clientX - rect.left;
       const pct = Math.max(0, Math.min(1, clickX / rect.width));
       const track = trackCatalog[currentTrackIndex];

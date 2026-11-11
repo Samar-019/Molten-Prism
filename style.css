@@ -1586,13 +1586,13 @@ body {
   letter-spacing: 1px;
 }
 
-/* Floating Dock Mini-Player (Always On) */
+/* Floating Dock Mini-Player */
 .liquid-dock {
   position: fixed;
   bottom: 24px;
   left: 50%;
-  transform: translateX(-50%) translateY(0);
-  background: rgba(18, 23, 38, 0.82);
+  transform: translateX(-50%) translateY(120%);
+  background: rgba(18, 23, 38, 0.75);
   backdrop-filter: var(--glass-backdrop-blur);
   -webkit-backdrop-filter: var(--glass-backdrop-blur);
   border: 1px solid var(--glass-border);
@@ -1604,7 +1604,7 @@ body {
   gap: 28px;
   box-shadow: 0 20px 45px rgba(0, 0, 0, 0.7), 0 0 30px rgba(56, 189, 248, 0.2);
   z-index: 99;
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .liquid-dock.visible {
@@ -1665,6 +1665,48 @@ body {
 .dock-artist {
   font-size: 0.72rem;
   color: var(--text-muted);
+}
+
+/* Dock Seekbar */
+.dock-seekbar-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 170px;
+}
+
+.dock-time {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--text-dim);
+  width: 28px;
+}
+
+.dock-slider-track {
+  position: relative;
+  flex: 1;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 99px;
+  cursor: pointer;
+  overflow: hidden;
+  transition: height 0.15s ease;
+}
+
+.dock-slider-track:hover {
+  height: 6px;
+}
+
+.dock-slider-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #38bdf8, #a855f7);
+  border-radius: 99px;
+  box-shadow: 0 0 8px rgba(56, 189, 248, 0.6);
+  transition: width 0.1s linear;
 }
 
 .dock-controls {

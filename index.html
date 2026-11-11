@@ -280,8 +280,8 @@
 
     </main>
 
-    <!-- Floating Dock / Sticky Mini-Player (Always Visible) -->
-    <div class="liquid-dock visible" id="floating-dock">
+    <!-- Floating Dock / Sticky Mini-Player -->
+    <div class="liquid-dock" id="floating-dock">
       <div class="dock-track-info">
         <div class="dock-disc-mini" id="dock-disc">
           <canvas id="dock-visualizer-canvas" class="dock-viz-canvas" width="60" height="60"></canvas>
@@ -291,6 +291,15 @@
           <span class="dock-title" id="dock-title">Vitreous Horizon</span>
           <span class="dock-artist" id="dock-artist">Molten Prism</span>
         </div>
+      </div>
+
+      <!-- Dock Progress Seekbar -->
+      <div class="dock-seekbar-container">
+        <span class="dock-time" id="dock-current-time">0:00</span>
+        <div class="dock-slider-track" id="dock-seek-track">
+          <div class="dock-slider-fill" id="dock-seek-fill"></div>
+        </div>
+        <span class="dock-time" id="dock-total-time">3:45</span>
       </div>
 
       <div class="dock-controls">
