@@ -782,90 +782,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // ==========================================
-  // Comprehensive Theme Engine: Light / Auto / Dark
-  // ==========================================
-  const themeModeBtns = document.querySelectorAll('.theme-mode-btn');
-  const themeToggle = document.getElementById('theme-toggle');
-  const systemDarkMedia = window.matchMedia('(prefers-color-scheme: dark)');
-
-  // Retrieve saved theme preference or default to 'auto'
-  let currentThemeMode = localStorage.getItem('molten_prism_theme') || 'auto';
-
-  function applyThemeMode(mode, playAudio = false) {
-    currentThemeMode = mode;
-    localStorage.setItem('molten_prism_theme', mode);
-
-    // Determine target scheme based on mode
-    let effectiveScheme = mode;
-    if (mode === 'auto') {
-      effectiveScheme = systemDarkMedia.matches ? 'dark' : 'light';
-    }
-
-    if (effectiveScheme === 'light') {
-      document.body.classList.add('light-mode');
-      document.body.classList.remove('prism-refract-mode');
-    } else {
-      document.body.classList.remove('light-mode');
-    }
-
-    // Update active pill button state
-    themeModeBtns.forEach(btn => {
-      if (btn.dataset.mode === mode) {
-        btn.classList.add('active');
-        btn.setAttribute('aria-pressed', 'true');
-      } else {
-        btn.classList.remove('active');
-        btn.setAttribute('aria-pressed', 'false');
-      }
-    });
-
-    // Update theme orb title
-    if (themeToggle) {
-      const modeLabels = { light: 'Light', auto: 'Auto (System)', dark: 'Dark' };
-      themeToggle.setAttribute('title', `Active: ${modeLabels[mode]} | Click to cycle`);
-    }
-
-    if (playAudio) {
-      playUiTone('switch');
-    }
-  }
-
-  // Pill buttons click handlers
-  themeModeBtns.forEach(btn => {
-    btn.addEventListener('mouseenter', () => playUiTone('hover'));
-    btn.addEventListener('click', () => {
-      applyThemeMode(btn.dataset.mode, true);
-    });
+  // Prismatic Refraction Theme Toggle
+  themeToggle.addEventListener('mouseenter', () => playUiTone('hover'));
+  themeToggle.addEventListener('click', () => {
+    playUiTone('switch');
+    document.body.classList.toggle('prism-refract-mode');
   });
-
-  // Molten Prism Orb click cycles through modes (Light -> Auto -> Dark -> Light)
-  if (themeToggle) {
-    themeToggle.addEventListener('mouseenter', () => playUiTone('hover'));
-    themeToggle.addEventListener('click', () => {
-      const cycle = { 'dark': 'light', 'light': 'auto', 'auto': 'dark' };
-      const next = cycle[currentThemeMode] || 'dark';
-      applyThemeMode(next, true);
-    });
-  }
-
-  // Realtime System Theme Listener for Auto Mode
-  if (systemDarkMedia.addEventListener) {
-    systemDarkMedia.addEventListener('change', () => {
-      if (currentThemeMode === 'auto') {
-        applyThemeMode('auto', false);
-      }
-    });
-  } else if (systemDarkMedia.addListener) {
-    systemDarkMedia.addListener(() => {
-      if (currentThemeMode === 'auto') {
-        applyThemeMode('auto', false);
-      }
-    });
-  }
-
-  // Initial execution on page load
-  applyThemeMode(currentThemeMode, false);
 
   // Mouse Parallax glare on Liquid Cards
   const cards = document.querySelectorAll('.liquid-card');
