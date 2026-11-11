@@ -1,0 +1,759 @@
+/*
+ * Pantalla del reproductor:
+ * izquierda → portada cuadrada con el título y el artista debajo (#lg-np-info);
+ * derecha   → panel de vidrio (letras o cola).
+ * La píldora y la cápsula de abajo no cambian respecto al resto de la app.
+ */
+
+/* ---------- No se desplaza al abrir el menú lateral ---------- */
+body.liquid-glass ytmusic-app-layout > [slot='player-page'] {
+  left: 0 !important;
+  width: 100vw !important;
+}
+
+/* ---------- Columnas alineadas con el reproductor de abajo ----------
+ * La portada empieza donde empieza la píldora y el panel derecho termina
+ * donde termina el grupo (círculo de abrir/cerrar incluido). */
+body.liquid-glass ytmusic-player-page > .content {
+  padding-left: var(--lg-bar-left) !important;
+  padding-right: var(--lg-bar-left) !important;
+  box-sizing: border-box !important;
+}
+
+/* La barra de desplazamiento de la página no sirve en esta pantalla */
+body.liquid-glass.lg-np ytmusic-app-layout {
+  scrollbar-width: none !important;
+}
+
+body.liquid-glass.lg-np ytmusic-app-layout::-webkit-scrollbar {
+  width: 0 !important;
+}
+
+/* ---------- Portada y título ---------- */
+body.liquid-glass ytmusic-player-page #main-panel {
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: flex-start !important;
+  row-gap: 18px;
+  padding: 0 !important;
+  box-sizing: border-box !important;
+}
+
+/* Portada siempre cuadrada (YouTube Music calcula su tamaño con otras
+   cuentas); en modo video se deja su tamaño */
+body.liquid-glass.lg-np ytmusic-player-page:not([video-mode]) #player,
+body.liquid-glass.lg-np.lg-prefer-music ytmusic-player-page #player {
+  width: var(--np-art, 360px) !important;
+  height: var(--np-art, 360px) !important;
+  max-width: none !important;
+  max-height: none !important;
+  flex: none !important;
+  margin: 0 !important;
+}
+
+/* Video (sin "Preferir música"): el cuadro con la proporción del video,
+   calculada en player.ts */
+/* Sin margen automático en la portada/video: una regla de YouTube Music más
+   específica (que no se puede leer) se lo ponía y separaba el título, sobre
+   todo en el modo letras. Por eso los selectores reforzados */
+body.liquid-glass.lg-np
+  ytmusic-player-page
+  #main-panel
+  > ytmusic-player#player#player {
+  margin: 0 !important;
+}
+
+/* (selector reforzado: ver arriba) */
+body.liquid-glass.lg-np:not(.lg-prefer-music)
+  ytmusic-player-page[video-mode]
+  #main-panel
+  > ytmusic-player#player#player {
+  width: var(--np-video-w, 100%) !important;
+  height: var(--np-video-h, auto) !important;
+  max-width: none !important;
+  max-height: none !important;
+  flex: none !important;
+  margin: 0 !important;
+  border-radius: 16px;
+  overflow: hidden !important;
+}
+
+/* Preferir música (prefer-music.ts): sin video, se muestra la portada */
+body.liquid-glass.lg-prefer-music ytmusic-player-page #song-video {
+  display: none !important;
+}
+
+body.liquid-glass.lg-prefer-music ytmusic-player-page #song-image {
+  display: block !important;
+}
+
+/* En modo video YouTube Music le da proporción 16:9: se hace llenar el cuadro */
+body.liquid-glass.lg-prefer-music ytmusic-player-page[video-mode] #player {
+  position: relative !important;
+  overflow: hidden !important;
+  border-radius: 16px;
+}
+
+body.liquid-glass.lg-prefer-music ytmusic-player-page[video-mode] #song-image {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  margin: 0 !important;
+}
+
+body.liquid-glass.lg-prefer-music
+  ytmusic-player-page[video-mode]
+  #song-image
+  :is(yt-img-shadow, img) {
+  width: var(--np-art, 100%) !important;
+  height: var(--np-art, 100%) !important;
+  padding: 0 !important;
+  max-width: none !important;
+  max-height: none !important;
+}
+
+body.liquid-glass.lg-prefer-music ytmusic-player-page #song-image img {
+  object-fit: cover !important;
+}
+
+/* Sin los botones "maximizar" y "pantalla completa" sobre la portada o el
+   video: descolocan toda la interfaz */
+body.liquid-glass ytmusic-player-page #song-media-window .top-row-buttons,
+body.liquid-glass ytmusic-player-page .player-maximize-button,
+body.liquid-glass ytmusic-player-page .fullscreen-button {
+  display: none !important;
+}
+
+/* Sin el recuadro de foco al pulsar la portada para pausar */
+body.liquid-glass ytmusic-player-page #player,
+body.liquid-glass ytmusic-player-page #player * {
+  outline: none !important;
+}
+
+/* Sin fondo gris detrás de la portada (se ve cuando se encoge) */
+body.liquid-glass ytmusic-player-page #player,
+body.liquid-glass ytmusic-player-page #song-media-window,
+body.liquid-glass ytmusic-player-page #song-image {
+  background: transparent !important;
+}
+
+/* Portada "viva": se encoge con un rebote al pausar, como en Apple Music */
+body.liquid-glass ytmusic-player-page #song-image {
+  transition:
+    transform 0.7s cubic-bezier(0.34, 1.45, 0.64, 1),
+    filter 0.7s ease;
+  transform-origin: 50% 50%;
+}
+
+body.liquid-glass.lg-paused ytmusic-player-page #song-image {
+  transform: scale(0.84);
+  filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.35));
+}
+
+/* Portada animada (animated-art.ts): video encima de la imagen, con fundido */
+body.liquid-glass ytmusic-player-page #song-image {
+  position: relative;
+}
+
+.lg-animated-art {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  /* Del tamaño de la portada cuadrada: en los videoclips el contenedor es
+     más alto que ancho y el video quedaba recortado por los lados */
+  width: var(--np-art, 100%);
+  height: var(--np-art, 100%);
+  object-fit: cover;
+  border-radius: 16px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.8s ease;
+}
+
+.lg-animated-art.ready {
+  opacity: 1;
+}
+
+#lg-np-info {
+  display: none;
+  width: var(--np-art, 360px);
+  max-width: 100%;
+  text-align: left;
+  color: #fff;
+  font-family: var(--lg-font);
+}
+
+body.liquid-glass.lg-np #lg-np-info {
+  display: block;
+  animation: lg-rise 0.5s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+  transition:
+    transform 0.7s cubic-bezier(0.34, 1.45, 0.64, 1),
+    width 0.7s cubic-bezier(0.34, 1.45, 0.64, 1);
+}
+
+/* Al pausar la portada se encoge al 84 % desde su centro: el título la sigue
+   para quedar pegado a su borde izquierdo e inferior (8 % de cada lado) */
+body.liquid-glass.lg-np.lg-paused
+  ytmusic-player-page:not([video-mode])
+  #lg-np-info,
+body.liquid-glass.lg-np.lg-paused.lg-prefer-music
+  ytmusic-player-page
+  #lg-np-info {
+  /* también se estrecha para que "compartir" siga alineado a la derecha */
+  width: calc(var(--np-art, 360px) * 0.84);
+  transform: translate(
+    calc(var(--np-art, 360px) * 0.08),
+    calc(var(--np-art, 360px) * -0.08)
+  );
+}
+
+/* Fila: textos a la izquierda, botones (portada/video y compartir) a la
+   derecha */
+body.liquid-glass.lg-np #lg-np-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Con el video, del ancho del video */
+body.liquid-glass.lg-np:not(.lg-prefer-music)
+  ytmusic-player-page[video-mode]
+  #lg-np-info {
+  width: var(--np-video-w, 100%);
+}
+
+.lg-np-text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+/* Título, álbum y artista pulsables (álbum / álbum / artista) */
+.lg-np-title,
+.lg-np-album,
+.lg-np-artist {
+  max-width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.lg-np-title:hover,
+.lg-np-album:hover,
+.lg-np-artist:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.lg-np-round {
+  width: 38px;
+  height: 38px;
+  background: var(--lg-glass);
+  border: 1px solid var(--lg-edge);
+}
+
+.lg-np-album.hidden,
+.lg-media-toggle.hidden {
+  display: none;
+}
+
+.lg-np-title,
+.lg-np-album,
+.lg-np-artist {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.lg-np-title {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+/* Álbum entre el título y el artista (como en la píldora) */
+.lg-np-album {
+  margin-top: 2px;
+  font-size: 16px;
+  font-weight: 600;
+  opacity: 0.85;
+}
+
+.lg-np-artist {
+  margin-top: 2px;
+  font-size: 17px;
+  font-weight: 500;
+  opacity: 0.65;
+}
+
+@keyframes lg-rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ---------- Pestañas: sin "Letra" ni "Comentarios" ----------
+ * Letra se abre con el botón de la cápsula (la pestaña sigue existiendo
+ * oculta porque es la que usa). Orden: A continuación, Letra,
+ * [Comentarios], Similares; Comentarios es la 3.ª cuando hay cuatro.
+ */
+body.liquid-glass ytmusic-player-page #tabsContent > .tab-header:nth-of-type(2),
+body.liquid-glass
+  ytmusic-player-page
+  #tabsContent
+  > .tab-header:nth-of-type(3):not(:last-of-type) {
+  display: none !important;
+}
+
+/* ---------- Pestañas como botones en una cápsula ----------
+ * Arriba del todo, a la altura de la parte superior de la portada
+ * (player.ts calcula --np-side-offset) */
+body.liquid-glass.lg-np ytmusic-player-page #side-panel {
+  padding-top: var(--np-side-offset, 0px) !important;
+  /* y termina a la altura del artista bajo la portada */
+  padding-bottom: var(--np-side-bottom, 12px) !important;
+}
+
+body.liquid-glass ytmusic-player-page #side-panel > .tab-header-container {
+  height: 46px !important;
+  box-sizing: border-box !important;
+  flex: none !important;
+  margin: 0 0 12px !important;
+  padding: 4px !important;
+  border: 1px solid var(--lg-edge) !important;
+  border-radius: 999px !important;
+  background: var(--lg-glass) !important;
+  box-shadow: var(--lg-shadow);
+}
+
+body.liquid-glass
+  ytmusic-player-page
+  #side-panel
+  :is(#tabsContainer, #tabsContent) {
+  height: 100% !important;
+}
+
+body.liquid-glass ytmusic-player-page #tabsContent {
+  display: flex !important;
+  gap: 4px;
+  width: 100% !important;
+}
+
+body.liquid-glass ytmusic-player-page #tabsContent > .tab-header {
+  flex: 1 1 0 !important;
+  height: 36px !important;
+  border-radius: 999px !important;
+  transition:
+    background 0.25s ease,
+    color 0.25s ease;
+}
+
+body.liquid-glass ytmusic-player-page #tabsContent > .tab-header .tab-content {
+  font-family: var(--lg-font) !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  text-transform: none !important;
+  letter-spacing: 0 !important;
+}
+
+body.liquid-glass
+  ytmusic-player-page
+  #tabsContent
+  > .tab-header[aria-selected='true'] {
+  background: rgba(255, 255, 255, 0.9) !important;
+  color: #111 !important;
+}
+
+body.liquid-glass
+  ytmusic-player-page
+  #tabsContent
+  > .tab-header[aria-selected='true']
+  * {
+  color: #111 !important;
+}
+
+/* Sin la línea de pestaña activa ni las flechas de desplazamiento */
+body.liquid-glass ytmusic-player-page #side-panel #selectionBar,
+body.liquid-glass ytmusic-player-page #side-panel tp-yt-paper-icon-button {
+  display: none !important;
+}
+
+/* "Reproduciendo desde … [Guardar]": otra cápsula de vidrio */
+body.liquid-glass ytmusic-player-page ytmusic-queue-header-renderer {
+  margin: 0 0 12px !important;
+  padding: 8px 8px 8px 18px !important;
+  border: 1px solid var(--lg-edge) !important;
+  border-radius: 999px !important;
+  background: var(--lg-glass) !important;
+  box-sizing: border-box;
+  align-items: center !important;
+}
+
+body.liquid-glass ytmusic-player-page #side-panel #tab-renderer {
+  scrollbar-width: none !important;
+}
+
+/* ---------- Arriba: "Reproduciendo desde" + botón ∞ (player.ts) ----------
+ * Una sola píldora: [∞] Reproduciendo desde … [Guardar] */
+.lg-queue-top {
+  display: none;
+  align-items: center;
+  gap: 4px;
+  height: 58px;
+  margin: 0 0 8px;
+  padding: 6px;
+  box-sizing: border-box;
+  border: 1px solid var(--lg-edge);
+  border-radius: 999px;
+  background: var(--lg-glass);
+}
+
+body.lg-np .lg-queue-top.has-header {
+  display: flex;
+}
+
+/* Dentro de la píldora la cabecera ya no lleva caja propia */
+body.liquid-glass
+  ytmusic-player-page
+  .lg-queue-top
+  ytmusic-queue-header-renderer {
+  flex: 1;
+  min-width: 0;
+  height: 100% !important;
+  margin: 0 !important;
+  padding: 0 0 0 8px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-sizing: border-box !important;
+}
+
+.lg-autoplay-button {
+  order: -1;
+  flex: none;
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  transition:
+    background 0.25s ease,
+    color 0.25s ease;
+}
+
+.lg-autoplay-button:hover {
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.lg-autoplay-button[aria-pressed='true'] {
+  background: rgba(255, 255, 255, 0.9);
+  color: #111;
+}
+
+.lg-autoplay-button.hidden {
+  display: none;
+}
+
+/* La fila original de "Reproducción automática" ya no hace falta */
+body.liquid-glass ytmusic-player-page #tab-renderer .autoplay {
+  display: none !important;
+}
+
+/* Sin los filtros "Todo, Canciones conocidas, Popular…" de la cola */
+body.liquid-glass ytmusic-player-page #side-panel ytmusic-chip-cloud-renderer {
+  display: none !important;
+}
+
+/* ---------- Panel lateral con márgenes interiores ---------- */
+body.liquid-glass ytmusic-player-page #side-panel {
+  padding: 4px 14px 12px !important;
+  box-sizing: border-box !important;
+}
+
+/* ---------- Fila de reproducción (queue.ts) ----------
+ * Botón ≡ a la izquierda de la cápsula "A continuación / Similares"; abre la
+ * vista "Fila" en lugar del contenido de las pestañas. */
+body.liquid-glass ytmusic-player-page #side-panel > .tab-header-container {
+  margin-left: 56px !important;
+}
+
+.lg-upnext-button {
+  position: absolute;
+  z-index: 1;
+  left: 14px;
+  width: 46px;
+  height: 46px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 1px solid var(--lg-edge);
+  border-radius: 50%;
+  background: var(--lg-glass);
+  color: rgba(255, 255, 255, 0.85);
+  cursor: pointer;
+  transition:
+    background 0.25s ease,
+    color 0.25s ease;
+}
+
+.lg-upnext-button:hover {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.lg-upnext-button[aria-pressed='true'] {
+  background: rgba(255, 255, 255, 0.9);
+  color: #111;
+}
+
+.lg-upnext {
+  display: none;
+}
+
+body.lg-upnext-open:not(.lg-lyrics-open)
+  ytmusic-player-page
+  #side-panel
+  > #tab-renderer {
+  display: none !important;
+}
+
+body.lg-upnext-open:not(.lg-lyrics-open) .lg-upnext {
+  flex: 1;
+  min-height: 0;
+  display: block;
+  overflow-y: auto;
+  scrollbar-width: none;
+  -webkit-mask-image: linear-gradient(180deg, #000 90%, transparent);
+  mask-image: linear-gradient(180deg, #000 90%, transparent);
+}
+
+body.lg-lyrics-open .lg-upnext-button {
+  display: none;
+}
+
+.lg-upnext-title {
+  margin: 6px 4px 8px;
+  color: #fff;
+  font-family: var(--lg-font);
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.lg-upnext-title:not(:first-child) {
+  margin-top: 18px;
+}
+
+.lg-upnext-hint {
+  margin: 0 4px 6px;
+  color: rgba(255, 255, 255, 0.55);
+  font-family: var(--lg-font);
+  font-size: 13px;
+}
+
+.lg-upnext-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 52px;
+  padding: 0 6px;
+  border-radius: 12px;
+  color: #fff;
+  font-family: var(--lg-font);
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.lg-upnext-row:hover {
+  background: var(--lg-glass-hover);
+}
+
+.lg-upnext-row img {
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  object-fit: cover;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.lg-upnext-text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.lg-upnext-song,
+.lg-upnext-artist {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.lg-upnext-song {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.lg-upnext-artist,
+.lg-upnext-length {
+  font-size: 12.5px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.lg-upnext-remove {
+  flex: none;
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+}
+
+.lg-upnext-remove:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
+
+/* Con la fila abierta ninguna pestaña se ve marcada (al pulsar una se
+   vuelve a ella) */
+body.lg-upnext-open:not(.lg-lyrics-open)
+  ytmusic-player-page
+  #tabsContent
+  > .tab-header[aria-selected='true'] {
+  background: transparent !important;
+  color: rgba(255, 255, 255, 0.75) !important;
+}
+
+body.lg-upnext-open:not(.lg-lyrics-open)
+  ytmusic-player-page
+  #tabsContent
+  > .tab-header[aria-selected='true']
+  * {
+  color: rgba(255, 255, 255, 0.75) !important;
+}
+
+/* ---------- Similares: filas como las de "A continuación" ----------
+ * El carrusel ponía columnas de ~460 px en un panel más estrecho y las filas
+ * se cortaban por la derecha: cada columna ocupa el ancho del panel. Sin ⋮
+ * (el menú sigue con clic derecho); el botón de la fila va a la derecha. */
+body.liquid-glass
+  ytmusic-player-page
+  #tab-renderer
+  ytmusic-carousel
+  #items:has(> ytmusic-responsive-list-item-renderer) {
+  /* YouTube Music fija columnas propias más anchas que el panel */
+  grid-template-columns: none !important;
+  grid-auto-columns: 100% !important;
+}
+
+body.liquid-glass
+  ytmusic-player-page
+  #tab-renderer
+  ytmusic-carousel
+  ytmusic-responsive-list-item-renderer {
+  width: 100% !important;
+  min-width: 0 !important;
+  box-sizing: border-box !important;
+  padding: 6px 8px !important;
+  border-radius: 12px !important;
+  align-items: center !important;
+}
+
+body.liquid-glass
+  ytmusic-player-page
+  #tab-renderer
+  ytmusic-responsive-list-item-renderer
+  > ytmusic-menu-renderer,
+body.liquid-glass
+  ytmusic-player-page
+  #tab-renderer
+  ytmusic-responsive-list-item-renderer
+  > .fixed-columns {
+  display: none !important;
+}
+
+body.liquid-glass
+  ytmusic-player-page
+  #tab-renderer
+  ytmusic-responsive-list-item-renderer
+  > .flex-columns {
+  flex: 1 !important;
+  min-width: 0 !important;
+}
+
+body.liquid-glass
+  ytmusic-player-page
+  #tab-renderer
+  ytmusic-responsive-list-item-renderer
+  .left-items {
+  border-radius: 8px !important;
+  overflow: hidden;
+}
+
+body.liquid-glass
+  ytmusic-player-page
+  #tab-renderer
+  ytmusic-responsive-list-item-renderer
+  > .lg-panel-add {
+  margin-left: auto;
+}
+
+/* "Artista • Álbum" en una sola línea que termina en "…" (YouTube Music la
+   reparte en dos columnas a medias que no se recortan bien) */
+body.liquid-glass
+  ytmusic-player-page
+  #tab-renderer
+  ytmusic-responsive-list-item-renderer
+  .secondary-flex-columns {
+  display: block !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  overflow: hidden !important;
+  white-space: nowrap !important;
+  text-overflow: ellipsis !important;
+}
+
+body.liquid-glass
+  ytmusic-player-page
+  #tab-renderer
+  ytmusic-responsive-list-item-renderer
+  .secondary-flex-columns
+  :is(.flex-column, yt-formatted-string, a) {
+  display: inline !important;
+  overflow: visible !important;
+}
+
+body.liquid-glass
+  ytmusic-player-page
+  #tab-renderer
+  ytmusic-responsive-list-item-renderer
+  :is(.title-column, .flex-columns) {
+  min-width: 0 !important;
+  max-width: 100% !important;
+}

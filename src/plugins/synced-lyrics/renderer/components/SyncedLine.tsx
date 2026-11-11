@@ -1,0 +1,247 @@
+import { createEffect, For, Show, createSignal, createMemo } from 'solid-js';
+import { type VirtualizerHandle } from 'virtua/solid';
+
+import { type LineLyrics } from '@/plugins/synced-lyrics/types';
+
+import { _ytAPI } from '..';
+import { config, currentTime } from '../renderer';
+import { translations } from '../store';
+import {
+  canonicalize,
+  convertChineseCharacter,
+  romanize,
+  simplifyUnicode,
+} from '../utils';
+
+interface SyncedLineProps {
+  scroller: VirtualizerHandle;
+  index: number;
+
+  line: LineLyrics;
+  status: 'upcoming' | 'current' | 'previous';
+}
+
+const EmptyLine = (props: SyncedLineProps) => {
+  const states = createMemo(() => {
+    const defaultText = config()?.defaultTextString ?? '';
+    return Array.isArray(defaultText) ? defaultText : [defaultText];
+  });
+
+  const index = createMemo(() => {
+    const progress = currentTime() - props.line.timeInMs;
+    const total = props.line.duration;
+
+    const percentage = Math.min(1, progress / total);
+    return Math.max(0, Math.floor((states().length - 1) * percentage));
+  });
+
+  return (
+    <div
+      class={`synced-line ${props.status}`}
+      onClick={() => {
+        _ytAPI?.seekTo((props.line.timeInMs + 10) / 1000);
+      }}
+    >
+      <div class="description ytmusic-description-shelf-renderer" dir="auto">
+        <yt-formatted-string
+          text={{
+            runs: [
+              {
+                text: config()?.showTimeCodes ? `[${props.line.time}] ` : '',
+              },
+            ],
+          }}
+        />
+
+        <div class="text-lyrics">
+          <span>
+            <span>
+              <Show
+                fallback={
+                  <yt-formatted-string
+                    text={{ runs: [{ text: states()[0] }] }}
+                  />
+                }
+                when={states().length > 1}
+              >
+                <yt-formatted-string
+                  text={{
+                    runs: [
+                      {
+                        text: states().at(
+                          props.status === 'current' ? index() : -1,
+                        )!,
+                      },
+                    ],
+                  }}
+                />
+              </Show>
+            </span>
+          </span>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export const SyncedLine = (props: SyncedLineProps) => {
+  const text = createMemo(() => {
+    let line = props.line.text;
+    const convertChineseText = config()?.convertChineseCharacter;
+    if (convertChineseText && convertChineseText !== 'disabled') {
+      line = convertChineseCharacter(line, convertChineseText);
+    }
+    return line.trim();
+  });
+
+  // MusicSense: cada palabra se ilumina en su momento. Sin tiempos por
+  // palabra, la duración de la línea se reparte según el largo de cada una
+  // (como Better Lyrics). --w-start / --w-len: fracciones de la línea
+  const words = createMemo(() => {
+    const list = text().split(' ');
+    const weights = list.map((word) => word.length + 1);
+    const total = weights.reduce((sum, weight) => sum + weight, 0) || 1;
+    let start = 0;
+    return list.map((word, index) => {
+      const length = weights[index] / total;
+      const item = { word, start, length };
+      start += length;
+      return item;
+    });
+  });
+
+  // Cuánto tarda en cantarse la línea (s). La duración que dan las letras va
+  // hasta la línea siguiente e incluye los silencios (y la última es
+  // infinita): se limita a lo que suele durar cantar ese texto
+  const fill = createMemo(() => {
+    const duration = props.line.duration / 1000;
+    // ~0,095 s por letra y un margen para la última palabra
+    const letters = text().length * 0.095;
+    const sung = letters + 0.6;
+    const limit = Number.isFinite(duration) && duration > 0 ? duration : sung;
+    return Math.max(0.4, Math.min(limit * 0.97, sung));
+  });
+
+  // En cada fotograma, la línea actual recibe su avance (--lp, de 0 a 1): el
+  // CSS rellena, eleva y hace brillar cada palabra con él. Así sigue al
+  // tiempo real aunque se pause o se salte a otro punto
+  let lyricsDiv: HTMLDivElement | undefined;
+  createEffect(() => {
+    // Se lee el estado antes de nada para que el efecto lo siga siempre
+    const status = props.status;
+    if (!lyricsDiv) return;
+    if (status !== 'current') {
+      lyricsDiv.style.setProperty('--lp', status === 'previous' ? '1' : '0');
+      return;
+    }
+    const elapsed = (currentTime() - props.line.timeInMs) / 1000;
+    const progress = Math.min(1, Math.max(0, elapsed / fill()));
+    lyricsDiv.style.setProperty('--lp', progress.toFixed(4));
+  });
+
+  const translation = createMemo(() => translations()[text()] ?? '');
+
+  const [romanization, setRomanization] = createSignal('');
+  createEffect(() => {
+    const input = canonicalize(text());
+    if (!config()?.romanization) return;
+
+    romanize(input).then((result) => {
+      setRomanization(canonicalize(result));
+    });
+  });
+
+  return (
+    <Show fallback={<EmptyLine {...props} />} when={text()}>
+      <div
+        class={`synced-line ${props.status}`}
+        onClick={() => {
+          _ytAPI?.seekTo((props.line.timeInMs + 10) / 1000);
+        }}
+      >
+        <div class="description ytmusic-description-shelf-renderer" dir="auto">
+          <yt-formatted-string
+            text={{
+              runs: [
+                {
+                  text: config()?.showTimeCodes ? `[${props.line.time}] ` : '',
+                },
+              ],
+            }}
+          />
+
+          <div
+            class="text-lyrics"
+            ref={(div: HTMLDivElement) => {
+              lyricsDiv = div;
+              div.style.setProperty('--fill', fill().toFixed(3));
+              // TODO: Investigate the animation, even though the duration is properly set, all lines have the same animation duration
+              div.style.setProperty(
+                '--lyrics-duration',
+                `${props.line.duration / 1000}s`,
+                'important',
+              );
+            }}
+            style={{ 'display': 'flex', 'flex-direction': 'column' }}
+          >
+            <span>
+              <For each={words()}>
+                {(item, index) => {
+                  return (
+                    <span
+                      class="lyrics-word"
+                      style={{
+                        'transition-delay': `${index() * 0.05}s`,
+                        'animation-delay': `${index() * 0.05}s`,
+                        '--w-start': `${item.start}`,
+                        '--w-len': `${item.length}`,
+                      }}
+                    >
+                      <yt-formatted-string
+                        text={{
+                          runs: [{ text: `${item.word} ` }],
+                        }}
+                      />
+                    </span>
+                  );
+                }}
+              </For>
+            </span>
+
+            <Show when={translation() && translation() !== text()}>
+              <span class="lyrics-translation">{translation()}</span>
+            </Show>
+
+            <Show
+              when={
+                config()?.romanization &&
+                simplifyUnicode(text()) !== simplifyUnicode(romanization())
+              }
+            >
+              <span class="romaji">
+                <For each={romanization().split(' ')}>
+                  {(word, index) => {
+                    return (
+                      <span
+                        style={{
+                          'transition-delay': `${index() * 0.05}s`,
+                          'animation-delay': `${index() * 0.05}s`,
+                        }}
+                      >
+                        <yt-formatted-string
+                          text={{
+                            runs: [{ text: `${word} ` }],
+                          }}
+                        />
+                      </span>
+                    );
+                  }}
+                </For>
+              </span>
+            </Show>
+          </div>
+        </div>
+      </div>
+    </Show>
+  );
+};
