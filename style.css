@@ -390,6 +390,62 @@ body {
   box-shadow: 0 8px 25px rgba(56, 189, 248, 0.25);
 }
 
+/* SFX Audio Tones Toggle Pill */
+.sfx-pill {
+  cursor: pointer;
+  font-size: 0.8rem;
+  padding: 7px 15px;
+  border-color: rgba(56, 189, 248, 0.35);
+  background: rgba(56, 189, 248, 0.08);
+  color: var(--text-main);
+  box-shadow: 0 0 14px rgba(56, 189, 248, 0.15);
+}
+
+.sfx-pill:hover {
+  border-color: var(--prism-cyan);
+  background: rgba(56, 189, 248, 0.18);
+  box-shadow: 0 0 22px rgba(56, 189, 248, 0.4);
+}
+
+.sfx-bars {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 2.5px;
+  height: 13px;
+  margin-right: 2px;
+}
+
+.sfx-bars span {
+  display: block;
+  width: 2.5px;
+  height: 100%;
+  background: var(--prism-cyan);
+  border-radius: 99px;
+  animation: sfxEqualizer 0.75s ease-in-out infinite alternate;
+}
+
+.sfx-bars span:nth-child(1) { height: 50%; animation-delay: 0.1s; }
+.sfx-bars span:nth-child(2) { height: 100%; animation-delay: 0.35s; }
+.sfx-bars span:nth-child(3) { height: 65%; animation-delay: 0.2s; }
+
+.sfx-pill.sfx-muted {
+  opacity: 0.55;
+  border-color: var(--glass-border);
+  background: rgba(255, 255, 255, 0.04);
+  box-shadow: none;
+}
+
+.sfx-pill.sfx-muted .sfx-bars span {
+  animation: none;
+  height: 3px !important;
+  background: var(--text-dim);
+}
+
+@keyframes sfxEqualizer {
+  0% { transform: scaleY(0.25); }
+  100% { transform: scaleY(1); }
+}
+
 .glass-icon-btn {
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid var(--glass-border);
@@ -462,7 +518,30 @@ body {
   border-radius: var(--border-radius-card);
   box-shadow: var(--glass-shadow);
   overflow: hidden;
-  transition: var(--transition-smooth);
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease, border-color 0.35s ease;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.liquid-card:hover {
+  border-color: rgba(56, 189, 248, 0.4);
+  box-shadow: 0 25px 65px rgba(0, 0, 0, 0.75), 0 0 45px rgba(168, 85, 247, 0.25);
+}
+
+.liquid-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(450px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 255, 255, 0.12), rgba(56, 189, 248, 0.06) 40%, transparent 70%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  z-index: 1;
+}
+
+.liquid-card:hover::after {
+  opacity: 1;
 }
 
 .glass-glare {
@@ -786,11 +865,12 @@ body {
 
 .waveform-container {
   width: 100%;
-  height: 70px;
-  background: rgba(0, 0, 0, 0.25);
-  border-radius: 14px;
-  padding: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  height: 80px;
+  background: rgba(0, 0, 0, 0.35);
+  border-radius: 16px;
+  padding: 10px;
+  border: 1px solid rgba(56, 189, 248, 0.18);
+  box-shadow: inset 0 2px 12px rgba(0, 0, 0, 0.6), 0 0 20px rgba(56, 189, 248, 0.1);
   position: relative;
   overflow: hidden;
 }
@@ -999,7 +1079,8 @@ body {
   box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5), 0 0 30px rgba(56, 189, 248, 0.18);
 }
 
-.card-art {
+.card-art,
+.card-art-preview {
   height: 160px;
   border-radius: 18px;
   background-size: cover;
@@ -1009,6 +1090,42 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow: inset 0 0 25px rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.card-soundwave-indicator {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  display: flex;
+  align-items: flex-end;
+  gap: 2.5px;
+  height: 16px;
+  padding: 4px 8px;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(8px);
+  border-radius: 99px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  pointer-events: none;
+}
+
+.card-soundwave-indicator span {
+  width: 2.5px;
+  height: 100%;
+  background: var(--prism-cyan);
+  border-radius: 99px;
+  animation: soundwaveBounce 0.85s ease-in-out infinite alternate;
+}
+
+.card-soundwave-indicator span:nth-child(1) { height: 40%; animation-delay: 0.1s; }
+.card-soundwave-indicator span:nth-child(2) { height: 95%; animation-delay: 0.35s; }
+.card-soundwave-indicator span:nth-child(3) { height: 60%; animation-delay: 0.2s; }
+.card-soundwave-indicator span:nth-child(4) { height: 85%; animation-delay: 0.45s; }
+
+@keyframes soundwaveBounce {
+  0% { transform: scaleY(0.25); opacity: 0.6; }
+  100% { transform: scaleY(1); opacity: 1; }
 }
 
 .card-play-hover {
