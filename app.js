@@ -1173,16 +1173,24 @@ document.addEventListener('DOMContentLoaded', () => {
     let waveStep = 0;
 
     function resizeWaveCanvas() {
-      waveCanvas.width = waveCanvas.parentElement.clientWidth * (window.devicePixelRatio || 1);
-      waveCanvas.height = waveCanvas.parentElement.clientHeight * (window.devicePixelRatio || 1);
+      const rect = waveCanvas.getBoundingClientRect();
+      const w = rect.width || waveCanvas.parentElement.clientWidth || 320;
+      const h = rect.height || 64;
+      const dpr = window.devicePixelRatio || 1;
+      waveCanvas.width = Math.floor(w * dpr);
+      waveCanvas.height = Math.floor(h * dpr);
+      waveCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
     }
     window.addEventListener('resize', resizeWaveCanvas);
+    setTimeout(resizeWaveCanvas, 50);
     resizeWaveCanvas();
 
     function drawWaveform() {
-      waveCtx.clearRect(0, 0, waveCanvas.width, waveCanvas.height);
-      const width = waveCanvas.width;
-      const height = waveCanvas.height;
+      const rect = waveCanvas.getBoundingClientRect();
+      const width = rect.width || 320;
+      const height = rect.height || 64;
+
+      waveCtx.clearRect(0, 0, width, height);
       const centerY = height / 2;
 
       const gap = 3;
@@ -1203,14 +1211,15 @@ document.addEventListener('DOMContentLoaded', () => {
           const binIndex = Math.min(Math.floor((i / numBars) * freqData.length), freqData.length - 1);
           const rawVal = freqData[binIndex] / 255; // 0 to 1
           // Combine real FFT data with slight organic molten breathing
-          barHeight = (rawVal * 0.85 + 0.08) * height;
+          barHeight = Math.max(4, (rawVal * 0.85 + 0.12) * height);
         } else if (isPlaying || previewingTrackId !== null) {
           const wave1 = Math.sin(waveStep * 0.08 + i * 0.28);
           const wave2 = Math.cos(waveStep * 0.05 + i * 0.18);
           const wave3 = Math.sin(waveStep * 0.12 + i * 0.45);
-          barHeight = (Math.abs(wave1 * 0.5 + wave2 * 0.35 + wave3 * 0.15) * 0.72 + 0.12) * height;
+          barHeight = Math.max(4, (Math.abs(wave1 * 0.5 + wave2 * 0.35 + wave3 * 0.15) * 0.72 + 0.14) * height);
         } else {
-          barHeight = (Math.sin(waveStep * 0.03 + i * 0.2) * 0.1 + 0.14) * height;
+          // Animated standby state when paused so user always sees the vibrant visualizer!
+          barHeight = Math.max(3, (Math.sin(waveStep * 0.04 + i * 0.22) * 0.16 + 0.24) * height);
         }
 
         // Peak cap physics (falls gracefully like high-end DJ equipment)

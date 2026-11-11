@@ -886,22 +886,22 @@ body {
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-radius: 18px;
-  padding: 12px;
+  padding: 8px 12px;
   border: 1px solid rgba(56, 189, 248, 0.25);
   box-shadow: inset 0 2px 14px rgba(0, 0, 0, 0.7), 0 0 25px rgba(56, 189, 248, 0.15);
   position: relative;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 .visualizer-overlay-modes {
-  position: absolute;
-  top: 8px;
-  left: 12px;
-  right: 12px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   pointer-events: none;
+  margin-bottom: 4px;
+  z-index: 2;
 }
 
 .viz-mode-badge,
@@ -934,7 +934,9 @@ body {
 
 #waveform-canvas {
   width: 100%;
-  height: 100%;
+  flex: 1;
+  display: block;
+  z-index: 1;
 }
 
 .progress-box {
