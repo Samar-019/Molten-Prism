@@ -53,8 +53,7 @@
       </div>
 
       <nav class="nav-links">
-        <button class="nav-btn active" data-tab="hero"><i data-lucide="waves"></i> Player</button>
-        <button class="nav-btn" data-tab="live-web-player"><i data-lucide="play-circle"></i> Live Web Player</button>
+        <button class="nav-btn active" data-tab="hero"><i data-lucide="waves"></i> Atmosphere</button>
         <button class="nav-btn" data-tab="gallery"><i data-lucide="image"></i> Gallery</button>
         <button class="nav-btn" data-tab="interactive-station"><i data-lucide="sparkles"></i> Glass Synth</button>
         <button class="nav-btn" data-tab="specs"><i data-lucide="cpu"></i> Architecture</button>
@@ -273,137 +272,6 @@
               </div>
             </div>
 
-          </div>
-        </div>
-      </section>
-
-      <!-- SECTION: LIVE WEB PLAYER (YOUTUBE MUSIC EMBED & STREAMING SUITE) -->
-      <section class="section-container live-web-player-section" id="live-web-player">
-        <div class="liquid-card live-player-panel">
-          <div class="glass-glare"></div>
-          <div class="glass-rim"></div>
-          
-          <div class="live-player-header">
-            <div>
-              <span class="subhead-pill"><i data-lucide="radio"></i> Online Stream Engine</span>
-              <h2 class="section-title">Live Web Player & Station Stream</h2>
-              <p class="section-desc">Stream audio seamlessly right in your browser through high-fidelity YouTube streams, curated Molten prism streams, or direct audio frequencies.</p>
-            </div>
-            <div class="live-status-pill">
-              <span class="pulse-emerald"></span>
-              <span class="live-indicator-text">SYSTEM ONLINE</span>
-            </div>
-          </div>
-
-          <div class="live-player-grid">
-            <!-- Left: Video / Audio Stream Viewport -->
-            <div class="player-stage-card liquid-card">
-              <div class="stage-frame-wrap">
-                <div class="stage-glass-overlay">
-                  <div class="stream-ambient-flare"></div>
-                </div>
-                <div class="embed-responsive" id="embed-container">
-                  <iframe 
-                    id="live-yt-iframe"
-                    src="https://www.youtube-nocookie.com/embed/jfKfPfyJRdk?enablejsapi=1&autoplay=0&rel=0&modestbranding=1" 
-                    title="Molten Prism Live Web Stream" 
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                    referrerpolicy="strict-origin-when-cross-origin" 
-                    allowfullscreen>
-                  </iframe>
-                </div>
-              </div>
-
-              <!-- Stream Info Bar Below Stage -->
-              <div class="stage-footer-bar">
-                <div class="stage-track-meta">
-                  <span class="live-now-badge">NOW STREAMING</span>
-                  <h3 id="live-stream-title" class="stage-title">Lofi Girl • 24/7 Relaxing Beats & Soundscape</h3>
-                  <p id="live-stream-artist" class="stage-sub">Curated Chillhop & Ambient Fluid Frequencies</p>
-                </div>
-                <div class="stage-quick-actions">
-                  <button class="liquid-btn glass-secondary live-pip-btn" id="live-fullscreen-btn" title="Expand Viewport">
-                    <i data-lucide="maximize-2"></i> <span>Fullscreen</span>
-                  </button>
-                  <a href="https://music.youtube.com" target="_blank" rel="noreferrer" class="liquid-btn primary-glow yt-music-direct" title="Launch YouTube Music Web">
-                    <i data-lucide="external-link"></i> <span>Open YT Music</span>
-                  </a>
-                </div>
-              </div>
-            </div>
-
-            <!-- Right: Station Selector & Channel Browser -->
-            <div class="channels-sidebar-card liquid-card">
-              <div class="sidebar-header">
-                <h4><i data-lucide="disc-3"></i> Prismatic Stations</h4>
-                <span class="station-count-chip">5 Channels</span>
-              </div>
-              <div class="channels-list" id="channel-picker-list">
-                <button class="channel-row active" data-vid="jfKfPfyJRdk" data-title="Lofi Girl • 24/7 Relaxing Beats & Soundscape" data-artist="Chillhop & Ambient Fluid Frequencies" data-genre="Lofi Ambient" data-tag="432Hz">
-                  <div class="channel-eq-wave">
-                    <span></span><span></span><span></span>
-                  </div>
-                  <div class="channel-details">
-                    <span class="ch-title">Lofi Girl Stream</span>
-                    <span class="ch-sub">24/7 Chill Beats to Relax/Study</span>
-                  </div>
-                  <span class="ch-badge">432Hz</span>
-                </button>
-
-                <button class="channel-row" data-vid="4xDzrJKXOOY" data-title="Synthwave Chill Radio • Retro Electro Dreams" data-artist="Lofi Synth & Deep Cyber Beats" data-genre="Synthwave" data-tag="528Hz">
-                  <div class="channel-eq-wave">
-                    <span></span><span></span><span></span>
-                  </div>
-                  <div class="channel-details">
-                    <span class="ch-title">Synthwave Chill Radio</span>
-                    <span class="ch-sub">Cyber Retro Liquid Beats</span>
-                  </div>
-                  <span class="ch-badge">528Hz</span>
-                </button>
-
-                <button class="channel-row" data-vid="DWcJFNfaw90" data-title="Ambient Deep Sleep & Peaceful Piano" data-artist="Relaxing Acoustic Soundscapes" data-genre="Zen Piano" data-tag="639Hz">
-                  <div class="channel-eq-wave">
-                    <span></span><span></span><span></span>
-                  </div>
-                  <div class="channel-details">
-                    <span class="ch-title">Peaceful Piano Stream</span>
-                    <span class="ch-sub">Organic Vitreous Acoustics</span>
-                  </div>
-                  <span class="ch-badge">639Hz</span>
-                </button>
-
-                <button class="channel-row" data-vid="WPni755-Krg" data-title="Deep Focus Techno & Minimal Ambient" data-artist="Pulsing Electronic Fluidity" data-genre="Deep Minimal" data-tag="852Hz">
-                  <div class="channel-eq-wave">
-                    <span></span><span></span><span></span>
-                  </div>
-                  <div class="channel-details">
-                    <span class="ch-title">Minimal Deep Focus</span>
-                    <span class="ch-sub">Productivity Flow Dynamics</span>
-                  </div>
-                  <span class="ch-badge">852Hz</span>
-                </button>
-
-                <button class="channel-row" data-vid="5qap5aO4i9A" data-title="Binaural Beats • Alpha Waves for Healing" data-artist="Harmonic Solfeggio Resonator" data-genre="Binaural" data-tag="963Hz">
-                  <div class="channel-eq-wave">
-                    <span></span><span></span><span></span>
-                  </div>
-                  <div class="channel-details">
-                    <span class="ch-title">Harmonic Binaural Waves</span>
-                    <span class="ch-sub">Alpha State Mind Expansion</span>
-                  </div>
-                  <span class="ch-badge">963Hz</span>
-                </button>
-              </div>
-
-              <!-- Web Player Quick Feature Pill -->
-              <div class="web-player-perk-box">
-                <i data-lucide="sparkles" class="perk-icon"></i>
-                <div class="perk-text">
-                  <strong>Zero-Config Streaming</strong>
-                  <p>Stream directly in your browser with synchronized audio reactivity & glass visualizers.</p>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </section>

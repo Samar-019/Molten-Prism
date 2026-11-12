@@ -817,51 +817,6 @@ document.addEventListener('DOMContentLoaded', () => {
   renderCatalog('all');
 
   // ==========================================================================
-  // LIVE WEB PLAYER CONTROLLER
-  // ==========================================================================
-  const channelRows = document.querySelectorAll('.channel-row');
-  const liveIframe = document.getElementById('live-yt-iframe');
-  const liveStreamTitle = document.getElementById('live-stream-title');
-  const liveStreamArtist = document.getElementById('live-stream-artist');
-  const liveFullscreenBtn = document.getElementById('live-fullscreen-btn');
-  const embedContainer = document.getElementById('embed-container');
-
-  if (channelRows.length > 0 && liveIframe) {
-    channelRows.forEach(row => {
-      row.addEventListener('click', () => {
-        playChime(741);
-        channelRows.forEach(r => r.classList.remove('active'));
-        row.classList.add('active');
-
-        const vid = row.dataset.vid;
-        const title = row.dataset.title;
-        const artist = row.dataset.artist;
-
-        liveIframe.src = `https://www.youtube-nocookie.com/embed/${vid}?enablejsapi=1&autoplay=1&rel=0&modestbranding=1`;
-        if (liveStreamTitle) liveStreamTitle.textContent = title;
-        if (liveStreamArtist) liveStreamArtist.textContent = artist;
-      });
-    });
-  }
-
-  if (liveFullscreenBtn && embedContainer) {
-    liveFullscreenBtn.addEventListener('click', () => {
-      playChime(852);
-      if (!document.fullscreenElement) {
-        if (embedContainer.requestFullscreen) {
-          embedContainer.requestFullscreen();
-        } else if (embedContainer.webkitRequestFullscreen) {
-          embedContainer.webkitRequestFullscreen();
-        }
-      } else {
-        if (document.exitFullscreen) {
-          document.exitFullscreen();
-        }
-      }
-    });
-  }
-
-  // ==========================================================================
   // PREVIEW IMAGES GALLERY & WOW LIGHTBOX CONTROLLER
   // ==========================================================================
   const galleryCards = document.querySelectorAll('.gallery-card');
