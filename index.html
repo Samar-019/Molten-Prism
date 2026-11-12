@@ -20,7 +20,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=14.0">
+  <link rel="stylesheet" href="style.css?v=15.0">
   <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
@@ -56,7 +56,9 @@
         <button class="nav-btn active" data-tab="hero"><i data-lucide="waves"></i> Atmosphere</button>
         <button class="nav-btn" data-tab="gallery"><i data-lucide="image"></i> Gallery</button>
         <button class="nav-btn" data-tab="interactive-station"><i data-lucide="sparkles"></i> Glass Synth</button>
+        <button class="nav-btn" data-tab="compare"><i data-lucide="scale"></i> Compare</button>
         <button class="nav-btn" data-tab="specs"><i data-lucide="cpu"></i> Architecture</button>
+        <button class="nav-btn" data-tab="download"><i data-lucide="download"></i> Download</button>
       </nav>
 
       <div class="nav-actions">
@@ -471,6 +473,95 @@
         </div>
       </section>
 
+      <!-- SECTION 3: COMPARISON MATRIX (MOLTEN PRISM VS STANDARD CLIENTS) -->
+      <section class="section-container compare-section" id="compare">
+        <div class="section-header text-center">
+          <span class="subhead-pill"><i data-lucide="scale"></i> Feature Breakdown</span>
+          <h2 class="section-title">The Vitreous Advantage</h2>
+          <p class="section-desc">See how Molten Prism transforms standard desktop audio streaming with native fluid shaders, zero ads, and studio acoustics.</p>
+        </div>
+
+        <div class="liquid-card compare-card-wrapper">
+          <div class="glass-glare"></div>
+          <div class="glass-rim"></div>
+          
+          <div class="compare-table-responsive">
+            <table class="compare-table">
+              <thead>
+                <tr>
+                  <th class="feature-col">Feature & Capability</th>
+                  <th class="prism-col highlight-header">
+                    <div class="col-head-prism">
+                      <img src="icon.png" alt="Molten Prism" class="table-brand-icon">
+                      <span>Molten Prism</span>
+                      <span class="ver-badge">v0.1.0</span>
+                    </div>
+                  </th>
+                  <th>YouTube Music Web / Native</th>
+                  <th>Standard Spotify Desktop</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="feature-name">
+                    <span class="feat-title"><i data-lucide="droplet"></i> Liquid Glass UI & Shaders</span>
+                    <span class="feat-subtitle">Real-time GPU caustics, chromatic dispersion, fluid blur</span>
+                  </td>
+                  <td class="prism-cell"><i data-lucide="check-circle-2" class="icon-check"></i> <span class="badge-tag">Native WebGL/CSS</span></td>
+                  <td class="other-cell"><i data-lucide="x-circle" class="icon-cross"></i> Flat Static Material</td>
+                  <td class="other-cell"><i data-lucide="x-circle" class="icon-cross"></i> Solid Dark Background</td>
+                </tr>
+                <tr>
+                  <td class="feature-name">
+                    <span class="feat-title"><i data-lucide="mic"></i> Shining Karaoke Synced Lyrics</span>
+                    <span class="feat-subtitle">Word-by-word shining typography, sustained aura & translation</span>
+                  </td>
+                  <td class="prism-cell"><i data-lucide="check-circle-2" class="icon-check"></i> <span class="badge-tag">Apple-grade Synced</span></td>
+                  <td class="other-cell"><i data-lucide="minus-circle" class="icon-partial"></i> Line-by-line Plain Text</td>
+                  <td class="other-cell"><i data-lucide="minus-circle" class="icon-partial"></i> Basic Musixmatch Sync</td>
+                </tr>
+                <tr>
+                  <td class="feature-name">
+                    <span class="feat-title"><i data-lucide="sliders"></i> 10-Band Studio Equalizer & DSP</span>
+                    <span class="feat-subtitle">Bass boost, Vocal clarity, Crossfade, Headphone 3D reverb</span>
+                  </td>
+                  <td class="prism-cell"><i data-lucide="check-circle-2" class="icon-check"></i> <span class="badge-tag">10 Bands + 3 Rooms</span></td>
+                  <td class="other-cell"><i data-lucide="x-circle" class="icon-cross"></i> Not Supported</td>
+                  <td class="other-cell"><i data-lucide="minus-circle" class="icon-partial"></i> Basic 6-band EQ only</td>
+                </tr>
+                <tr>
+                  <td class="feature-name">
+                    <span class="feat-title"><i data-lucide="shield-check"></i> Zero Ad Injections / Promo Popups</span>
+                    <span class="feat-subtitle">Clean uninterrupted music stream with zero commercial banners</span>
+                  </td>
+                  <td class="prism-cell"><i data-lucide="check-circle-2" class="icon-check"></i> <span class="badge-tag">Clean Stream</span></td>
+                  <td class="other-cell"><i data-lucide="x-circle" class="icon-cross"></i> Video Ads & Premium Upsells</td>
+                  <td class="other-cell"><i data-lucide="x-circle" class="icon-cross"></i> Audio Ad Interruptions</td>
+                </tr>
+                <tr>
+                  <td class="feature-name">
+                    <span class="feat-title"><i data-lucide="message-square"></i> Discord Rich Presence & Last.fm</span>
+                    <span class="feat-subtitle">Live real-time progress scrub, album art status, auto-scrobble</span>
+                  </td>
+                  <td class="prism-cell"><i data-lucide="check-circle-2" class="icon-check"></i> <span class="badge-tag">Full Rich RPC</span></td>
+                  <td class="other-cell"><i data-lucide="x-circle" class="icon-cross"></i> None (Requires browser extension)</td>
+                  <td class="other-cell"><i data-lucide="minus-circle" class="icon-partial"></i> Discord activity only</td>
+                </tr>
+                <tr>
+                  <td class="feature-name">
+                    <span class="feat-title"><i data-lucide="sparkles"></i> Animated Apple Music Artwork</span>
+                    <span class="feat-subtitle">Fluid motion cover art looping with bass-reactive pulse</span>
+                  </td>
+                  <td class="prism-cell"><i data-lucide="check-circle-2" class="icon-check"></i> <span class="badge-tag">Reactive Pulse</span></td>
+                  <td class="other-cell"><i data-lucide="x-circle" class="icon-cross"></i> Static 2D Artwork</td>
+                  <td class="other-cell"><i data-lucide="minus-circle" class="icon-partial"></i> Canvas loops on select tracks</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
       <!-- SECTION 4: GLASS TECH & ARCHITECTURE -->
       <section class="section-container" id="specs">
         <div class="section-header text-center">
@@ -505,6 +596,85 @@
             <h3>Native Web Audio Core</h3>
             <p>Real-time FFT audio visualizer, polyphonic dual-oscillator drone generator, and binaural audio stages running without external bloat.</p>
             <div class="card-refract-light"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 5: DOWNLOAD & RELEASES HUB -->
+      <section class="section-container download-section" id="download">
+        <div class="section-header text-center">
+          <span class="subhead-pill"><i data-lucide="download-cloud"></i> Official Releases</span>
+          <h2 class="section-title">Experience Molten Prism on Windows</h2>
+          <p class="section-desc">Get the native desktop app for 64-bit Windows 10 & 11. Choose between an automated installer or a standalone zero-install portable executable.</p>
+        </div>
+
+        <div class="download-grid">
+          <!-- Option 1: Installer -->
+          <div class="liquid-card download-card highlight-card">
+            <div class="glass-glare"></div>
+            <div class="glass-rim"></div>
+            <div class="card-ambient-light"></div>
+            <div class="dl-badge-top">RECOMMENDED</div>
+            <div class="dl-icon-circle">
+              <i data-lucide="cpu"></i>
+            </div>
+            <h3>Molten-Prism-Setup.exe</h3>
+            <p class="dl-desc">Full Windows installer package with start menu shortcut, taskbar integration, and auto-updates.</p>
+            <div class="dl-meta-list">
+              <span><i data-lucide="check"></i> Windows 10 / 11 (64-bit)</span>
+              <span><i data-lucide="check"></i> Media Key & Tray Integration</span>
+              <span><i data-lucide="check"></i> Taskbar Miniature Controls</span>
+            </div>
+            <a href="https://github.com/Samar-019/Molten-Prism/releases/download/v0.1.0/Molten-Prism-Setup.exe" class="liquid-btn primary-glow dl-cta-btn">
+              <span class="liquid-fill"></span>
+              <span class="btn-content"><i data-lucide="download"></i> Download Setup (.exe)</span>
+            </a>
+            <span class="dl-subtext">v0.1.0 • Direct GitHub Release Asset</span>
+          </div>
+
+          <!-- Option 2: Portable -->
+          <div class="liquid-card download-card">
+            <div class="glass-glare"></div>
+            <div class="glass-rim"></div>
+            <div class="dl-icon-circle">
+              <i data-lucide="box"></i>
+            </div>
+            <h3>Molten-Prism-portable.exe</h3>
+            <p class="dl-desc">Zero installation required. Run directly from your downloads folder or a USB flash drive.</p>
+            <div class="dl-meta-list">
+              <span><i data-lucide="check"></i> No Admin Rights Required</span>
+              <span><i data-lucide="check"></i> Self-Contained Binaries</span>
+              <span><i data-lucide="check"></i> Isolated Config Profile</span>
+            </div>
+            <a href="https://github.com/Samar-019/Molten-Prism/releases/download/v0.1.0/Molten-Prism-portable.exe" class="liquid-btn glass-secondary dl-cta-btn">
+              <span class="btn-content"><i data-lucide="folder-down"></i> Download Portable (.exe)</span>
+            </a>
+            <span class="dl-subtext">v0.1.0 • Standalone Executable</span>
+          </div>
+        </div>
+
+        <!-- CLI / Winget & SmartScreen Info Box -->
+        <div class="liquid-card terminal-guide-card">
+          <div class="glass-glare"></div>
+          <div class="glass-rim"></div>
+          <div class="guide-header">
+            <div class="guide-title-block">
+              <span class="guide-pill"><i data-lucide="terminal"></i> Quick Command Line</span>
+              <h4>Clone, Build or Install from Source</h4>
+            </div>
+            <button class="copy-cmd-btn" id="copy-cmd-btn" title="Copy Commands">
+              <i data-lucide="copy" id="copy-cmd-icon"></i> <span id="copy-cmd-text">Copy</span>
+            </button>
+          </div>
+          <div class="code-terminal-block">
+            <pre><code><span class="code-comment"># Clone Molten Prism repository</span>
+<span class="code-cmd">git clone</span> https://github.com/Samar-019/Molten-Prism.git
+<span class="code-cmd">cd</span> Molten-Prism
+<span class="code-cmd">pnpm install</span> && <span class="code-cmd">pnpm build</span></code></pre>
+          </div>
+          <div class="smartscreen-tip">
+            <i data-lucide="info"></i>
+            <span><strong>SmartScreen Note:</strong> As an open-source MIT project without an expensive EV certificate, Windows may show <em>"Windows protected your PC"</em>. Simply click <strong>More info → Run anyway</strong>.</span>
           </div>
         </div>
       </section>
@@ -559,8 +729,11 @@
             </svg>
             GitHub Repository
           </a>
-          <a href="#hero"><i data-lucide="music"></i> Sound Client</a>
+          <a href="#hero"><i data-lucide="music"></i> Atmosphere</a>
+          <a href="#gallery"><i data-lucide="image"></i> Gallery</a>
+          <a href="#compare"><i data-lucide="scale"></i> Compare</a>
           <a href="#specs"><i data-lucide="layers"></i> Architecture</a>
+          <a href="#download"><i data-lucide="download"></i> Download</a>
         </div>
         <div class="footer-copy">
           <p>© <span id="year"></span> Samar-019 / Molten Prism. Released under MIT License.</p>
@@ -569,6 +742,6 @@
     </footer>
   </div>
 
-  <script src="app.js?v=14.0"></script>
+  <script src="app.js?v=15.0"></script>
 </body>
 </html>

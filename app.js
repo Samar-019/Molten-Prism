@@ -977,4 +977,44 @@ document.addEventListener('DOMContentLoaded', () => {
     if (e.key === 'ArrowRight') showNextImage();
     if (e.key === 'ArrowLeft') showPrevImage();
   });
+
+  // Copy Terminal Commands Feature
+  const copyCmdBtn = document.getElementById('copy-cmd-btn');
+  const copyCmdText = document.getElementById('copy-cmd-text');
+  const copyCmdIcon = document.getElementById('copy-cmd-icon');
+
+  if (copyCmdBtn) {
+    copyCmdBtn.addEventListener('click', () => {
+      const commandText = "git clone https://github.com/Samar-019/Molten-Prism.git\ncd Molten-Prism\npnpm install && pnpm build";
+      navigator.clipboard.writeText(commandText).then(() => {
+        playChime(852);
+        if (copyCmdText) copyCmdText.textContent = 'Copied!';
+        copyCmdBtn.classList.add('copied');
+        setTimeout(() => {
+          if (copyCmdText) copyCmdText.textContent = 'Copy';
+          copyCmdBtn.classList.remove('copied');
+        }, 2200);
+      }).catch(() => {
+        if (copyCmdText) copyCmdText.textContent = 'Copied!';
+        setTimeout(() => {
+          if (copyCmdText) copyCmdText.textContent = 'Copy';
+        }, 2000);
+      });
+    });
+  }
+
+  // Smooth Navigation for Tabs
+  const allNavButtons = document.querySelectorAll('.nav-btn');
+  allNavButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const tabId = btn.getAttribute('data-tab');
+      const targetSection = document.getElementById(tabId);
+      if (targetSection) {
+        allNavButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        playChime(639);
+        targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
 });
