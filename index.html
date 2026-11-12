@@ -524,10 +524,11 @@
         </div>
       </div>
 
-      <!-- Dock Progress Seekbar -->
+      <!-- Dock Progress Seekbar with Interactive Waveform Bars Visualizer -->
       <div class="dock-seekbar-container">
         <span class="dock-time" id="dock-current-time">0:00</span>
         <div class="dock-slider-track" id="dock-seek-track">
+          <canvas id="dock-mini-visualizer" class="dock-bars-canvas" width="160" height="20"></canvas>
           <div class="dock-slider-fill" id="dock-seek-fill"></div>
         </div>
         <span class="dock-time" id="dock-total-time">3:45</span>

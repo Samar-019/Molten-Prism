@@ -481,6 +481,63 @@ document.addEventListener('DOMContentLoaded', () => {
     drawCircularAura();
   }
 
+  // Mini Dock Waveform Visualizer Inside Seekbar
+  const dockMiniCanvas = document.getElementById('dock-mini-visualizer');
+  if (dockMiniCanvas) {
+    const dCtx = dockMiniCanvas.getContext('2d');
+    let dockWaveStep = 0;
+
+    function resizeDockMini() {
+      const rect = dockMiniCanvas.parentElement.getBoundingClientRect();
+      dockMiniCanvas.width = rect.width * (window.devicePixelRatio || 1);
+      dockMiniCanvas.height = rect.height * (window.devicePixelRatio || 1);
+    }
+    window.addEventListener('resize', resizeDockMini);
+    resizeDockMini();
+
+    function drawDockMiniVisualizer() {
+      dCtx.clearRect(0, 0, dockMiniCanvas.width, dockMiniCanvas.height);
+      const width = dockMiniCanvas.width;
+      const height = dockMiniCanvas.height;
+      const centerY = height / 2;
+
+      const numBars = 32;
+      const barWidth = width / numBars - 1.5;
+
+      for (let i = 0; i < numBars; i++) {
+        let barHeight;
+        if (isPlaying) {
+          const wave1 = Math.sin(dockWaveStep * 0.08 + i * 0.35);
+          const wave2 = Math.cos(dockWaveStep * 0.05 + i * 0.22);
+          barHeight = (Math.abs(wave1 + wave2) * 0.45 + 0.18) * (height * 0.85);
+        } else {
+          barHeight = (Math.sin(dockWaveStep * 0.03 + i * 0.3) * 0.15 + 0.22) * (height * 0.55);
+        }
+
+        const x = i * (barWidth + 1.5);
+        const y = centerY - barHeight / 2;
+
+        const grad = dCtx.createLinearGradient(0, y, 0, y + barHeight);
+        grad.addColorStop(0, '#38bdf8');
+        grad.addColorStop(0.5, '#a855f7');
+        grad.addColorStop(1, '#ec4899');
+
+        dCtx.fillStyle = grad;
+        dCtx.beginPath();
+        if (dCtx.roundRect) {
+          dCtx.roundRect(x, y, barWidth, barHeight, 2);
+        } else {
+          dCtx.rect(x, y, barWidth, barHeight);
+        }
+        dCtx.fill();
+      }
+
+      dockWaveStep++;
+      requestAnimationFrame(drawDockMiniVisualizer);
+    }
+    drawDockMiniVisualizer();
+  }
+
   // Background Liquid Fluid Canvas
   const fluidCanvas = document.getElementById('liquid-canvas');
   if (fluidCanvas) {

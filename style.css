@@ -1746,25 +1746,30 @@ body.mode-light .mode-seg-btn.active {
   line-height: 1.65;
 }
 
-/* Floating Dock Mini-Player */
+/* Floating Dock Mini-Player UI/UX Enhancement */
 .liquid-dock {
   position: fixed;
   bottom: 24px;
   left: 50%;
   transform: translateX(-50%) translateY(0);
   background: rgba(14, 18, 32, 0.82);
-  backdrop-filter: var(--glass-backdrop-blur);
-  -webkit-backdrop-filter: var(--glass-backdrop-blur);
-  border: 1px solid var(--glass-border);
-  border-top-color: var(--glass-highlight);
+  backdrop-filter: blur(28px) saturate(220%);
+  -webkit-backdrop-filter: blur(28px) saturate(220%);
+  border: 1.5px solid rgba(255, 255, 255, 0.18);
+  border-top-color: rgba(255, 255, 255, 0.45);
   border-radius: var(--border-radius-pill);
   padding: 10px 24px;
   display: flex;
   align-items: center;
-  gap: 24px;
-  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 35px rgba(56, 189, 248, 0.25);
+  gap: 22px;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 40px rgba(56, 189, 248, 0.28);
   z-index: 99;
-  transition: var(--transition-smooth);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease, border-color 0.4s ease;
+}
+
+.liquid-dock:hover {
+  border-color: rgba(56, 189, 248, 0.55);
+  box-shadow: 0 30px 75px rgba(0, 0, 0, 0.85), 0 0 50px rgba(56, 189, 248, 0.45);
 }
 
 .dock-track-info {
@@ -1774,17 +1779,18 @@ body.mode-light .mode-seg-btn.active {
 }
 
 .dock-disc-mini {
-  width: 40px;
-  height: 40px;
+  width: 42px;
+  height: 42px;
   border-radius: 50%;
   overflow: hidden;
   position: relative;
-  border: 1.5px solid rgba(255, 255, 255, 0.4);
-  box-shadow: 0 0 16px rgba(56, 189, 248, 0.7);
+  border: 1.5px solid rgba(255, 255, 255, 0.45);
+  box-shadow: 0 0 18px rgba(56, 189, 248, 0.75), inset 0 0 8px rgba(255, 255, 255, 0.3);
   display: flex;
   align-items: center;
   justify-content: center;
   animation: spinVinyl 6s linear infinite;
+  flex-shrink: 0;
 }
 
 .dock-viz-canvas {
@@ -1793,7 +1799,7 @@ body.mode-light .mode-seg-btn.active {
   width: 100%;
   height: 100%;
   pointer-events: none;
-  opacity: 0.7;
+  opacity: 0.85;
 }
 
 .dock-orb-img {
@@ -1814,6 +1820,7 @@ body.mode-light .mode-seg-btn.active {
   font-weight: 700;
   color: #fff;
   white-space: nowrap;
+  letter-spacing: -0.01em;
 }
 
 .dock-artist {
@@ -1825,23 +1832,42 @@ body.mode-light .mode-seg-btn.active {
   display: flex;
   align-items: center;
   gap: 10px;
-  width: 180px;
+  width: 190px;
 }
 
 .dock-time {
   font-family: var(--font-mono);
   font-size: 0.72rem;
   color: var(--text-dim);
+  font-weight: 600;
 }
 
 .dock-slider-track {
   position: relative;
   flex: 1;
-  height: 4px;
-  background: rgba(255, 255, 255, 0.14);
+  height: 18px;
+  background: rgba(255, 255, 255, 0.08);
   border-radius: 99px;
   cursor: pointer;
   overflow: hidden;
+  display: flex;
+  align-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  transition: all 0.25s ease;
+}
+
+.dock-slider-track:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(56, 189, 248, 0.4);
+}
+
+.dock-bars-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
 }
 
 .dock-slider-fill {
@@ -1850,8 +1876,12 @@ body.mode-light .mode-seg-btn.active {
   left: 0;
   height: 100%;
   width: 0%;
-  background: linear-gradient(90deg, #38bdf8, #a855f7);
+  background: linear-gradient(90deg, rgba(56, 189, 248, 0.25), rgba(168, 85, 247, 0.35));
+  border-right: 2px solid #38bdf8;
   border-radius: 99px;
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.8);
+  z-index: 2;
+  pointer-events: none;
 }
 
 .dock-controls {
