@@ -88,10 +88,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Web Audio Context for Procedural Liquid Synthesizer & Visualizer
   let audioCtx = null;
+  let masterGain = null;
   let ambientOsc1 = null;
   let ambientOsc2 = null;
   let ambientGain = null;
   let synthActive = false;
+
+  // Master Volume State
+  let currentVolume = 0.85; // 0.0 - 1.0
+  let isMuted = false;
+  let previousVolume = 0.85;
+
+  // Fluid Simulation Dynamics Parameters
+  let fluidViscosityMultiplier = 1.0;
+  let fluidRefractionMultiplier = 1.0;
 
   // DOM Elements
   const playBtn = document.getElementById('btn-play');
@@ -382,6 +392,106 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // Volume & Mute Controls Implementation
+  const btnVolume = document.getElementById('btn-volume');
+  const dockBtnVolume = document.getElementById('dock-btn-volume');
+  const volumeSlider = document.getElementById('volume-slider');
+  const volumeText = document.getElementById('volume-text');
+  const volIcon = document.getElementById('vol-icon');
+  const dockVolIcon = document.getElementById('dock-vol-icon');
+  const paramViscosity = document.getElementById('param-viscosity');
+  const paramRefraction = document.getElementById('param-refraction');
+
+  function updateVolumeUI() {
+    const effectiveVol = isMuted ? 0 : currentVolume;
+    const pct = Math.round(effectiveVol * 100);
+
+    if (volumeSlider) volumeSlider.value = pct;
+    if (volumeText) volumeText.textContent = `${pct}%`;
+
+    // Apply to Web Audio Master Node
+    if (masterGain && audioCtx) {
+      masterGain.gain.setTargetAtTime(effectiveVol, audioCtx.currentTime, 0.05);
+    }
+
+    // Determine Icon (volume-x, volume-1, volume-2)
+    let iconName = 'volume-2';
+    if (isMuted || effectiveVol === 0) {
+      iconName = 'volume-x';
+    } else if (effectiveVol < 0.5) {
+      iconName = 'volume-1';
+    }
+
+    if (btnVolume) {
+      btnVolume.innerHTML = `<i data-lucide="${iconName}" id="vol-icon"></i>`;
+      btnVolume.classList.toggle('muted', isMuted || effectiveVol === 0);
+      btnVolume.title = isMuted ? 'Unmute Audio' : `Volume: ${pct}% (Click to Mute)`;
+    }
+
+    if (dockBtnVolume) {
+      dockBtnVolume.innerHTML = `<i data-lucide="${iconName}" id="dock-vol-icon"></i>`;
+      dockBtnVolume.classList.toggle('muted', isMuted || effectiveVol === 0);
+      dockBtnVolume.title = isMuted ? 'Unmute Audio' : `Volume: ${pct}% (Click to Mute)`;
+    }
+
+    if (window.lucide) {
+      lucide.createIcons();
+    }
+  }
+
+  function toggleMute() {
+    initAudioNodes();
+    isMuted = !isMuted;
+    if (!isMuted && currentVolume === 0) {
+      currentVolume = 0.85;
+    }
+    playChime(isMuted ? 330 : 660);
+    updateVolumeUI();
+  }
+
+  if (btnVolume) {
+    btnVolume.addEventListener('click', (e) => {
+      // If clicking directly on volume button (and not dragging the vertical slider)
+      if (e.target.closest('#volume-popover')) return;
+      toggleMute();
+    });
+  }
+
+  if (dockBtnVolume) {
+    dockBtnVolume.addEventListener('click', () => {
+      toggleMute();
+    });
+  }
+
+  if (volumeSlider) {
+    volumeSlider.addEventListener('input', (e) => {
+      initAudioNodes();
+      const val = parseFloat(e.target.value) / 100;
+      currentVolume = val;
+      if (currentVolume > 0 && isMuted) {
+        isMuted = false;
+      }
+      updateVolumeUI();
+    });
+  }
+
+  // Fluid Viscosity and Refraction Sliders
+  if (paramViscosity) {
+    paramViscosity.addEventListener('input', (e) => {
+      const val = parseFloat(e.target.value);
+      // Maps 1..100 to speed multiplier 0.2 .. 2.0
+      fluidViscosityMultiplier = 0.2 + (val / 100) * 1.8;
+    });
+  }
+
+  if (paramRefraction) {
+    paramRefraction.addEventListener('input', (e) => {
+      const val = parseFloat(e.target.value);
+      // Maps 1..100 to radius/scale factor 0.5 .. 1.8
+      fluidRefractionMultiplier = 0.5 + (val / 100) * 1.3;
+    });
+  }
+
   // Waveform Canvas Animation
   const waveCanvas = document.getElementById('waveform-canvas');
   if (waveCanvas) {
@@ -569,19 +679,20 @@ document.addEventListener('DOMContentLoaded', () => {
       fluidCtx.clearRect(0, 0, fluidWidth, fluidHeight);
 
       fluidBlobs.forEach(b => {
-        b.x += b.vx;
-        b.y += b.vy;
+        b.x += b.vx * fluidViscosityMultiplier;
+        b.y += b.vy * fluidViscosityMultiplier;
 
         if (b.x < 0 || b.x > fluidWidth) b.vx *= -1;
         if (b.y < 0 || b.y > fluidHeight) b.vy *= -1;
 
-        const grad = fluidCtx.createRadialGradient(b.x, b.y, 10, b.x, b.y, b.radius);
+        const effectiveRadius = b.radius * fluidRefractionMultiplier;
+        const grad = fluidCtx.createRadialGradient(b.x, b.y, 10, b.x, b.y, effectiveRadius);
         grad.addColorStop(0, b.color);
         grad.addColorStop(1, 'rgba(0,0,0,0)');
 
         fluidCtx.fillStyle = grad;
         fluidCtx.beginPath();
-        fluidCtx.arc(b.x, b.y, b.radius, 0, Math.PI * 2);
+        fluidCtx.arc(b.x, b.y, effectiveRadius, 0, Math.PI * 2);
         fluidCtx.fill();
       });
 
@@ -596,9 +707,15 @@ document.addEventListener('DOMContentLoaded', () => {
       const AudioContext = window.AudioContext || window.webkitAudioContext;
       audioCtx = new AudioContext();
 
+      // Master Gain Node connected directly to Destination
+      masterGain = audioCtx.createGain();
+      masterGain.gain.setValueAtTime(isMuted ? 0 : currentVolume, audioCtx.currentTime);
+      masterGain.connect(audioCtx.destination);
+
+      // Ambient gain connected through masterGain
       ambientGain = audioCtx.createGain();
       ambientGain.gain.setValueAtTime(0, audioCtx.currentTime);
-      ambientGain.connect(audioCtx.destination);
+      ambientGain.connect(masterGain);
 
       ambientOsc1 = audioCtx.createOscillator();
       ambientOsc1.type = 'sine';
@@ -629,7 +746,7 @@ document.addEventListener('DOMContentLoaded', () => {
     chimeGain.gain.setValueAtTime(0.08, audioCtx.currentTime);
     chimeGain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.45);
     chime.connect(chimeGain);
-    chimeGain.connect(audioCtx.destination);
+    chimeGain.connect(masterGain || audioCtx.destination);
     chime.start();
     chime.stop(audioCtx.currentTime + 0.45);
   }
@@ -680,7 +797,7 @@ document.addEventListener('DOMContentLoaded', () => {
           padGain = audioCtx.createGain();
           padOsc.type = 'sine';
           padOsc.connect(padGain);
-          padGain.connect(audioCtx.destination);
+          padGain.connect(masterGain || audioCtx.destination);
           padOsc.start();
         }
         padOsc.frequency.setTargetAtTime(freq, audioCtx.currentTime, 0.05);
