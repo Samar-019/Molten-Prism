@@ -815,4 +815,154 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Initial render
   renderCatalog('all');
+
+  // ==========================================================================
+  // LIVE WEB PLAYER CONTROLLER
+  // ==========================================================================
+  const channelRows = document.querySelectorAll('.channel-row');
+  const liveIframe = document.getElementById('live-yt-iframe');
+  const liveStreamTitle = document.getElementById('live-stream-title');
+  const liveStreamArtist = document.getElementById('live-stream-artist');
+  const liveFullscreenBtn = document.getElementById('live-fullscreen-btn');
+  const embedContainer = document.getElementById('embed-container');
+
+  if (channelRows.length > 0 && liveIframe) {
+    channelRows.forEach(row => {
+      row.addEventListener('click', () => {
+        playChime(741);
+        channelRows.forEach(r => r.classList.remove('active'));
+        row.classList.add('active');
+
+        const vid = row.dataset.vid;
+        const title = row.dataset.title;
+        const artist = row.dataset.artist;
+
+        liveIframe.src = `https://www.youtube-nocookie.com/embed/${vid}?enablejsapi=1&autoplay=1&rel=0&modestbranding=1`;
+        if (liveStreamTitle) liveStreamTitle.textContent = title;
+        if (liveStreamArtist) liveStreamArtist.textContent = artist;
+      });
+    });
+  }
+
+  if (liveFullscreenBtn && embedContainer) {
+    liveFullscreenBtn.addEventListener('click', () => {
+      playChime(852);
+      if (!document.fullscreenElement) {
+        if (embedContainer.requestFullscreen) {
+          embedContainer.requestFullscreen();
+        } else if (embedContainer.webkitRequestFullscreen) {
+          embedContainer.webkitRequestFullscreen();
+        }
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        }
+      }
+    });
+  }
+
+  // ==========================================================================
+  // PREVIEW IMAGES GALLERY & WOW LIGHTBOX CONTROLLER
+  // ==========================================================================
+  const galleryCards = document.querySelectorAll('.gallery-card');
+  const lightbox = document.getElementById('image-lightbox');
+  const lightboxImg = document.getElementById('lightbox-img');
+  const lightboxTitle = document.getElementById('lightbox-title');
+  const lightboxDesc = document.getElementById('lightbox-desc');
+  const lightboxCounter = document.getElementById('lightbox-counter');
+  const lightboxClose = document.getElementById('lightbox-close');
+  const lightboxBackdrop = document.getElementById('lightbox-backdrop');
+  const lightboxPrev = document.getElementById('lightbox-prev');
+  const lightboxNext = document.getElementById('lightbox-next');
+
+  let currentGalleryIndex = 0;
+  const galleryData = [];
+
+  galleryCards.forEach((card, index) => {
+    galleryData.push({
+      src: card.dataset.full,
+      caption: card.dataset.caption,
+      desc: card.dataset.desc
+    });
+
+    // 3D Parallax Tilt effect on Gallery cards
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+      const rotateX = ((y - centerY) / centerY) * -8;
+      const rotateY = ((x - centerX) / centerX) * 8;
+      card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+    });
+
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+    });
+
+    card.addEventListener('click', () => {
+      playChime(639);
+      openLightbox(index);
+    });
+  });
+
+  function openLightbox(index) {
+    if (!lightbox || !galleryData[index]) return;
+    currentGalleryIndex = index;
+    updateLightboxUI();
+    lightbox.classList.add('active');
+    lightbox.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLightbox() {
+    if (!lightbox) return;
+    playChime(432);
+    lightbox.classList.remove('active');
+    lightbox.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+
+  function updateLightboxUI() {
+    const item = galleryData[currentGalleryIndex];
+    if (!item) return;
+
+    if (lightboxImg) {
+      lightboxImg.style.opacity = '0';
+      lightboxImg.style.transform = 'scale(0.96)';
+      setTimeout(() => {
+        lightboxImg.src = item.src;
+        lightboxImg.style.opacity = '1';
+        lightboxImg.style.transform = 'scale(1)';
+      }, 150);
+    }
+    if (lightboxTitle) lightboxTitle.textContent = item.caption;
+    if (lightboxDesc) lightboxDesc.textContent = item.desc;
+    if (lightboxCounter) lightboxCounter.textContent = `${currentGalleryIndex + 1} / ${galleryData.length}`;
+  }
+
+  function showNextImage() {
+    playChime(741);
+    currentGalleryIndex = (currentGalleryIndex + 1) % galleryData.length;
+    updateLightboxUI();
+  }
+
+  function showPrevImage() {
+    playChime(741);
+    currentGalleryIndex = (currentGalleryIndex - 1 + galleryData.length) % galleryData.length;
+    updateLightboxUI();
+  }
+
+  if (lightboxClose) lightboxClose.addEventListener('click', closeLightbox);
+  if (lightboxBackdrop) lightboxBackdrop.addEventListener('click', closeLightbox);
+  if (lightboxNext) lightboxNext.addEventListener('click', showNextImage);
+  if (lightboxPrev) lightboxPrev.addEventListener('click', showPrevImage);
+
+  window.addEventListener('keydown', (e) => {
+    if (!lightbox || !lightbox.classList.contains('active')) return;
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowRight') showNextImage();
+    if (e.key === 'ArrowLeft') showPrevImage();
+  });
 });
