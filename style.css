@@ -77,6 +77,28 @@ body.theme-amber {
   --glass-shadow: 0 25px 65px rgba(0, 0, 0, 0.75), 0 0 50px rgba(245, 158, 11, 0.22);
 }
 
+body.theme-rose {
+  --bg-dark: #0f050c;
+  --bg-gradient: radial-gradient(circle at 50% 0%, #3a0d2a 0%, #170512 50%, #070105 100%);
+  --prism-cyan: #fb7185;
+  --prism-purple: #f43f5e;
+  --primary-accent: #f43f5e;
+  --glass-border: rgba(251, 113, 133, 0.28);
+  --glass-border-glow: rgba(244, 63, 94, 0.65);
+  --glass-shadow: 0 25px 65px rgba(0, 0, 0, 0.75), 0 0 50px rgba(244, 63, 94, 0.25);
+}
+
+body.theme-obsidian {
+  --bg-dark: #020305;
+  --bg-gradient: radial-gradient(circle at 50% 0%, #131722 0%, #06080c 50%, #010203 100%);
+  --prism-cyan: #94a3b8;
+  --prism-purple: #cbd5e1;
+  --primary-accent: #f8fafc;
+  --glass-border: rgba(255, 255, 255, 0.2);
+  --glass-border-glow: rgba(255, 255, 255, 0.4);
+  --glass-shadow: 0 25px 75px rgba(0, 0, 0, 0.9), 0 0 40px rgba(255, 255, 255, 0.08);
+}
+
 /* Prismatic Refraction Mode (Light/Aurora State) */
 body.prism-refract-mode {
   --bg-dark: #0a0e1c;
@@ -542,6 +564,16 @@ body {
 .swatch-amber {
   background: linear-gradient(135deg, #f59e0b, #ef4444);
   box-shadow: 0 0 8px #f59e0b;
+}
+
+.swatch-rose {
+  background: linear-gradient(135deg, #fb7185, #f43f5e);
+  box-shadow: 0 0 8px #fb7185;
+}
+
+.swatch-obsidian {
+  background: linear-gradient(135deg, #64748b, #cbd5e1);
+  box-shadow: 0 0 8px #cbd5e1;
 }
 
 .opt-name {

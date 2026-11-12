@@ -655,12 +655,14 @@ document.addEventListener('DOMContentLoaded', () => {
     violet: { label: 'Aurora Violet', color: 'linear-gradient(135deg, #a855f7, #ec4899)' },
     cyan: { label: 'Cyber Cyan', color: 'linear-gradient(135deg, #06b6d4, #3b82f6)' },
     emerald: { label: 'Emerald Silica', color: 'linear-gradient(135deg, #10b981, #06b6d4)' },
-    amber: { label: 'Molten Amber', color: 'linear-gradient(135deg, #f59e0b, #ef4444)' }
+    amber: { label: 'Molten Amber', color: 'linear-gradient(135deg, #f59e0b, #ef4444)' },
+    rose: { label: 'Rose Quartz', color: 'linear-gradient(135deg, #fb7185, #f43f5e)' },
+    obsidian: { label: 'Obsidian Vitre', color: 'linear-gradient(135deg, #64748b, #cbd5e1)' }
   };
 
   function applyTheme(themeKey) {
     if (!themes[themeKey]) return;
-    document.body.classList.remove('theme-violet', 'theme-cyan', 'theme-emerald', 'theme-amber');
+    document.body.classList.remove('theme-violet', 'theme-cyan', 'theme-emerald', 'theme-amber', 'theme-rose', 'theme-obsidian');
     document.body.classList.add(`theme-${themeKey}`);
     
     if (themeBtnLabel) themeBtnLabel.textContent = themes[themeKey].label;
