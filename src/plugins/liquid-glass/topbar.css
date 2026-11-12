@@ -682,13 +682,30 @@ body.liquid-glass #guide-renderer #buttons .ytSpecButtonShapeNextIcon {
   text-overflow: ellipsis;
 }
 
-/* ---------- Sin publicidad de YouTube Music Premium ---------- */
+/* ---------- Sin publicidad de YouTube Music Premium y Ads ---------- */
 .lg-premium-hidden,
-body.liquid-glass ytmusic-menu-service-item-download-renderer,
-body.liquid-glass ytmusic-mealbar-promo-renderer,
-body.liquid-glass ytmusic-statement-banner-renderer,
-body.liquid-glass yt-mealbar-promo-renderer {
+.video-ads,
+.ytp-ad-module,
+.ytp-ad-overlay-container,
+.ytp-ad-message-container,
+.ytp-ad-player-overlay,
+ytmusic-menu-service-item-download-renderer,
+ytmusic-mealbar-promo-renderer,
+ytmusic-statement-banner-renderer,
+yt-mealbar-promo-renderer,
+ytd-promoted-sparkles-web-renderer,
+ytd-promoted-video-renderer,
+ytd-in-feed-ad-layout-renderer,
+ytd-banner-promo-renderer-background,
+ytd-ad-slot-renderer,
+#masthead-ad,
+#player-ads {
   display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  height: 0 !important;
+  width: 0 !important;
 }
 
 /* ---------- Menú lateral: solo la biblioteca (sidebar.ts) ----------

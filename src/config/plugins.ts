@@ -11,7 +11,13 @@ import type { PluginConfig } from '@/types/plugins';
 // desactivar (solo ajustar sus opciones)
 // (y los controles en la barra de tareas de Windows, como Spotify)
 // y 'do-not-track' (adblocker/tracking blocker para música sin anuncios)
-export const ALWAYS_ENABLED = new Set(['liquid-glass', 'taskbar-mediacontrol', 'do-not-track']);
+// y 'sponsorblock' (saltar patrocinadores y anuncios integrados en canciones/vídeos)
+export const ALWAYS_ENABLED = new Set([
+  'liquid-glass',
+  'taskbar-mediacontrol',
+  'do-not-track',
+  'sponsorblock',
+]);
 
 // Molten Prism: complementos de Pear descartados. Chocan con el diseño de
 // Liquid Glass o repiten algo que ya hace: siempre desactivados y ocultos en
