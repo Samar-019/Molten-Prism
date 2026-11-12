@@ -60,7 +60,7 @@ export const defaultConfig: DefaultConfig = {
     hideMenuWarned: false,
     startAtLogin: false,
     disableHardwareAcceleration: false,
-    removeUpgradeButton: false,
+    removeUpgradeButton: true,
     restartOnConfigChanges: false,
     trayClickPlayPause: false,
     autoResetAppCache: false,
