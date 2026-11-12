@@ -337,9 +337,10 @@ body {
 .app-layout {
   position: relative;
   z-index: 2;
-  max-width: 1320px;
+  max-width: 1440px;
+  width: 100%;
   margin: 0 auto;
-  padding: 24px 28px 140px;
+  padding: 20px 24px 140px;
   display: flex;
   flex-direction: column;
   gap: 52px;
@@ -350,7 +351,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 28px;
+  padding: 10px 20px;
+  gap: 16px;
   background: rgba(14, 18, 32, 0.55);
   backdrop-filter: var(--glass-backdrop-blur);
   -webkit-backdrop-filter: var(--glass-backdrop-blur);
@@ -450,7 +452,8 @@ body {
 
 .nav-links {
   display: flex;
-  gap: 8px;
+  gap: 6px;
+  flex-shrink: 0;
 }
 
 .nav-btn {
@@ -458,15 +461,21 @@ body {
   border: 1px solid transparent;
   color: var(--text-muted);
   font-family: var(--font-main);
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   font-weight: 600;
-  padding: 8px 18px;
+  padding: 7px 14px;
   border-radius: var(--border-radius-pill);
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   transition: var(--transition-smooth);
+  white-space: nowrap;
+}
+
+.nav-btn svg {
+  width: 15px;
+  height: 15px;
 }
 
 .nav-btn:hover {
@@ -484,25 +493,27 @@ body {
 .nav-actions {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
+  flex-shrink: 0;
 }
 
 .glass-pill-btn {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 8px 18px;
+  gap: 6px;
+  padding: 7px 13px;
   background: rgba(255, 255, 255, 0.07);
   border: 1px solid var(--glass-border);
   border-top-color: var(--glass-highlight);
   border-radius: var(--border-radius-pill);
   color: var(--text-main);
   text-decoration: none;
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   font-weight: 600;
   backdrop-filter: blur(14px);
   cursor: pointer;
   transition: var(--transition-smooth);
+  white-space: nowrap;
 }
 
 .glass-pill-btn:hover {
@@ -514,7 +525,8 @@ body {
 
 .sfx-pill {
   font-family: var(--font-mono);
-  font-size: 0.78rem;
+  font-size: 0.74rem;
+  padding: 7px 11px;
 }
 
 .sfx-bars {
@@ -544,31 +556,33 @@ body {
   -webkit-backdrop-filter: var(--glass-backdrop-blur);
   border: 1px solid var(--glass-border);
   border-radius: var(--border-radius-pill);
-  padding: 3px;
+  padding: 2px;
   gap: 2px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
   transition: var(--transition-smooth);
+  flex-shrink: 0;
 }
 
 .mode-seg-btn {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 6px 12px;
+  gap: 5px;
+  padding: 5px 10px;
   border: none;
   background: transparent;
   color: var(--text-muted);
   font-family: var(--font-main);
-  font-size: 0.78rem;
+  font-size: 0.74rem;
   font-weight: 700;
   border-radius: var(--border-radius-pill);
   cursor: pointer;
   transition: var(--transition-smooth);
+  white-space: nowrap;
 }
 
 .mode-seg-btn svg {
-  width: 14px;
-  height: 14px;
+  width: 13px;
+  height: 13px;
   stroke-width: 2.2;
 }
 
@@ -599,20 +613,22 @@ body.mode-light .mode-seg-btn.active {
 /* Theme Switcher Dropdown & Pill */
 .theme-switcher-wrapper {
   position: relative;
+  flex-shrink: 0;
 }
 
 .theme-switcher-btn {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 8px 16px;
+  gap: 7px;
+  padding: 7px 14px;
   cursor: pointer;
   border-radius: var(--border-radius-pill);
+  white-space: nowrap;
 }
 
 .theme-active-orb {
-  width: 14px;
-  height: 14px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
   background: linear-gradient(135deg, var(--prism-cyan), var(--prism-purple));
   box-shadow: 0 0 10px var(--prism-cyan);
@@ -623,7 +639,7 @@ body.mode-light .mode-seg-btn.active {
 
 .theme-btn-label {
   font-family: var(--font-main);
-  font-size: 0.84rem;
+  font-size: 0.8rem;
   font-weight: 700;
   color: #fff;
   white-space: nowrap;
@@ -2597,8 +2613,33 @@ body.mode-light .lightbox-arrow-btn {
   color: #0f172a;
 }
 
-/* Responsive Media Queries for Player & Gallery */
+/* Responsive Media Queries for Navbar, Player & Gallery */
+@media (max-width: 1200px) {
+  .glass-nav {
+    padding: 10px 16px;
+    gap: 12px;
+  }
+  .brand-text .badge {
+    display: none;
+  }
+  .glass-pill-btn.github-link span {
+    display: none;
+  }
+}
+
 @media (max-width: 992px) {
+  .glass-nav {
+    flex-wrap: wrap;
+    border-radius: 24px;
+    padding: 12px 18px;
+  }
+  .nav-links {
+    order: 3;
+    width: 100%;
+    justify-content: center;
+    padding-top: 8px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
   .live-player-grid {
     grid-template-columns: 1fr;
   }
@@ -2608,6 +2649,12 @@ body.mode-light .lightbox-arrow-btn {
 }
 
 @media (max-width: 768px) {
+  .mode-seg-btn .mode-text {
+    display: none;
+  }
+  .theme-btn-label {
+    display: none;
+  }
   .gallery-grid {
     grid-template-columns: 1fr;
   }
