@@ -491,11 +491,19 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('resize', resizeFluid);
     resizeFluid();
 
-    const fluidBlobs = [
-      { x: 250, y: 320, vx: 0.7, vy: 0.5, radius: 220, color: 'rgba(56, 189, 248, 0.22)' },
-      { x: 850, y: 450, vx: -0.5, vy: 0.8, radius: 260, color: 'rgba(168, 85, 247, 0.18)' },
-      { x: 550, y: 750, vx: 0.6, vy: -0.6, radius: 240, color: 'rgba(236, 72, 153, 0.16)' }
+    let fluidBlobs = [
+      { x: 250, y: 320, vx: 0.7, vy: 0.5, radius: 240, color: 'rgba(56, 189, 248, 0.24)' },
+      { x: 850, y: 450, vx: -0.5, vy: 0.8, radius: 280, color: 'rgba(168, 85, 247, 0.22)' },
+      { x: 550, y: 750, vx: 0.6, vy: -0.6, radius: 260, color: 'rgba(236, 72, 153, 0.18)' },
+      { x: 1100, y: 250, vx: -0.4, vy: -0.5, radius: 250, color: 'rgba(125, 211, 252, 0.2)' }
     ];
+
+    window.updateFluidColors = function(palette) {
+      if (!palette || !palette.length) return;
+      fluidBlobs.forEach((b, idx) => {
+        b.color = palette[idx % palette.length];
+      });
+    };
 
     function animateFluid() {
       fluidCtx.clearRect(0, 0, fluidWidth, fluidHeight);
@@ -652,17 +660,54 @@ document.addEventListener('DOMContentLoaded', () => {
   const themeOptBtns = document.querySelectorAll('.theme-opt-btn');
 
   const themes = {
-    violet: { label: 'Aurora Violet', color: 'linear-gradient(135deg, #a855f7, #ec4899)' },
-    cyan: { label: 'Cyber Cyan', color: 'linear-gradient(135deg, #06b6d4, #3b82f6)' },
-    emerald: { label: 'Emerald Silica', color: 'linear-gradient(135deg, #10b981, #06b6d4)' },
-    amber: { label: 'Molten Amber', color: 'linear-gradient(135deg, #f59e0b, #ef4444)' },
-    rose: { label: 'Rose Quartz', color: 'linear-gradient(135deg, #fb7185, #f43f5e)' },
-    obsidian: { label: 'Obsidian Vitre', color: 'linear-gradient(135deg, #64748b, #cbd5e1)' }
+    'liquid-glass': {
+      label: '✨ Pure Liquid Glass',
+      color: 'linear-gradient(135deg, #ffffff, #7dd3fc, #c084fc)',
+      palette: ['rgba(255, 255, 255, 0.28)', 'rgba(125, 211, 252, 0.26)', 'rgba(192, 132, 252, 0.22)', 'rgba(224, 242, 254, 0.25)']
+    },
+    violet: {
+      label: 'Aurora Violet',
+      color: 'linear-gradient(135deg, #a855f7, #ec4899)',
+      palette: ['rgba(168, 85, 247, 0.22)', 'rgba(236, 72, 153, 0.20)', 'rgba(99, 102, 241, 0.22)', 'rgba(192, 132, 252, 0.18)']
+    },
+    cyan: {
+      label: 'Cyber Cyan',
+      color: 'linear-gradient(135deg, #06b6d4, #3b82f6)',
+      palette: ['rgba(6, 182, 212, 0.24)', 'rgba(59, 130, 246, 0.22)', 'rgba(14, 165, 233, 0.22)', 'rgba(45, 212, 191, 0.20)']
+    },
+    emerald: {
+      label: 'Emerald Silica',
+      color: 'linear-gradient(135deg, #10b981, #06b6d4)',
+      palette: ['rgba(16, 185, 129, 0.24)', 'rgba(6, 182, 212, 0.22)', 'rgba(52, 211, 153, 0.22)', 'rgba(20, 184, 166, 0.20)']
+    },
+    amber: {
+      label: 'Molten Amber',
+      color: 'linear-gradient(135deg, #f59e0b, #ef4444)',
+      palette: ['rgba(245, 158, 11, 0.24)', 'rgba(239, 68, 68, 0.22)', 'rgba(251, 146, 60, 0.22)', 'rgba(234, 88, 12, 0.20)']
+    },
+    rose: {
+      label: 'Rose Quartz',
+      color: 'linear-gradient(135deg, #fb7185, #f43f5e)',
+      palette: ['rgba(251, 113, 133, 0.24)', 'rgba(244, 63, 94, 0.22)', 'rgba(244, 114, 182, 0.22)', 'rgba(225, 29, 72, 0.20)']
+    },
+    obsidian: {
+      label: 'Obsidian Vitre',
+      color: 'linear-gradient(135deg, #64748b, #cbd5e1)',
+      palette: ['rgba(100, 116, 139, 0.24)', 'rgba(203, 213, 225, 0.18)', 'rgba(71, 85, 105, 0.22)', 'rgba(148, 163, 184, 0.20)']
+    }
   };
 
   function applyTheme(themeKey) {
     if (!themes[themeKey]) return;
-    document.body.classList.remove('theme-violet', 'theme-cyan', 'theme-emerald', 'theme-amber', 'theme-rose', 'theme-obsidian');
+    document.body.classList.remove(
+      'theme-liquid-glass',
+      'theme-violet',
+      'theme-cyan',
+      'theme-emerald',
+      'theme-amber',
+      'theme-rose',
+      'theme-obsidian'
+    );
     document.body.classList.add(`theme-${themeKey}`);
     
     if (themeBtnLabel) themeBtnLabel.textContent = themes[themeKey].label;
@@ -671,6 +716,10 @@ document.addEventListener('DOMContentLoaded', () => {
     themeOptBtns.forEach(btn => {
       btn.classList.toggle('active', btn.dataset.theme === themeKey);
     });
+
+    if (window.updateFluidColors && themes[themeKey].palette) {
+      window.updateFluidColors(themes[themeKey].palette);
+    }
 
     localStorage.setItem('molten-prism-theme', themeKey);
   }

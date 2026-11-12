@@ -35,6 +35,21 @@
 }
 
 /* Liquid Themes */
+body.theme-liquid-glass {
+  --bg-dark: #070d18;
+  --bg-gradient: radial-gradient(circle at 50% 0%, #162a4a 0%, #081324 50%, #030811 100%);
+  --glass-bg: rgba(255, 255, 255, 0.1);
+  --glass-bg-hover: rgba(255, 255, 255, 0.16);
+  --glass-border: rgba(255, 255, 255, 0.32);
+  --glass-border-glow: rgba(147, 197, 253, 0.85);
+  --glass-highlight: rgba(255, 255, 255, 0.7);
+  --glass-shadow: 0 30px 80px rgba(0, 0, 0, 0.7), 0 0 60px rgba(125, 211, 252, 0.35);
+  --glass-backdrop-blur: blur(48px) saturate(240%);
+  --prism-cyan: #7dd3fc;
+  --prism-purple: #c084fc;
+  --primary-accent: #38bdf8;
+}
+
 body.theme-violet {
   --bg-dark: #06080e;
   --bg-gradient: radial-gradient(circle at 50% 0%, #1a1532 0%, #0a0c18 50%, #030408 100%);
@@ -544,6 +559,12 @@ body {
   border-radius: 50%;
   flex-shrink: 0;
   border: 1.5px solid rgba(255, 255, 255, 0.4);
+}
+
+.swatch-liquid-glass {
+  background: linear-gradient(135deg, #ffffff, #7dd3fc, #c084fc);
+  box-shadow: 0 0 10px #7dd3fc, inset 0 0 4px #ffffff;
+  border: 1.5px solid #ffffff;
 }
 
 .swatch-violet {
