@@ -754,6 +754,51 @@ document.addEventListener('DOMContentLoaded', () => {
     applyTheme(savedTheme);
   }
 
+  // Auto / Light / Dark Color Mode Controller
+  const modeBtns = document.querySelectorAll('.mode-seg-btn');
+  let currentMode = localStorage.getItem('molten-prism-mode') || 'auto';
+  const systemDarkMedia = window.matchMedia('(prefers-color-scheme: dark)');
+
+  function updateColorModeUI(mode) {
+    const isDark = mode === 'auto' ? systemDarkMedia.matches : mode === 'dark';
+    
+    if (isDark) {
+      document.body.classList.remove('mode-light');
+      document.body.classList.add('mode-dark');
+    } else {
+      document.body.classList.remove('mode-dark');
+      document.body.classList.add('mode-light');
+    }
+
+    modeBtns.forEach(b => {
+      b.classList.toggle('active', b.dataset.mode === mode);
+    });
+  }
+
+  function setColorMode(mode, playSound = true) {
+    currentMode = mode;
+    localStorage.setItem('molten-prism-mode', mode);
+    updateColorModeUI(mode);
+    if (playSound) {
+      playChime(mode === 'light' ? 852 : mode === 'dark' ? 432 : 639);
+    }
+  }
+
+  modeBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      setColorMode(btn.dataset.mode, true);
+    });
+  });
+
+  systemDarkMedia.addEventListener('change', () => {
+    if (currentMode === 'auto') {
+      updateColorModeUI('auto');
+    }
+  });
+
+  // Initialize Color Mode
+  setColorMode(currentMode, false);
+
   // Smooth Navigation Scroll
   document.querySelectorAll('.nav-btn').forEach(btn => {
     btn.addEventListener('click', () => {
