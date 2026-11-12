@@ -72,9 +72,36 @@
           </svg>
           <span>GitHub</span>
         </a>
-        <button id="theme-toggle" class="glass-icon-btn nav-theme-toggle" title="Toggle Prismatic Theme">
-          <img src="icon.png" alt="Toggle Theme" class="nav-toggle-orb">
-        </button>
+        <div class="theme-switcher-wrapper">
+          <button id="theme-toggle" class="glass-pill-btn theme-switcher-btn" title="Cycle Liquid Themes">
+            <span class="theme-active-orb" id="theme-orb-indicator"></span>
+            <span class="theme-btn-label" id="theme-btn-label">Aurora Violet</span>
+            <i data-lucide="chevron-down" class="theme-caret"></i>
+          </button>
+          
+          <div class="theme-dropdown-menu" id="theme-dropdown">
+            <button class="theme-opt-btn active" data-theme="violet">
+              <span class="opt-swatch swatch-violet"></span>
+              <span class="opt-name">Aurora Violet</span>
+              <span class="opt-check"><i data-lucide="check"></i></span>
+            </button>
+            <button class="theme-opt-btn" data-theme="cyan">
+              <span class="opt-swatch swatch-cyan"></span>
+              <span class="opt-name">Cyber Cyan</span>
+              <span class="opt-check"><i data-lucide="check"></i></span>
+            </button>
+            <button class="theme-opt-btn" data-theme="emerald">
+              <span class="opt-swatch swatch-emerald"></span>
+              <span class="opt-name">Emerald Silica</span>
+              <span class="opt-check"><i data-lucide="check"></i></span>
+            </button>
+            <button class="theme-opt-btn" data-theme="amber">
+              <span class="opt-swatch swatch-amber"></span>
+              <span class="opt-name">Molten Amber</span>
+              <span class="opt-check"><i data-lucide="check"></i></span>
+            </button>
+          </div>
+        </div>
       </div>
     </header>
 

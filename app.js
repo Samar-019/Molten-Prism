@@ -644,12 +644,60 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Prismatic Refraction Theme Toggle
-  if (themeToggle) {
-    themeToggle.addEventListener('click', () => {
-      document.body.classList.toggle('prism-refract-mode');
-      playChime(852);
+  // Multi-Theme Liquid Switcher Logic
+  const themeWrapper = document.querySelector('.theme-switcher-wrapper');
+  const themeToggleBtn = document.getElementById('theme-toggle');
+  const themeOrbIndicator = document.getElementById('theme-orb-indicator');
+  const themeBtnLabel = document.getElementById('theme-btn-label');
+  const themeOptBtns = document.querySelectorAll('.theme-opt-btn');
+
+  const themes = {
+    violet: { label: 'Aurora Violet', color: 'linear-gradient(135deg, #a855f7, #ec4899)' },
+    cyan: { label: 'Cyber Cyan', color: 'linear-gradient(135deg, #06b6d4, #3b82f6)' },
+    emerald: { label: 'Emerald Silica', color: 'linear-gradient(135deg, #10b981, #06b6d4)' },
+    amber: { label: 'Molten Amber', color: 'linear-gradient(135deg, #f59e0b, #ef4444)' }
+  };
+
+  function applyTheme(themeKey) {
+    if (!themes[themeKey]) return;
+    document.body.classList.remove('theme-violet', 'theme-cyan', 'theme-emerald', 'theme-amber');
+    document.body.classList.add(`theme-${themeKey}`);
+    
+    if (themeBtnLabel) themeBtnLabel.textContent = themes[themeKey].label;
+    if (themeOrbIndicator) themeOrbIndicator.style.background = themes[themeKey].color;
+
+    themeOptBtns.forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.theme === themeKey);
     });
+
+    localStorage.setItem('molten-prism-theme', themeKey);
+  }
+
+  if (themeToggleBtn && themeWrapper) {
+    themeToggleBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      playChime(741);
+      themeWrapper.classList.toggle('open');
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!themeWrapper.contains(e.target)) {
+        themeWrapper.classList.remove('open');
+      }
+    });
+
+    themeOptBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const selected = btn.dataset.theme;
+        playChime(852);
+        applyTheme(selected);
+        themeWrapper.classList.remove('open');
+      });
+    });
+
+    // Load saved or default theme
+    const savedTheme = localStorage.getItem('molten-prism-theme') || 'violet';
+    applyTheme(savedTheme);
   }
 
   // Smooth Navigation Scroll

@@ -34,6 +34,49 @@
   --transition-spring: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
+/* Liquid Themes */
+body.theme-violet {
+  --bg-dark: #06080e;
+  --bg-gradient: radial-gradient(circle at 50% 0%, #1a1532 0%, #0a0c18 50%, #030408 100%);
+  --prism-cyan: #38bdf8;
+  --prism-purple: #a855f7;
+  --primary-accent: #a855f7;
+  --glass-border-glow: rgba(168, 85, 247, 0.55);
+}
+
+body.theme-cyan {
+  --bg-dark: #040912;
+  --bg-gradient: radial-gradient(circle at 50% 0%, #0e2a3f 0%, #05131f 50%, #02060b 100%);
+  --prism-cyan: #22d3ee;
+  --prism-purple: #38bdf8;
+  --primary-accent: #06b6d4;
+  --glass-border: rgba(34, 211, 238, 0.22);
+  --glass-border-glow: rgba(6, 182, 212, 0.65);
+  --glass-shadow: 0 25px 65px rgba(0, 0, 0, 0.75), 0 0 50px rgba(6, 182, 212, 0.22);
+}
+
+body.theme-emerald {
+  --bg-dark: #040e0b;
+  --bg-gradient: radial-gradient(circle at 50% 0%, #0b3223 0%, #051610 50%, #020704 100%);
+  --prism-cyan: #34d399;
+  --prism-purple: #10b981;
+  --primary-accent: #10b981;
+  --glass-border: rgba(52, 211, 153, 0.22);
+  --glass-border-glow: rgba(16, 185, 129, 0.65);
+  --glass-shadow: 0 25px 65px rgba(0, 0, 0, 0.75), 0 0 50px rgba(16, 185, 129, 0.22);
+}
+
+body.theme-amber {
+  --bg-dark: #0f0a05;
+  --bg-gradient: radial-gradient(circle at 50% 0%, #3a220a 0%, #1a1005 50%, #080401 100%);
+  --prism-cyan: #fbbf24;
+  --prism-purple: #f97316;
+  --primary-accent: #f59e0b;
+  --glass-border: rgba(251, 191, 36, 0.25);
+  --glass-border-glow: rgba(245, 158, 11, 0.65);
+  --glass-shadow: 0 25px 65px rgba(0, 0, 0, 0.75), 0 0 50px rgba(245, 158, 11, 0.22);
+}
+
 /* Prismatic Refraction Mode (Light/Aurora State) */
 body.prism-refract-mode {
   --bg-dark: #0a0e1c;
@@ -371,6 +414,153 @@ body {
 .sfx-bars span:nth-child(1) { height: 6px; }
 .sfx-bars span:nth-child(2) { height: 12px; animation-delay: 0.2s; }
 .sfx-bars span:nth-child(3) { height: 8px; animation-delay: 0.4s; }
+
+/* Theme Switcher Dropdown & Pill */
+.theme-switcher-wrapper {
+  position: relative;
+}
+
+.theme-switcher-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  cursor: pointer;
+  border-radius: var(--border-radius-pill);
+}
+
+.theme-active-orb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--prism-cyan), var(--prism-purple));
+  box-shadow: 0 0 10px var(--prism-cyan);
+  display: inline-block;
+  flex-shrink: 0;
+  transition: var(--transition-smooth);
+}
+
+.theme-btn-label {
+  font-family: var(--font-main);
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: #fff;
+  white-space: nowrap;
+}
+
+.theme-caret {
+  width: 14px;
+  height: 14px;
+  color: var(--text-muted);
+  transition: transform 0.3s ease;
+}
+
+.theme-switcher-wrapper.open .theme-caret {
+  transform: rotate(180deg);
+}
+
+.theme-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  min-width: 190px;
+  background: rgba(14, 18, 32, 0.88);
+  backdrop-filter: blur(28px) saturate(200%);
+  -webkit-backdrop-filter: blur(28px) saturate(200%);
+  border: 1px solid var(--glass-border);
+  border-top-color: var(--glass-highlight);
+  border-radius: 20px;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.7), 0 0 30px rgba(56, 189, 248, 0.2);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-8px) scale(0.95);
+  transition: var(--transition-smooth);
+  z-index: 150;
+}
+
+.theme-switcher-wrapper.open .theme-dropdown-menu {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0) scale(1);
+}
+
+.theme-opt-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 14px;
+  color: var(--text-muted);
+  font-family: var(--font-main);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: left;
+  transition: var(--transition-smooth);
+}
+
+.theme-opt-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+.theme-opt-btn.active {
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.25);
+  color: #fff;
+}
+
+.opt-swatch {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  border: 1.5px solid rgba(255, 255, 255, 0.4);
+}
+
+.swatch-violet {
+  background: linear-gradient(135deg, #a855f7, #ec4899);
+  box-shadow: 0 0 8px #a855f7;
+}
+
+.swatch-cyan {
+  background: linear-gradient(135deg, #06b6d4, #3b82f6);
+  box-shadow: 0 0 8px #06b6d4;
+}
+
+.swatch-emerald {
+  background: linear-gradient(135deg, #10b981, #06b6d4);
+  box-shadow: 0 0 8px #10b981;
+}
+
+.swatch-amber {
+  background: linear-gradient(135deg, #f59e0b, #ef4444);
+  box-shadow: 0 0 8px #f59e0b;
+}
+
+.opt-name {
+  flex: 1;
+}
+
+.opt-check {
+  display: none;
+  color: var(--prism-cyan);
+}
+
+.theme-opt-btn.active .opt-check {
+  display: inline-flex;
+}
+
+.opt-check svg {
+  width: 14px;
+  height: 14px;
+}
 
 .glass-icon-btn {
   background: rgba(255, 255, 255, 0.07);
