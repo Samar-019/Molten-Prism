@@ -1,8 +1,8 @@
-name: Build Pear Desktop
+name: Build Molten Prism
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, main ]
 
 permissions: {}
 
@@ -14,7 +14,7 @@ jobs:
     permissions:
       contents: write
     if: github.event.pull_request.draft == false
-    name: Build Pear Desktop
+    name: Build Molten Prism
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: true

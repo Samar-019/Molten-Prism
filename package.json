@@ -8,11 +8,10 @@
   "main": "./dist/main/index.js",
   "type": "module",
   "license": "MIT",
-  "repository": "pear-devs/pear-desktop",
+  "repository": "Samar-019/Molten-Prism",
   "author": {
-    "name": "th-ch",
-    "email": "th-ch@users.noreply.github.com",
-    "url": "https://github.com/pear-devs/pear-desktop"
+    "name": "Samar-019",
+    "url": "https://github.com/Samar-019/Molten-Prism"
   },
   "scripts": {
     "postinstall": "pnpm install-electron",
