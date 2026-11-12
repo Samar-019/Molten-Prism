@@ -973,23 +973,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // Initialize Color Mode
   setColorMode(currentMode, false);
 
-  // Smooth Navigation Scroll
-  document.querySelectorAll('.nav-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      playChime(639);
-      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      const tab = btn.dataset.tab;
-      const target = document.getElementById(tab);
-      if (target) {
-        target.scrollIntoView({ behavior: 'smooth' });
-      }
-    });
-  });
-
-  // Initial render
-  renderCatalog('all');
-
   // ==========================================================================
   // PREVIEW IMAGES GALLERY & WOW LIGHTBOX CONTROLLER
   // ==========================================================================
