@@ -160,6 +160,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Render Track Catalog Cards
   function renderCatalog(filter = 'all') {
+    if (!trackGrid) return;
     trackGrid.innerHTML = '';
     const filtered = filter === 'all' 
       ? trackCatalog 
@@ -202,14 +203,16 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Filter Buttons
-  filterBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      playChime(528);
-      filterBtns.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      renderCatalog(btn.dataset.genre);
+  if (filterBtns) {
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        playChime(528);
+        filterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderCatalog(btn.dataset.genre);
+      });
     });
-  });
+  }
 
   // Track Selection and Playback Simulation
   function selectTrack(index, autoPlay = true) {
