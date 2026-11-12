@@ -352,7 +352,7 @@ body {
   align-items: center;
   justify-content: space-between;
   padding: 8px 16px;
-  gap: 10px;
+  gap: 12px;
   background: rgba(14, 18, 32, 0.55);
   backdrop-filter: var(--glass-backdrop-blur);
   -webkit-backdrop-filter: var(--glass-backdrop-blur);
@@ -364,6 +364,8 @@ body {
   top: 18px;
   z-index: 100;
   transition: var(--transition-smooth);
+  box-sizing: border-box;
+  max-width: 100%;
 }
 
 .glass-nav:hover {
@@ -374,13 +376,13 @@ body {
 .brand {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   flex-shrink: 0;
 }
 
 .logo-gem-icon {
-  width: 38px;
-  height: 38px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   position: relative;
   display: flex;
@@ -424,27 +426,29 @@ body {
 .brand-text .title {
   font-family: var(--font-mono);
   font-weight: 800;
-  font-size: 1.05rem;
-  letter-spacing: 1.5px;
+  font-size: 1rem;
+  letter-spacing: 1.2px;
   background: linear-gradient(90deg, #ffffff, #c7d2fe, #38bdf8);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  white-space: nowrap;
 }
 
 .brand-text .badge {
-  font-size: 0.62rem;
-  letter-spacing: 1.2px;
+  font-size: 0.6rem;
+  letter-spacing: 1px;
   font-weight: 800;
   color: var(--prism-cyan);
   text-transform: uppercase;
   display: inline-flex;
   align-items: center;
-  gap: 5px;
+  gap: 4px;
+  white-space: nowrap;
 }
 
 .badge-dot {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
   border-radius: 50%;
   background: var(--prism-emerald);
   box-shadow: 0 0 8px var(--prism-emerald);
@@ -453,8 +457,9 @@ body {
 
 .nav-links {
   display: flex;
-  gap: 6px;
-  flex-shrink: 0;
+  gap: 4px;
+  flex-shrink: 1;
+  min-width: 0;
 }
 
 .nav-btn {
@@ -462,21 +467,21 @@ body {
   border: 1px solid transparent;
   color: var(--text-muted);
   font-family: var(--font-main);
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   font-weight: 600;
-  padding: 7px 14px;
+  padding: 6px 11px;
   border-radius: var(--border-radius-pill);
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 5px;
   transition: var(--transition-smooth);
   white-space: nowrap;
 }
 
 .nav-btn svg {
-  width: 15px;
-  height: 15px;
+  width: 14px;
+  height: 14px;
 }
 
 .nav-btn:hover {
@@ -494,22 +499,22 @@ body {
 .nav-actions {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   flex-shrink: 0;
 }
 
 .glass-pill-btn {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 7px 13px;
+  gap: 5px;
+  padding: 6px 11px;
   background: rgba(255, 255, 255, 0.07);
   border: 1px solid var(--glass-border);
   border-top-color: var(--glass-highlight);
   border-radius: var(--border-radius-pill);
   color: var(--text-main);
   text-decoration: none;
-  font-size: 0.82rem;
+  font-size: 0.78rem;
   font-weight: 600;
   backdrop-filter: blur(14px);
   cursor: pointer;
@@ -526,8 +531,8 @@ body {
 
 .sfx-pill {
   font-family: var(--font-mono);
-  font-size: 0.74rem;
-  padding: 7px 11px;
+  font-size: 0.72rem;
+  padding: 6px 9px;
 }
 
 .sfx-bars {
@@ -558,7 +563,7 @@ body {
   border: 1px solid var(--glass-border);
   border-radius: var(--border-radius-pill);
   padding: 2px;
-  gap: 2px;
+  gap: 1px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
   transition: var(--transition-smooth);
   flex-shrink: 0;
@@ -567,13 +572,13 @@ body {
 .mode-seg-btn {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
-  padding: 5px 10px;
+  gap: 4px;
+  padding: 4px 8px;
   border: none;
   background: transparent;
   color: var(--text-muted);
   font-family: var(--font-main);
-  font-size: 0.74rem;
+  font-size: 0.72rem;
   font-weight: 700;
   border-radius: var(--border-radius-pill);
   cursor: pointer;
@@ -582,8 +587,8 @@ body {
 }
 
 .mode-seg-btn svg {
-  width: 13px;
-  height: 13px;
+  width: 12px;
+  height: 12px;
   stroke-width: 2.2;
 }
 
@@ -620,16 +625,16 @@ body.mode-light .mode-seg-btn.active {
 .theme-switcher-btn {
   display: inline-flex;
   align-items: center;
-  gap: 7px;
-  padding: 7px 14px;
+  gap: 6px;
+  padding: 6px 11px;
   cursor: pointer;
   border-radius: var(--border-radius-pill);
   white-space: nowrap;
 }
 
 .theme-active-orb {
-  width: 12px;
-  height: 12px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
   background: linear-gradient(135deg, var(--prism-cyan), var(--prism-purple));
   box-shadow: 0 0 10px var(--prism-cyan);
@@ -640,7 +645,7 @@ body.mode-light .mode-seg-btn.active {
 
 .theme-btn-label {
   font-family: var(--font-main);
-  font-size: 0.8rem;
+  font-size: 0.76rem;
   font-weight: 700;
   color: #fff;
   white-space: nowrap;
