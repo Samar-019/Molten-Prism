@@ -140,7 +140,7 @@ type LyricsRendererChild =
       kind: 'PlainLine';
       line: string;
     }
-  // MusicSense: pie al final de la letra (el complemento Liquid Glass pone el
+  // Molten Prism: pie al final de la letra (el complemento Liquid Glass pone el
   // crédito con la variable CSS --lg-lyrics-credit)
   | { kind: 'Footer' };
 
@@ -244,7 +244,7 @@ export const LyricsRenderer = () => {
     ('previous' | 'current' | 'upcoming')[]
   >([]);
   createEffect(() => {
-    // MusicSense: la línea se activa un poco antes, como en Apple Music, para
+    // Molten Prism: la línea se activa un poco antes, como en Apple Music, para
     // que su transición (tamaño y brillo) termine cuando empieza a cantarse
     const time = currentTime() + LINE_LEAD_MS;
     const data = currentLyrics()?.data;

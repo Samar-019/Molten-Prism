@@ -72,7 +72,7 @@ export const mainMenuTemplate = async (
 
   const menuResult = await Promise.all(
     Object.entries(getAllMenuTemplate())
-      // MusicSense: sin los complementos descartados
+      // Molten Prism: sin los complementos descartados
       .filter(([id]) => !config.plugins.DISCARDED.has(id))
       .map(async ([id, template]) => {
         const plugin = allPluginsStubs[id];
@@ -96,7 +96,7 @@ export const mainMenuTemplate = async (
           ] as const;
         }
 
-        // Complementos de MusicSense siempre activos: solo sus opciones
+        // Complementos de Molten Prism siempre activos: solo sus opciones
         if (config.plugins.ALWAYS_ENABLED.has(id)) {
           return [
             id,
@@ -131,7 +131,7 @@ export const mainMenuTemplate = async (
       }),
   );
 
-  // MusicSense: sin los complementos descartados ni los que siempre están
+  // Molten Prism: sin los complementos descartados ni los que siempre están
   // activos y no tienen opciones (su interruptor no haría nada)
   const availablePlugins = Object.keys(await allPlugins()).filter(
     (id) =>
@@ -185,7 +185,7 @@ export const mainMenuTemplate = async (
         {
           label: t('main.menu.options.submenu.auto-update'),
           type: 'checkbox',
-          // MusicSense: sin actualizaciones automáticas (ver src/index.ts)
+          // Molten Prism: sin actualizaciones automáticas (ver src/index.ts)
           visible: false,
           checked: config.get('options.autoUpdates'),
           click(item: MenuItem) {

@@ -12,10 +12,10 @@ import {
 import type { SetActivity } from '@xhayper/discord-rpc/dist/structures/ClientUser';
 
 /*
- * Estado de Discord propio de MusicSense (proceso principal). Sustituye al
+ * Estado de Discord propio de Molten Prism (proceso principal). Sustituye al
  * complemento Discord Rich Presence de Pear:
  *
- *   Listening to <MusicSense | canción | artista>     ← cabecera (a elegir)
+ *   Listening to <Molten Prism | canción | artista>     ← cabecera (a elegir)
  *   [portada]  Canción
  *   [icono]    Artista
  *              Álbum
@@ -213,7 +213,7 @@ export class DiscordPresence {
     }, RETRY_MS);
   }
 
-  // Icono de la aplicación de Discord (el de MusicSense si usas una propia)
+  // Icono de la aplicación de Discord (el de Molten Prism si usas una propia)
   private async loadAppIcon(clientId: string) {
     const response = await net.fetch(
       `https://discord.com/api/v10/applications/${clientId}/rpc`,
@@ -265,7 +265,7 @@ export class DiscordPresence {
       smallImageKey: small || undefined,
       smallImageText: small ? text(smallText) : undefined,
     };
-    // Tus amigos no tienen MusicSense: el botón abre la canción en YouTube Music
+    // Tus amigos no tienen Molten Prism: el botón abre la canción en YouTube Music
     if (config.button && song.url)
       activity.buttons = [
         {
@@ -323,7 +323,7 @@ export class DiscordPresence {
     this.lastSent = key;
     await client.user?.setActivity(activity).catch((error: unknown) => {
       this.lastSent = '';
-      console.error('[MusicSense] Discord:', error);
+      console.error('[Molten Prism] Discord:', error);
     });
   }
 

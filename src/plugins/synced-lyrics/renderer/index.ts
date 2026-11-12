@@ -54,7 +54,7 @@ export const renderer = createRenderer<
     await this.videoDataChange();
   },
   async videoDataChange() {
-    // MusicSense: el tiempo se lee en cada fotograma (antes cada 100 ms, y la
+    // Molten Prism: el tiempo se lee en cada fotograma (antes cada 100 ms, y la
     // línea y el relleno de palabras iban con retraso)
     if (!this.updateTimestampInterval) {
       // Con la letra oculta basta con 4 veces por segundo (ahorra CPU)
@@ -95,7 +95,7 @@ export const renderer = createRenderer<
       fetchLyrics(info);
     });
 
-    // MusicSense: Pear anuncia la canción en cuanto existe el reproductor,
+    // Molten Prism: Pear anuncia la canción en cuanto existe el reproductor,
     // a veces antes de que este complemento empiece a escuchar (al abrir o
     // recargar la app); sin esto la letra se quedaba "cargando"
     const current = getSongInfo();

@@ -38,7 +38,7 @@ export const [lyricsStore, setLyricsStore] = createStore<LyricsStore>({
   },
 });
 
-// MusicSense: traducción de cada línea (la rellena el complemento Liquid
+// Molten Prism: traducción de cada línea (la rellena el complemento Liquid
 // Glass, lyrics.ts). Clave: texto original de la línea
 export const [translations, setTranslations] = createSignal<
   Record<string, string>

@@ -10,7 +10,7 @@ import {
 } from '@/providers/song-info';
 
 /*
- * Last.fm propio de MusicSense (proceso principal). Sustituye al complemento
+ * Last.fm propio de Molten Prism (proceso principal). Sustituye al complemento
  * Scrobbler de Pear: solo Last.fm, con dos formas de conectar la cuenta:
  *
  * - Autorizar la aplicación: se abre la web de Last.fm en una ventana y, en

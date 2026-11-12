@@ -203,7 +203,7 @@ export class TopBar {
   /*
    * "Cambiar de cuenta" abre el selector de cuentas de YouTube (se deja ver a
    * propósito). Su botón "atrás" vuelve al menú de la cuenta de YouTube, que
-   * en MusicSense no debe aparecer: si está a la vista sin que lo estemos
+   * en Molten Prism no debe aparecer: si está a la vista sin que lo estemos
    * usando por dentro, se cierra.
    */
   private closeStrayAccountMenu() {
@@ -283,7 +283,7 @@ export class TopBar {
   }
 
   // ---------- Botones junto al buscador ----------
-  // Icono de MusicSense en la franja superior izquierda (sobre el botón del
+  // Icono de Molten Prism en la franja superior izquierda (sobre el botón del
   // menú lateral)
   private ensureAppIcon() {
     if (this.appIcon?.isConnected) return;

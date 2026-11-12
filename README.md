@@ -78,7 +78,7 @@ El programa no lleva firma digital: si Windows muestra "Windows protegió su PC"
 
 ## Qué es
 
-MusicSense es una versión modificada de [Pear Desktop](https://github.com/pear-devs/pear-desktop) (antes `th-ch/youtube-music`), un cliente de YouTube Music hecho con Electron y TypeScript. Todo el diseño y las funciones nuevas viven en el complemento [`src/plugins/liquid-glass/`](src/plugins/liquid-glass/), que siempre está activo.
+Molten Prism es una versión modificada de [Pear Desktop](https://github.com/pear-devs/pear-desktop) (antes `th-ch/youtube-music`), un cliente de YouTube Music hecho con Electron y TypeScript. Todo el diseño y las funciones nuevas viven en el complemento [`src/plugins/liquid-glass/`](src/plugins/liquid-glass/), que siempre está activo.
 
 ## Desarrollo
 
@@ -112,7 +112,7 @@ git merge upstream/master
 
 ## Hecho con IA
 
-MusicSense se ha desarrollado con ayuda de **[Claude Code](https://claude.com/claude-code)**, el asistente de programación de Anthropic: la idea, el diseño y las pruebas son de una persona, y gran parte del código se escribió junto a la IA. Las notas que usa para trabajar en el proyecto están en [`CLAUDE.md`](CLAUDE.md).
+Molten Prism se ha desarrollado con ayuda de **[Claude Code](https://claude.com/claude-code)**, el asistente de programación de Anthropic: la idea, el diseño y las pruebas son de una persona, y gran parte del código se escribió junto a la IA. Las notas que usa para trabajar en el proyecto están en [`CLAUDE.md`](CLAUDE.md).
 
 ## Créditos y licencia
 

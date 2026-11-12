@@ -32,7 +32,7 @@ type AppElement = HTMLElement & {
   };
 };
 
-const APP_NAME = 'MusicSense';
+const APP_NAME = 'Molten Prism';
 const PAUSE_OPTIONS = [0, 5, 10, 30];
 
 const el = <K extends keyof HTMLElementTagNameMap>(

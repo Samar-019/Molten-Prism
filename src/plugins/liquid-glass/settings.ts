@@ -69,7 +69,7 @@ const isVisible = (node: MenuNode) => node.visible !== false;
 // primera casilla es "Enabled"
 // El interruptor es la casilla del complemento o la "Enabled" de su submenú
 // (primera casilla seguida de un separador). Los complementos siempre activos
-// de MusicSense no tienen: solo opciones.
+// de Molten Prism no tienen: solo opciones.
 const pluginToggle = (node: MenuNode) => {
   if (node.type === 'checkbox') return node;
   const [first, second] = node.submenu?.items ?? [];
@@ -109,7 +109,7 @@ export class SettingsPanel {
   constructor(
     private readonly labels: SettingsLabels,
     private readonly invoke: Invoke,
-    // Pestañas propias tras la de MusicSense (Last.fm, Discord...)
+    // Pestañas propias tras la de Molten Prism (Last.fm, Discord...)
     private readonly custom: CustomTab[] = [],
   ) {}
 
@@ -207,7 +207,7 @@ export class SettingsPanel {
       (item) => isVisible(item) && item.type === 'submenu',
     );
 
-    // 1.ª pestaña: opciones de MusicSense (las de nuestro complemento);
+    // 1.ª pestaña: opciones de Molten Prism (las de nuestro complemento);
     // 2.ª: Plugins; después el resto de menús de la app
     const [plugins, ...rest] = top;
     const own = plugins?.submenu?.items.find(

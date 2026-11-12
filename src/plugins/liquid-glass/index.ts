@@ -55,7 +55,7 @@ type LiquidGlassConfig = {
 };
 
 // Activado de fábrica y sin opción de desactivarlo (ALWAYS_ENABLED en
-// src/config/plugins.ts): es el diseño de MusicSense
+// src/config/plugins.ts): es el diseño de Molten Prism
 const defaultConfig: LiquidGlassConfig = {
   enabled: true,
   animatedBackground: true,

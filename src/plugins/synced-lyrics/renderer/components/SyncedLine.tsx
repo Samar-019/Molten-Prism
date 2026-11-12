@@ -94,7 +94,7 @@ export const SyncedLine = (props: SyncedLineProps) => {
     return line.trim();
   });
 
-  // MusicSense: cada palabra se ilumina en su momento. Sin tiempos por
+  // Molten Prism: cada palabra se ilumina en su momento. Sin tiempos por
   // palabra, la duración de la línea se reparte según el largo de cada una
   // (como Better Lyrics). --w-start / --w-len: fracciones de la línea
   const words = createMemo(() => {

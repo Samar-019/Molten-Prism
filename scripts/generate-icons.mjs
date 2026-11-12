@@ -1,4 +1,4 @@
-// Genera los iconos de MusicSense a partir de assets/icon.svg.
+// Genera los iconos de Molten Prism a partir de assets/icon.svg.
 // Uso: pnpm exec electron scripts/generate-icons.mjs
 // Usa el propio Electron para dibujar el SVG (sin dependencias nuevas):
 // - assets/icon.png (512 px) y assets/generated/icons/png/<n>x<n>.png

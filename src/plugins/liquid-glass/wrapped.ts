@@ -1,5 +1,5 @@
 /*
- * Resumen mensual estilo "Wrapped" (diseño en Figma: "MusicSense · Resumen
+ * Resumen mensual estilo "Wrapped" (diseño en Figma: "Molten Prism · Resumen
  * mensual"). Cuatro pantallas: portada con los minutos, tus artistas, tus
  * canciones y tu momento musical (hora y día favoritos).
  *
@@ -221,7 +221,7 @@ export class WrappedView {
               width: rect.width,
               height: rect.height,
             },
-            `MusicSense-${monthName(key)}-${this.page + 1}.png`,
+            `MoltenPrism-${monthName(key)}-${this.page + 1}.png`,
           )
             .catch(console.error)
             .finally(() => overlay.classList.remove('capturing'));
@@ -272,7 +272,7 @@ export class WrappedView {
       story.append(el('span', `lg-wr-blob ${blob}`));
     const content = el('div', 'lg-wr-content');
     const brand = el('div', 'lg-wr-brand');
-    brand.append(el('span', 'lg-wr-logo'), el('span', '', 'MusicSense'));
+    brand.append(el('span', 'lg-wr-logo'), el('span', '', 'Molten Prism'));
     content.append(brand);
     story.append(content);
     return { story, content };

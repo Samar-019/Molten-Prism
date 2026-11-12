@@ -87,7 +87,7 @@ export class OverlayGuard {
   }
 
   private dismiss(element: Overlay) {
-    console.warn('[MusicSense] Cerrado un menú/diálogo invisible', element);
+    console.warn('[Molten Prism] Cerrado un menú/diálogo invisible', element);
     if (element.tagName === 'TP-YT-IRON-OVERLAY-BACKDROP') {
       element.close?.();
       element.removeAttribute('opened');

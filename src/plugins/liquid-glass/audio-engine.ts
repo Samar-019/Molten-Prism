@@ -1,5 +1,5 @@
 /*
- * Motor de audio de MusicSense: una sola cadena para que las opciones no se
+ * Motor de audio de Molten Prism: una sola cadena para que las opciones no se
  * pisen entre sí.
  *
  *   fuente → ecualizador (10 bandas) → [estéreo amplio] → [audio espacial]

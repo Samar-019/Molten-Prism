@@ -5,7 +5,7 @@ import { YTMusic } from './YTMusic';
 
 import type { LyricProvider } from '../types';
 
-// MusicSense: Musixmatch sin cuenta de pago devuelve letras "codificadas"
+// Molten Prism: Musixmatch sin cuenta de pago devuelve letras "codificadas"
 // (palabras sin sentido). Se deja como fuente vacía para que se use otra
 // o se muestre que no se encontró la letra.
 const disabledMusixMatch: LyricProvider = {

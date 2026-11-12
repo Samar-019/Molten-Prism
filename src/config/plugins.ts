@@ -7,12 +7,12 @@ import { store } from './store';
 
 import type { PluginConfig } from '@/types/plugins';
 
-// MusicSense: complementos que forman parte de la app y no se pueden
+// Molten Prism: complementos que forman parte de la app y no se pueden
 // desactivar (solo ajustar sus opciones)
 // (y los controles en la barra de tareas de Windows, como Spotify)
 export const ALWAYS_ENABLED = new Set(['liquid-glass', 'taskbar-mediacontrol']);
 
-// MusicSense: complementos de Pear descartados. Chocan con el diseño de
+// Molten Prism: complementos de Pear descartados. Chocan con el diseño de
 // Liquid Glass o repiten algo que ya hace: siempre desactivados y ocultos en
 // los menús.
 export const DISCARDED = new Set([

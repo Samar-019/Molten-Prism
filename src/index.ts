@@ -322,7 +322,7 @@ function initTheme(win: BrowserWindow) {
   }
 
   win.webContents.once('did-finish-load', () => {
-    // MusicSense: solo si se pide expresamente (PEAR_DEVTOOLS=1 pnpm dev)
+    // Molten Prism: solo si se pide expresamente (PEAR_DEVTOOLS=1 pnpm dev)
     if (is.dev() && process.env.PEAR_DEVTOOLS === '1') {
       console.debug(LoggerPrefix, t('main.console.did-finish-load.dev-tools'));
       win.webContents.openDevTools();
@@ -620,7 +620,7 @@ app.once('browser-window-created', (_event, win) => {
       win.setTitle(customWindowTitle);
       return;
     }
-    // MusicSense: el título lo pone el complemento Liquid Glass con la
+    // Molten Prism: el título lo pone el complemento Liquid Glass con la
     // canción cargada ("Canción · Artista", también en pausa); YouTube Music
     // solo pone la canción mientras suena. Aquí solo el nombre al empezar
     if (!win.getTitle().includes(' · ')) win.setTitle(APPLICATION_NAME);
@@ -679,9 +679,9 @@ app.whenReady().then(async () => {
 
   // Register appID on windows
   if (is.windows()) {
-    // MusicSense: identificador propio (el mismo que appId en
+    // Molten Prism: identificador propio (el mismo que appId en
     // electron-builder.yml) para no mezclarse con Pear Desktop en Windows
-    const appID = 'com.bbernalm.musicsense';
+    const appID = 'com.samar019.moltenprism';
     app.setAppUserModelId(appID);
     const appLocation = process.execPath;
     const appData = app.getPath('appData');
@@ -818,7 +818,7 @@ app.whenReady().then(async () => {
     openAtLogin: config.get('options.startAtLogin'),
   });
 
-  // MusicSense: el buscador de actualizaciones de Pear miraba las versiones
+  // Molten Prism: el buscador de actualizaciones de Pear miraba las versiones
   // de Pear Desktop (y ofrecía instalarlo encima). Apagado hasta tener
   // versiones propias publicadas
   const checkUpdates = false as boolean;
