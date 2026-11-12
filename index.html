@@ -54,7 +54,6 @@
 
       <nav class="nav-links">
         <button class="nav-btn active" data-tab="hero"><i data-lucide="waves"></i> Atmosphere</button>
-        <button class="nav-btn" data-tab="gallery"><i data-lucide="image"></i> Gallery</button>
         <button class="nav-btn" data-tab="interactive-station"><i data-lucide="sparkles"></i> Glass Synth</button>
         <button class="nav-btn" data-tab="compare"><i data-lucide="scale"></i> Compare</button>
         <button class="nav-btn" data-tab="specs"><i data-lucide="cpu"></i> Architecture</button>
@@ -277,151 +276,6 @@
           </div>
         </div>
       </section>
-
-      <!-- SECTION: PREVIEW IMAGES UI/UX SHOWCASE (INTERACTIVE WOW GALLERY & LIGHTBOX) -->
-      <section class="section-container preview-gallery-section" id="gallery">
-        <div class="section-header text-center">
-          <h2 class="section-title">Visual UI/UX Experience</h2>
-          <p class="section-desc">Inspect real desktop screenshots showcasing iOS 26 liquid glass aesthetics, word-by-word shining synced lyrics, and acoustic spatial suites.</p>
-        </div>
-
-        <div class="gallery-grid" id="preview-gallery">
-          <!-- Card 1: Player Screen -->
-          <div class="gallery-card liquid-card" data-full="assets/player.jpg" data-caption="Player Screen • Circular FFT Visualizer & Translucent Glass Deck" data-desc="Apple Music inspired fluid playback screen with real-time spectrum caustics surrounding album art and glass gradient buttons.">
-            <div class="glass-glare"></div>
-            <div class="glass-rim"></div>
-            <div class="gallery-img-container">
-              <img src="assets/player.jpg" alt="Player Screen with Audio Visualizer" class="gallery-thumb" loading="lazy">
-              <div class="gallery-hover-overlay">
-                <div class="zoom-pill"><i data-lucide="zoom-in"></i> Preview High-Res</div>
-              </div>
-            </div>
-            <div class="gallery-card-body">
-              <div class="card-tag-row">
-                <span class="gallery-tag"><i data-lucide="disc"></i> Player View</span>
-                <span class="gallery-res">4K UHD</span>
-              </div>
-              <h3 class="gallery-title">Vitreous Player Deck</h3>
-              <p class="gallery-sub">Circular dynamic FFT visualizer around rotating high-res album art with glass caustics.</p>
-            </div>
-          </div>
-
-          <!-- Card 2: Synced Lyrics -->
-          <div class="gallery-card liquid-card" data-full="assets/lyrics.jpg" data-caption="Synced Lyrics • Word-by-Word Radiant Glow & Instant Translation" data-desc="Karaoke word-by-word fluid typography that shimmers on sustained notes, accompanied by automated dual-language translation.">
-            <div class="glass-glare"></div>
-            <div class="glass-rim"></div>
-            <div class="gallery-img-container">
-              <img src="assets/lyrics.jpg" alt="Synced Lyrics with Word by Word Illumination" class="gallery-thumb" loading="lazy">
-              <div class="gallery-hover-overlay">
-                <div class="zoom-pill"><i data-lucide="zoom-in"></i> Preview High-Res</div>
-              </div>
-            </div>
-            <div class="gallery-card-body">
-              <div class="card-tag-row">
-                <span class="gallery-tag"><i data-lucide="align-left"></i> Synced Lyrics</span>
-                <span class="gallery-res">Karaoke Glow</span>
-              </div>
-              <h3 class="gallery-title">Word-by-Word Lyrics</h3>
-              <p class="gallery-sub">Dynamic glowing typography with sustained-note aura and synchronized inline subtitles.</p>
-            </div>
-          </div>
-
-          <!-- Card 3: Quick Settings Audio Panel -->
-          <div class="gallery-card liquid-card" data-full="assets/quick.jpg" data-caption="Quick Sound Settings • 10-Band EQ & Spatial Acoustics" data-desc="Translucent floating control pod featuring 10-band equalizer presets, reverb rooms, stereo widening, and crossfade tuning.">
-            <div class="glass-glare"></div>
-            <div class="glass-rim"></div>
-            <div class="gallery-img-container">
-              <img src="assets/quick.jpg" alt="Quick Settings Panel with 10-Band EQ" class="gallery-thumb" loading="lazy">
-              <div class="gallery-hover-overlay">
-                <div class="zoom-pill"><i data-lucide="zoom-in"></i> Preview High-Res</div>
-              </div>
-            </div>
-            <div class="gallery-card-body">
-              <div class="card-tag-row">
-                <span class="gallery-tag"><i data-lucide="sliders"></i> Audio Engine</span>
-                <span class="gallery-res">10-Band EQ</span>
-              </div>
-              <h3 class="gallery-title">Vitreous Equalizer & Reverb</h3>
-              <p class="gallery-sub">10-band studio frequency control, spatial headphone expansion, and custom room simulation.</p>
-            </div>
-          </div>
-
-          <!-- Card 4: Library Home Grid -->
-          <div class="gallery-card liquid-card" data-full="assets/home.jpg" data-caption="Home & Library • Floating Nav Capsule & Cover Art Grid" data-desc="Comprehensive media library navigation with high-density album cards, floating sidebar capsule, and instant search history.">
-            <div class="glass-glare"></div>
-            <div class="glass-rim"></div>
-            <div class="gallery-img-container">
-              <img src="assets/home.jpg" alt="Home Screen with Library Grid" class="gallery-thumb" loading="lazy">
-              <div class="gallery-hover-overlay">
-                <div class="zoom-pill"><i data-lucide="zoom-in"></i> Preview High-Res</div>
-              </div>
-            </div>
-            <div class="gallery-card-body">
-              <div class="card-tag-row">
-                <span class="gallery-tag"><i data-lucide="grid"></i> Library</span>
-                <span class="gallery-res">Cover Grid</span>
-              </div>
-              <h3 class="gallery-title">Floating Library Grid</h3>
-              <p class="gallery-sub">Fast playlist browsing with floating capsule navigation, artist collections, and history.</p>
-            </div>
-          </div>
-
-          <!-- Card 5: Discord Rich Presence -->
-          <div class="gallery-card liquid-card" data-full="assets/discord.jpg" data-caption="Discord Rich Presence • Real-Time Playback Scrobble" data-desc="Live interactive Discord status broadcasting current album art, playback time, artist name, and a direct link to listen.">
-            <div class="glass-glare"></div>
-            <div class="glass-rim"></div>
-            <div class="gallery-img-container">
-              <img src="assets/discord.jpg" alt="Discord Rich Presence Integration" class="gallery-thumb" loading="lazy">
-              <div class="gallery-hover-overlay">
-                <div class="zoom-pill"><i data-lucide="zoom-in"></i> Preview High-Res</div>
-              </div>
-            </div>
-            <div class="gallery-card-body">
-              <div class="card-tag-row">
-                <span class="gallery-tag"><i data-lucide="message-square"></i> Discord</span>
-                <span class="gallery-res">Rich Presence</span>
-              </div>
-              <h3 class="gallery-title">Discord & Last.fm Sync</h3>
-              <p class="gallery-sub">Customizable live status with cover art, track scrobbling, and one-click friend listening.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- LIGHTBOX MODAL WITH WOW ANIMATION -->
-      <div class="glass-lightbox" id="image-lightbox" aria-hidden="true" role="dialog">
-        <div class="lightbox-backdrop" id="lightbox-backdrop"></div>
-        <div class="lightbox-dialog liquid-card">
-          <div class="glass-glare"></div>
-          <div class="glass-rim"></div>
-          
-          <button class="lightbox-close-btn" id="lightbox-close" title="Close Preview (Esc)">
-            <i data-lucide="x"></i>
-          </button>
-          
-          <div class="lightbox-content-wrap">
-            <div class="lightbox-image-stage">
-              <img src="" alt="Expanded Preview" id="lightbox-img" class="lightbox-img">
-              <div class="lightbox-reflection"></div>
-            </div>
-            <div class="lightbox-info-bar">
-              <div class="lightbox-text">
-                <h3 id="lightbox-title">Vitreous Player Deck</h3>
-                <p id="lightbox-desc">Detailed view of the player interface.</p>
-              </div>
-              <div class="lightbox-nav-buttons">
-                <button class="lightbox-arrow-btn" id="lightbox-prev" title="Previous Image">
-                  <i data-lucide="chevron-left"></i>
-                </button>
-                <span class="lightbox-counter" id="lightbox-counter">1 / 6</span>
-                <button class="lightbox-arrow-btn" id="lightbox-next" title="Next Image">
-                  <i data-lucide="chevron-right"></i>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
 
       <!-- SECTION 2: INTERACTIVE PRISMATIC SYNTHESIZER PAD -->
       <section class="section-container interactive-station" id="interactive-station">
@@ -709,7 +563,6 @@
             GitHub Repository
           </a>
           <a href="#hero"><i data-lucide="music"></i> Atmosphere</a>
-          <a href="#gallery"><i data-lucide="image"></i> Gallery</a>
           <a href="#compare"><i data-lucide="scale"></i> Compare</a>
           <a href="#specs"><i data-lucide="layers"></i> Architecture</a>
           <a href="#download"><i data-lucide="download"></i> Download</a>
