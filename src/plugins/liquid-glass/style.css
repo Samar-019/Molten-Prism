@@ -2191,3 +2191,126 @@ body.liquid-glass
   content-visibility: auto;
   contain-intrinsic-size: auto 64px;
 }
+
+/* ==========================================================================
+   Rainbow, Aurora & Neon UI Animations for Molten Prism Music App
+   ========================================================================== */
+
+/* Aurora Borealis Ambient Backing Tint */
+#liquid-glass-backdrop::after {
+  content: '';
+  position: absolute;
+  inset: -15%;
+  background: 
+    radial-gradient(ellipse at 15% 25%, rgba(56, 189, 248, 0.18) 0%, transparent 60%),
+    radial-gradient(ellipse at 85% 20%, rgba(168, 85, 247, 0.22) 0%, transparent 60%),
+    radial-gradient(ellipse at 50% 85%, rgba(244, 63, 94, 0.16) 0%, transparent 60%),
+    radial-gradient(ellipse at 75% 70%, rgba(52, 211, 153, 0.16) 0%, transparent 60%);
+  filter: blur(80px);
+  mix-blend-mode: screen;
+  pointer-events: none;
+  animation: appAuroraDrift 20s ease-in-out infinite alternate;
+  z-index: 1;
+}
+
+@keyframes appAuroraDrift {
+  0% {
+    transform: rotate(0deg) scale(1) translate(0px, 0px);
+    filter: blur(80px) hue-rotate(0deg);
+  }
+  50% {
+    transform: rotate(3deg) scale(1.06) translate(30px, -20px);
+    filter: blur(95px) hue-rotate(90deg);
+  }
+  100% {
+    transform: rotate(-3deg) scale(0.96) translate(-20px, 25px);
+    filter: blur(75px) hue-rotate(180deg);
+  }
+}
+
+/* Prismatic Rainbow Shimmer on Playing Progress & Controls */
+body.liquid-glass ytmusic-player-bar {
+  transition: box-shadow 0.4s ease, border-color 0.4s ease;
+}
+
+body.liquid-glass ytmusic-player-bar:hover {
+  box-shadow: 
+    0 20px 60px rgba(0, 0, 0, 0.65),
+    0 0 35px rgba(56, 189, 248, 0.25),
+    0 0 50px rgba(168, 85, 247, 0.15) !important;
+}
+
+/* Neon Glow on Active Playback Buttons */
+body.liquid-glass #play-pause-button {
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+}
+
+body.liquid-glass #play-pause-button:hover {
+  transform: scale(1.08);
+  filter: drop-shadow(0 0 14px rgba(56, 189, 248, 0.75)) drop-shadow(0 0 25px rgba(168, 85, 247, 0.5));
+}
+
+/* Rainbow Animated Wave / Progress Accent */
+body.liquid-glass #progress-bar #primaryProgress {
+  background: linear-gradient(
+    90deg,
+    #38bdf8 0%,
+    #818cf8 25%,
+    #c084fc 50%,
+    #f43f5e 75%,
+    #38bdf8 100%
+  ) !important;
+  background-size: 200% 100% !important;
+  animation: rainbowProgressBar 6s linear infinite !important;
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.6), 0 0 20px rgba(168, 85, 247, 0.4);
+}
+
+@keyframes rainbowProgressBar {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+
+/* Neon Aura on Album Artwork in Now Playing */
+body.liquid-glass.lg-np #player {
+  position: relative;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s ease;
+}
+
+body.liquid-glass.lg-np #player:hover {
+  transform: translateY(-4px) scale(1.02);
+  filter: drop-shadow(0 20px 45px rgba(0, 0, 0, 0.8)) drop-shadow(0 0 35px rgba(56, 189, 248, 0.35));
+}
+
+/* Neon Glowing Active Synced Lyrics Line */
+body.liquid-glass .synced-line.current .text-lyrics {
+  text-shadow: 
+    0 0 15px rgba(255, 255, 255, 0.6),
+    0 0 30px rgba(56, 189, 248, 0.45),
+    0 0 50px rgba(168, 85, 247, 0.3);
+  animation: neonLyricsBreathe 3s ease-in-out infinite alternate;
+}
+
+@keyframes neonLyricsBreathe {
+  0% {
+    text-shadow: 
+      0 0 15px rgba(255, 255, 255, 0.6),
+      0 0 30px rgba(56, 189, 248, 0.45),
+      0 0 50px rgba(168, 85, 247, 0.3);
+  }
+  100% {
+    text-shadow: 
+      0 0 20px rgba(255, 255, 255, 0.8),
+      0 0 38px rgba(244, 63, 94, 0.45),
+      0 0 60px rgba(52, 211, 153, 0.35);
+  }
+}
+
+/* Smooth Interactive Micro-Animations on Track Items */
+body.liquid-glass ytmusic-responsive-list-item-renderer {
+  transition: background-color 0.25s ease, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+body.liquid-glass ytmusic-responsive-list-item-renderer:hover {
+  transform: translateX(4px);
+}
+
