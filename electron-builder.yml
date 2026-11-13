@@ -50,6 +50,7 @@ nsis:
 portable:
   artifactName: Molten-Prism-${version}-portable.${ext}
 linux:
+  maintainer: "Samar-019 <i.axis.019@gmail.com>"
   icon: assets/generated/icons/png
   category: AudioVideo
   syncDesktopName: true
