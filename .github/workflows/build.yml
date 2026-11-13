@@ -1,8 +1,9 @@
 name: Build Molten Prism
 
 on:
+  workflow_dispatch:
   push:
-    branches: [ master, main ]
+    branches: [ master ]
 
 permissions: {}
 
