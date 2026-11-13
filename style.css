@@ -226,18 +226,89 @@ body {
   line-height: 1.6;
 }
 
-/* Interactive Cursor Glow */
+/* Interactive Cursor & Particle Canvas */
 .cursor-glow {
   position: fixed;
-  width: 450px;
-  height: 450px;
+  width: 480px;
+  height: 480px;
   border-radius: 50%;
   pointer-events: none;
   z-index: 1;
-  background: radial-gradient(circle, rgba(56, 189, 248, 0.14) 0%, rgba(168, 85, 247, 0.07) 40%, transparent 70%);
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.16) 0%, rgba(168, 85, 247, 0.08) 35%, transparent 70%);
   transform: translate(-50%, -50%);
-  transition: opacity 0.3s ease;
+  transition: opacity 0.4s ease, transform 0.1s ease-out;
   mix-blend-mode: screen;
+  will-change: left, top, opacity;
+}
+
+.cursor-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 9998;
+}
+
+.custom-cursor-dot {
+  position: fixed;
+  width: 8px;
+  height: 8px;
+  background: #ffffff;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px var(--prism-cyan);
+  transition: width 0.2s cubic-bezier(0.16, 1, 0.3, 1), height 0.2s cubic-bezier(0.16, 1, 0.3, 1), background 0.2s ease, opacity 0.3s ease;
+  opacity: 0;
+}
+
+.custom-cursor-ring {
+  position: fixed;
+  width: 36px;
+  height: 36px;
+  border: 1.5px solid rgba(255, 255, 255, 0.45);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  backdrop-filter: blur(2px) saturate(180%);
+  -webkit-backdrop-filter: blur(2px) saturate(180%);
+  box-shadow: 0 0 15px rgba(56, 189, 248, 0.3), inset 0 0 10px rgba(255, 255, 255, 0.2);
+  transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1), height 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease, background 0.25s ease, transform 0.12s ease-out, opacity 0.3s ease;
+  opacity: 0;
+}
+
+/* Cursor Interactive States */
+body.cursor-hover .custom-cursor-dot {
+  width: 4px;
+  height: 4px;
+  background: var(--prism-cyan);
+}
+
+body.cursor-hover .custom-cursor-ring {
+  width: 54px;
+  height: 54px;
+  border-color: rgba(56, 189, 248, 0.9);
+  background: rgba(56, 189, 248, 0.12);
+  box-shadow: 0 0 25px rgba(56, 189, 248, 0.5), inset 0 0 14px rgba(255, 255, 255, 0.35);
+}
+
+body.cursor-click .custom-cursor-ring {
+  transform: translate(-50%, -50%) scale(0.85);
+  background: rgba(255, 255, 255, 0.25);
+  border-color: #ffffff;
+}
+
+/* Hide custom cursor on touch/mobile devices */
+@media (pointer: coarse) {
+  .custom-cursor-dot,
+  .custom-cursor-ring,
+  .cursor-canvas {
+    display: none !important;
+  }
 }
 
 /* Ambient Fluid Background & Mesh */
@@ -2836,4 +2907,148 @@ body.mode-light .lightbox-arrow-btn {
     align-items: flex-start;
   }
 }
+
+/* ==========================================================================
+   UI Animations & Liquid Micro-Interactions
+   ========================================================================== */
+
+/* Magnetic & Floating Glass Hover */
+.glass-panel,
+.glass-card,
+.spec-card,
+.feature-glass-box,
+.download-card,
+.glass-pill-btn,
+.nav-btn,
+.btn-primary,
+.btn-secondary {
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.35s ease,
+              background 0.35s ease;
+}
+
+.glass-panel:hover,
+.glass-card:hover,
+.spec-card:hover,
+.download-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 32px 75px rgba(0, 0, 0, 0.75), 0 0 45px var(--glass-border-glow);
+}
+
+/* Shimmer Light Reflection Sweep on Buttons & Badges */
+.btn-primary,
+.glass-pill-btn,
+.badge-pill,
+.download-action-btn {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-primary::after,
+.glass-pill-btn::after,
+.download-action-btn::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -60%;
+  width: 40%;
+  height: 200%;
+  background: linear-gradient(
+    60deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.04) 40%,
+    rgba(255, 255, 255, 0.28) 50%,
+    rgba(255, 255, 255, 0.04) 60%,
+    transparent 100%
+  );
+  transform: rotate(25deg);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.btn-primary:hover::after,
+.glass-pill-btn:hover::after,
+.download-action-btn:hover::after {
+  opacity: 1;
+  animation: liquidShimmerSweep 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes liquidShimmerSweep {
+  0% {
+    left: -70%;
+  }
+  100% {
+    left: 140%;
+  }
+}
+
+/* Glass Ripple Effect for Clicks */
+.glass-ripple-wave {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.45) 0%, rgba(56, 189, 248, 0.2) 50%, transparent 80%);
+  transform: scale(0);
+  pointer-events: none;
+  animation: glassRippleAnim 0.7s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
+  z-index: 10;
+}
+
+@keyframes glassRippleAnim {
+  0% {
+    transform: scale(0);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(3.5);
+    opacity: 0;
+  }
+}
+
+/* Ambient Subtle Floating Motion for Hero Gem & Elements */
+.logo-gem-icon {
+  animation: gemSoftFloat 6s ease-in-out infinite alternate;
+}
+
+@keyframes gemSoftFloat {
+  0% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-3px) rotate(1.5deg);
+  }
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+}
+
+/* Smooth Entrance Scroll Fade & Reveal Classes */
+.ui-reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(28px) scale(0.98);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.ui-reveal-on-scroll.revealed {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* Pulsing Prismatic Glow on Active Navigation & Status */
+.nav-btn.active {
+  animation: navActiveGlow 3.5s ease-in-out infinite alternate;
+}
+
+@keyframes navActiveGlow {
+  0% {
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.45);
+  }
+  100% {
+    box-shadow: 0 4px 24px rgba(56, 189, 248, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.65);
+  }
+}
+
 

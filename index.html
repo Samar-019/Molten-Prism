@@ -20,7 +20,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=15.0">
+  <link rel="stylesheet" href="style.css?v=16.0">
   <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
@@ -35,8 +35,11 @@
     <div class="noise-overlay"></div>
   </div>
 
-  <!-- Cursor Follower Ambient Glow -->
+  <!-- Cursor Follower Ambient Glow & Custom Liquid Cursor -->
   <div class="cursor-glow" id="cursor-glow" aria-hidden="true"></div>
+  <div class="custom-cursor-dot" id="cursor-dot" aria-hidden="true"></div>
+  <div class="custom-cursor-ring" id="cursor-ring" aria-hidden="true"></div>
+  <canvas id="cursor-canvas" class="cursor-canvas" aria-hidden="true"></canvas>
 
   <div class="app-layout">
     <!-- Liquid Glass Navigation / Header -->
@@ -574,6 +577,6 @@
     </footer>
   </div>
 
-  <script src="app.js?v=16.0"></script>
+  <script src="app.js?v=17.0"></script>
 </body>
 </html>

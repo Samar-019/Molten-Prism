@@ -130,15 +130,200 @@ document.addEventListener('DOMContentLoaded', () => {
   const sfxToggle = document.getElementById('sfx-toggle');
   const sfxText = document.getElementById('sfx-text');
   const cursorGlow = document.getElementById('cursor-glow');
+  const cursorDot = document.getElementById('cursor-dot');
+  const cursorRing = document.getElementById('cursor-ring');
+  const cursorCanvas = document.getElementById('cursor-canvas');
   const vizFreqReadout = document.getElementById('viz-freq-readout');
 
-  // Interactive Cursor Follower
+  // =========================================================================
+  // Enhanced Fluid Cursor & Sparkle Particle System
+  // =========================================================================
+  let mouseX = window.innerWidth / 2;
+  let mouseY = window.innerHeight / 2;
+  let ringX = mouseX;
+  let ringY = mouseY;
+  let cursorVisible = false;
+  let particles = [];
+  let lastParticleTime = 0;
+
+  // Particle canvas setup
+  let cursorCtx = null;
+  if (cursorCanvas) {
+    cursorCtx = cursorCanvas.getContext('2d');
+    const resizeCursorCanvas = () => {
+      cursorCanvas.width = window.innerWidth;
+      cursorCanvas.height = window.innerHeight;
+    };
+    resizeCursorCanvas();
+    window.addEventListener('resize', resizeCursorCanvas);
+  }
+
+  class LiquidSparkle {
+    constructor(x, y, vx, vy, color, size, maxLife) {
+      this.x = x;
+      this.y = y;
+      this.vx = vx || (Math.random() - 0.5) * 1.5;
+      this.vy = vy || (Math.random() - 0.5) * 1.5;
+      this.color = color || 'rgba(56, 189, 248, ';
+      this.size = size || (Math.random() * 2.5 + 1.2);
+      this.life = 1.0;
+      this.decay = 1 / (maxLife || (Math.random() * 25 + 20));
+    }
+    update() {
+      this.x += this.vx;
+      this.y += this.vy;
+      this.vy += 0.02; // soft gravity
+      this.vx *= 0.98;
+      this.life -= this.decay;
+    }
+    draw(ctx) {
+      if (this.life <= 0) return;
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.size * this.life, 0, Math.PI * 2);
+      ctx.fillStyle = `${this.color}${this.life * 0.8})`;
+      ctx.shadowBlur = 8;
+      ctx.shadowColor = 'rgba(56, 189, 248, 0.8)';
+      ctx.fill();
+      ctx.restore();
+    }
+  }
+
+  function spawnCursorParticles(x, y, count = 2) {
+    if (!cursorCtx) return;
+    for (let i = 0; i < count; i++) {
+      if (particles.length < 90) {
+        particles.push(new LiquidSparkle(
+          x + (Math.random() - 0.5) * 12,
+          y + (Math.random() - 0.5) * 12
+        ));
+      }
+    }
+  }
+
+  // Smooth lerp loop for the custom cursor ring & particle drawing
+  function renderCursorFrame() {
+    // Lerp ring towards mouse
+    ringX += (mouseX - ringX) * 0.18;
+    ringY += (mouseY - ringY) * 0.18;
+
+    if (cursorRing) {
+      cursorRing.style.left = `${ringX}px`;
+      cursorRing.style.top = `${ringY}px`;
+    }
+
+    if (cursorCtx && cursorCanvas) {
+      cursorCtx.clearRect(0, 0, cursorCanvas.width, cursorCanvas.height);
+      for (let i = particles.length - 1; i >= 0; i--) {
+        const p = particles[i];
+        p.update();
+        if (p.life <= 0) {
+          particles.splice(i, 1);
+        } else {
+          p.draw(cursorCtx);
+        }
+      }
+    }
+
+    requestAnimationFrame(renderCursorFrame);
+  }
+  requestAnimationFrame(renderCursorFrame);
+
+  // Pointer move handler
   window.addEventListener('pointermove', (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+
+    if (!cursorVisible) {
+      cursorVisible = true;
+      if (cursorDot) cursorDot.style.opacity = '1';
+      if (cursorRing) cursorRing.style.opacity = '1';
+    }
+
+    if (cursorDot) {
+      cursorDot.style.left = `${mouseX}px`;
+      cursorDot.style.top = `${mouseY}px`;
+    }
+
     if (cursorGlow) {
-      cursorGlow.style.left = `${e.clientX}px`;
-      cursorGlow.style.top = `${e.clientY}px`;
+      cursorGlow.style.left = `${mouseX}px`;
+      cursorGlow.style.top = `${mouseY}px`;
+    }
+
+    // Spawn trail particles throttled
+    const now = performance.now();
+    if (now - lastParticleTime > 40) {
+      spawnCursorParticles(mouseX, mouseY, 1);
+      lastParticleTime = now;
     }
   });
+
+  window.addEventListener('pointerdown', (e) => {
+    document.body.classList.add('cursor-click');
+    // Burst particles on click
+    spawnCursorParticles(e.clientX, e.clientY, 8);
+
+    // Interactive Glass Click Ripple on clickable surfaces
+    const target = e.target.closest('button, a, .glass-card, .spec-card, .track-item');
+    if (target) {
+      const rect = target.getBoundingClientRect();
+      const ripple = document.createElement('span');
+      ripple.className = 'glass-ripple-wave';
+      const size = Math.max(rect.width, rect.height) * 1.5;
+      ripple.style.width = `${size}px`;
+      ripple.style.height = `${size}px`;
+      ripple.style.left = `${e.clientX - rect.left - size / 2}px`;
+      ripple.style.top = `${e.clientY - rect.top - size / 2}px`;
+      target.appendChild(ripple);
+      setTimeout(() => ripple.remove(), 750);
+    }
+  });
+
+  window.addEventListener('pointerup', () => {
+    document.body.classList.remove('cursor-click');
+  });
+
+  document.addEventListener('mouseleave', () => {
+    cursorVisible = false;
+    if (cursorDot) cursorDot.style.opacity = '0';
+    if (cursorRing) cursorRing.style.opacity = '0';
+  });
+
+  // Cursor hover state on interactive elements
+  const hoverSelectors = 'button, a, input[type="range"], .glass-card, .spec-card, .track-item, .dock-icon-btn, .pill-btn, [role="button"]';
+  document.addEventListener('mouseover', (e) => {
+    if (e.target.closest(hoverSelectors)) {
+      document.body.classList.add('cursor-hover');
+    }
+  });
+  document.addEventListener('mouseout', (e) => {
+    if (e.target.closest(hoverSelectors)) {
+      document.body.classList.remove('cursor-hover');
+    }
+  });
+
+  // =========================================================================
+  // UI Scroll Reveal Animations
+  // =========================================================================
+  const scrollElements = document.querySelectorAll(
+    '.glass-card, .spec-card, .feature-glass-box, .download-card, .station-module, .compare-table-wrapper, .section-head'
+  );
+
+  scrollElements.forEach(el => el.classList.add('ui-reveal-on-scroll'));
+
+  const revealObserver = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('revealed');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, {
+    threshold: 0.12,
+    rootMargin: '0px 0px -40px 0px'
+  });
+
+  scrollElements.forEach(el => revealObserver.observe(el));
 
   // 3D Tilt Parallax on Player Card
   const playerCard = document.getElementById('player-deck-card');
