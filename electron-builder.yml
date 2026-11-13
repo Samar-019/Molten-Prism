@@ -35,6 +35,9 @@ win:
     - target: portable
       arch:
         - x64
+    - target: zip
+      arch:
+        - x64
   compression: maximum
 nsis:
   oneClick: false

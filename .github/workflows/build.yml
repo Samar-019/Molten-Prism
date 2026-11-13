@@ -3,7 +3,9 @@ name: Build Molten Prism
 on:
   workflow_dispatch:
   push:
-    branches: [ master ]
+    branches: [ master, main ]
+    tags:
+      - 'v*'
 
 permissions: {}
 
@@ -47,22 +49,22 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      # Only vite build without release if it is a fork, or it is a pull-request
+      # Only vite build without release if it is a pull-request
       - name: Vite Build
-        if: github.repository == 'pear-devs/pear-desktop' && github.event_name == 'pull_request'
+        if: github.repository == 'Samar-019/Molten-Prism' && github.event_name == 'pull_request'
         run: |
           pnpm build
 
       # Build and release if it's the main repository and is not pull-request
       - name: Build and release on Mac
-        if: startsWith(matrix.os, 'macOS') && (github.repository == 'pear-devs/pear-desktop' && github.event_name != 'pull_request')
+        if: startsWith(matrix.os, 'macOS') && (github.repository == 'Samar-019/Molten-Prism' && github.event_name != 'pull_request')
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           pnpm release:mac
 
       - name: Build and release on Linux
-        if: startsWith(matrix.os, 'ubuntu') && (github.repository == 'pear-devs/pear-desktop' && github.event_name != 'pull_request')
+        if: startsWith(matrix.os, 'ubuntu') && (github.repository == 'Samar-019/Molten-Prism' && github.event_name != 'pull_request')
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -76,7 +78,7 @@ jobs:
           pnpm release:linux
 
       - name: Build and release on Windows
-        if: startsWith(matrix.os, 'windows') && (github.repository == 'pear-devs/pear-desktop' && github.event_name != 'pull_request')
+        if: startsWith(matrix.os, 'windows') && (github.repository == 'Samar-019/Molten-Prism' && github.event_name != 'pull_request')
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -94,8 +96,8 @@ jobs:
     permissions:
       contents: write
     runs-on: ubuntu-latest
-    name: Release Pear Desktop
-    if: github.repository == 'pear-devs/pear-desktop' && github.ref == 'refs/heads/master'
+    name: Release Molten Prism
+    if: github.repository == 'Samar-019/Molten-Prism' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/v'))
     needs: build
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
@@ -109,17 +111,10 @@ jobs:
           run_install: false
 
       - name: Setup NodeJS
-        if: startsWith(matrix.os, 'macOS') != true
         uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'pnpm'
-
-      - name: Setup NodeJS for macOS
-        if: startsWith(matrix.os, 'macOS')
-        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f
-        with:
-          node-version: ${{ env.NODE_VERSION }}
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -148,7 +143,7 @@ jobs:
         if: ${{ env.VERSION_HASH == '' }}
         uses: irongut/EditRelease@ccf529ad26dddf9996e7dd0f24ca5da4ea507cc2
         with:
-          token: ${{ secrets.GH_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           id: ${{ steps.get_draft_release.outputs.id }}
           draft: false
           prerelease: false
@@ -156,11 +151,11 @@ jobs:
           name: ${{ env.VERSION_TAG }}
           replacebody: true
           body: |
-            See [changelog](https://github.com/pear-devs/pear-desktop/blob/master/changelog.md#${{ env.CHANGELOG_ANCHOR }}) for the list of updates and the full diff.
+            See [changelog](https://github.com/Samar-019/Molten-Prism/blob/main/changelog.md#${{ env.CHANGELOG_ANCHOR }}) for the list of updates and the full diff.
 
             Thanks to all contributors! 🏅
 
-            (Note for Windows: `Pear-Desktop-Web-Setup-${{ env.VERSION_TAG }}.exe` is an installer, and `Pear-Desktop-${{ env.VERSION_TAG }}.exe` is a portable version)
+            (Note for Windows: `Molten-Prism-Setup-${{ env.VERSION_TAG }}.exe` is an installer, and `Molten-Prism-${{ env.VERSION_TAG }}-portable.exe` / `.zip` is a portable version)
 
       - name: Update changelog
         if: ${{ env.VERSION_HASH == '' }}
