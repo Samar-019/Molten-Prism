@@ -158,21 +158,32 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('resize', resizeCursorCanvas);
   }
 
+  // Rainbow & Aurora Neon Sparkle Color Palette
+  const rainbowNeonColors = [
+    'rgba(56, 189, 248, ',   // Neon Cyan
+    'rgba(168, 85, 247, ',  // Aurora Purple
+    'rgba(244, 63, 94, ',   // Neon Rose
+    'rgba(251, 191, 36, ',  // Amber Gold
+    'rgba(52, 211, 153, ',  // Aurora Emerald
+    'rgba(236, 72, 153, '   // Hot Pink
+  ];
+
   class LiquidSparkle {
     constructor(x, y, vx, vy, color, size, maxLife) {
       this.x = x;
       this.y = y;
-      this.vx = vx || (Math.random() - 0.5) * 1.5;
-      this.vy = vy || (Math.random() - 0.5) * 1.5;
-      this.color = color || 'rgba(56, 189, 248, ';
-      this.size = size || (Math.random() * 2.5 + 1.2);
+      this.vx = vx || (Math.random() - 0.5) * 1.8;
+      this.vy = vy || (Math.random() - 0.5) * 1.8;
+      this.color = color || rainbowNeonColors[Math.floor(Math.random() * rainbowNeonColors.length)];
+      this.size = size || (Math.random() * 2.8 + 1.2);
       this.life = 1.0;
       this.decay = 1 / (maxLife || (Math.random() * 25 + 20));
+      this.glow = Math.random() > 0.4;
     }
     update() {
       this.x += this.vx;
       this.y += this.vy;
-      this.vy += 0.02; // soft gravity
+      this.vy += 0.015; // floaty anti-gravity feel
       this.vx *= 0.98;
       this.life -= this.decay;
     }
@@ -181,9 +192,11 @@ document.addEventListener('DOMContentLoaded', () => {
       ctx.save();
       ctx.beginPath();
       ctx.arc(this.x, this.y, this.size * this.life, 0, Math.PI * 2);
-      ctx.fillStyle = `${this.color}${this.life * 0.8})`;
-      ctx.shadowBlur = 8;
-      ctx.shadowColor = 'rgba(56, 189, 248, 0.8)';
+      ctx.fillStyle = `${this.color}${this.life * 0.9})`;
+      if (this.glow) {
+        ctx.shadowBlur = 12;
+        ctx.shadowColor = `${this.color}1)`;
+      }
       ctx.fill();
       ctx.restore();
     }
@@ -192,10 +205,10 @@ document.addEventListener('DOMContentLoaded', () => {
   function spawnCursorParticles(x, y, count = 2) {
     if (!cursorCtx) return;
     for (let i = 0; i < count; i++) {
-      if (particles.length < 90) {
+      if (particles.length < 120) {
         particles.push(new LiquidSparkle(
-          x + (Math.random() - 0.5) * 12,
-          y + (Math.random() - 0.5) * 12
+          x + (Math.random() - 0.5) * 14,
+          y + (Math.random() - 0.5) * 14
         ));
       }
     }

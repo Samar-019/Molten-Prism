@@ -253,47 +253,70 @@ body {
 
 .custom-cursor-dot {
   position: fixed;
-  width: 8px;
-  height: 8px;
+  width: 9px;
+  height: 9px;
   background: #ffffff;
   border-radius: 50%;
   pointer-events: none;
   z-index: 9999;
   transform: translate(-50%, -50%);
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px var(--prism-cyan);
-  transition: width 0.2s cubic-bezier(0.16, 1, 0.3, 1), height 0.2s cubic-bezier(0.16, 1, 0.3, 1), background 0.2s ease, opacity 0.3s ease;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.9), 0 0 20px var(--prism-cyan), 0 0 35px var(--prism-purple);
+  transition: width 0.2s cubic-bezier(0.16, 1, 0.3, 1), height 0.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
   opacity: 0;
+  animation: cursorRainbowPulse 4s linear infinite;
 }
 
 .custom-cursor-ring {
   position: fixed;
-  width: 36px;
-  height: 36px;
-  border: 1.5px solid rgba(255, 255, 255, 0.45);
+  width: 38px;
+  height: 38px;
+  border: 1.5px solid rgba(255, 255, 255, 0.55);
   border-radius: 50%;
   pointer-events: none;
   z-index: 9999;
   transform: translate(-50%, -50%);
-  backdrop-filter: blur(2px) saturate(180%);
-  -webkit-backdrop-filter: blur(2px) saturate(180%);
-  box-shadow: 0 0 15px rgba(56, 189, 248, 0.3), inset 0 0 10px rgba(255, 255, 255, 0.2);
-  transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1), height 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease, background 0.25s ease, transform 0.12s ease-out, opacity 0.3s ease;
+  backdrop-filter: blur(3px) saturate(200%);
+  -webkit-backdrop-filter: blur(3px) saturate(200%);
+  box-shadow: 0 0 18px rgba(56, 189, 248, 0.4), inset 0 0 12px rgba(255, 255, 255, 0.25);
+  transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1), height 0.3s cubic-bezier(0.16, 1, 0.3, 1), transform 0.12s ease-out, opacity 0.3s ease;
   opacity: 0;
+  animation: cursorRingNeonGlow 3.5s ease-in-out infinite alternate;
+}
+
+@keyframes cursorRainbowPulse {
+  0% { filter: hue-rotate(0deg); }
+  100% { filter: hue-rotate(360deg); }
+}
+
+@keyframes cursorRingNeonGlow {
+  0% {
+    box-shadow: 0 0 15px rgba(56, 189, 248, 0.35), inset 0 0 10px rgba(255, 255, 255, 0.2);
+    border-color: rgba(56, 189, 248, 0.6);
+  }
+  50% {
+    box-shadow: 0 0 24px rgba(168, 85, 247, 0.5), inset 0 0 14px rgba(236, 72, 153, 0.3);
+    border-color: rgba(168, 85, 247, 0.7);
+  }
+  100% {
+    box-shadow: 0 0 28px rgba(244, 63, 94, 0.45), inset 0 0 12px rgba(52, 211, 153, 0.25);
+    border-color: rgba(52, 211, 153, 0.65);
+  }
 }
 
 /* Cursor Interactive States */
 body.cursor-hover .custom-cursor-dot {
-  width: 4px;
-  height: 4px;
-  background: var(--prism-cyan);
+  width: 5px;
+  height: 5px;
+  background: #ffffff;
+  box-shadow: 0 0 12px #fff, 0 0 25px #38bdf8;
 }
 
 body.cursor-hover .custom-cursor-ring {
-  width: 54px;
-  height: 54px;
-  border-color: rgba(56, 189, 248, 0.9);
-  background: rgba(56, 189, 248, 0.12);
-  box-shadow: 0 0 25px rgba(56, 189, 248, 0.5), inset 0 0 14px rgba(255, 255, 255, 0.35);
+  width: 56px;
+  height: 56px;
+  border-color: rgba(56, 189, 248, 0.95);
+  background: rgba(56, 189, 248, 0.14);
+  box-shadow: 0 0 35px rgba(56, 189, 248, 0.6), inset 0 0 18px rgba(255, 255, 255, 0.45);
 }
 
 body.cursor-click .custom-cursor-ring {
@@ -330,6 +353,41 @@ body.cursor-click .custom-cursor-ring {
   width: 100%;
   height: 100%;
   opacity: 0.75;
+}
+
+/* Atmospheric Aurora Borealis Curtain Layer */
+.aurora-borealis-curtain {
+  position: absolute;
+  inset: -20%;
+  background: 
+    radial-gradient(ellipse at 20% 20%, rgba(56, 189, 248, 0.22) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 30%, rgba(168, 85, 247, 0.25) 0%, transparent 60%),
+    radial-gradient(ellipse at 40% 80%, rgba(244, 63, 94, 0.18) 0%, transparent 60%),
+    radial-gradient(ellipse at 70% 70%, rgba(52, 211, 153, 0.2) 0%, transparent 60%);
+  filter: blur(65px);
+  opacity: 0.7;
+  mix-blend-mode: screen;
+  animation: auroraCurtainFlow 18s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+@keyframes auroraCurtainFlow {
+  0% {
+    transform: rotate(0deg) scale(1) translate(0px, 0px);
+    filter: blur(65px) hue-rotate(0deg);
+  }
+  33% {
+    transform: rotate(3deg) scale(1.08) translate(30px, -20px);
+    filter: blur(75px) hue-rotate(60deg);
+  }
+  66% {
+    transform: rotate(-3deg) scale(0.95) translate(-25px, 35px);
+    filter: blur(60px) hue-rotate(140deg);
+  }
+  100% {
+    transform: rotate(1deg) scale(1.05) translate(15px, -15px);
+    filter: blur(70px) hue-rotate(240deg);
+  }
 }
 
 .fluid-mesh-gradient {
@@ -3050,5 +3108,129 @@ body.mode-light .lightbox-arrow-btn {
     box-shadow: 0 4px 24px rgba(56, 189, 248, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.65);
   }
 }
+
+/* ==========================================================================
+   Rainbow, Aurora & Neon UI Animations Across the Website
+   ========================================================================== */
+
+/* Animated Rainbow Gradient Text for Hero Headline & Key Highlights */
+.gradient-text {
+  background: linear-gradient(
+    90deg,
+    #38bdf8 0%,
+    #818cf8 20%,
+    #c084fc 40%,
+    #f43f5e 60%,
+    #fbbf24 80%,
+    #34d399 90%,
+    #38bdf8 100%
+  ) !important;
+  background-size: 250% 100% !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  animation: rainbowShiftText 8s linear infinite !important;
+  text-shadow: 0 0 45px rgba(168, 85, 247, 0.45);
+}
+
+@keyframes rainbowShiftText {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 250% 50%;
+  }
+}
+
+/* Prismatic Rainbow Border Aura for Hero Player Card & Station Modules */
+.liquid-card::before,
+.feature-glass-box::before,
+.compare-table-wrapper::before {
+  background: linear-gradient(
+    135deg,
+    rgba(56, 189, 248, 0.75) 0%,
+    rgba(168, 85, 247, 0.7) 25%,
+    rgba(244, 63, 94, 0.65) 50%,
+    rgba(251, 191, 36, 0.7) 75%,
+    rgba(52, 211, 153, 0.7) 100%
+  ) !important;
+  background-size: 300% 300% !important;
+  animation: rainbowBorderFlow 10s ease infinite alternate !important;
+}
+
+@keyframes rainbowBorderFlow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Neon Glow Halo & Pulsing Breathing Animation for Interactive Cards */
+.liquid-card:hover,
+.spec-card:hover,
+.download-card:hover,
+.feature-glass-box:hover {
+  box-shadow: 
+    0 25px 70px rgba(0, 0, 0, 0.8),
+    0 0 45px rgba(56, 189, 248, 0.35),
+    0 0 70px rgba(168, 85, 247, 0.25),
+    inset 0 1px 1px rgba(255, 255, 255, 0.6) !important;
+  border-color: rgba(168, 85, 247, 0.5) !important;
+}
+
+/* Neon Button Pulsing Border */
+.btn-primary,
+.liquid-btn.primary {
+  box-shadow: 0 0 25px rgba(56, 189, 248, 0.45), 0 0 50px rgba(168, 85, 247, 0.2);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-primary:hover,
+.liquid-btn.primary:hover {
+  box-shadow: 
+    0 0 35px rgba(56, 189, 248, 0.8),
+    0 0 65px rgba(168, 85, 247, 0.55),
+    0 0 90px rgba(244, 63, 94, 0.35) !important;
+  transform: translateY(-2px) scale(1.02);
+}
+
+/* Neon Track Playing Glowing Equalizer Bars */
+.sound-playing-bars span {
+  background: linear-gradient(180deg, #38bdf8, #a855f7) !important;
+  box-shadow: 0 0 10px #38bdf8, 0 0 18px #a855f7;
+}
+
+/* Floating Aurora Orbs Enhanced with Neon Breathing */
+.orb-1, .orb-2, .orb-3, .orb-4 {
+  filter: blur(85px) saturate(180%) !important;
+}
+
+/* Aurora Shimmering Floating Badge */
+.brand .badge,
+.tag-chip,
+.badge-pill {
+  box-shadow: 0 0 14px rgba(56, 189, 248, 0.35);
+  animation: neonBadgeBreathe 4s ease-in-out infinite alternate;
+}
+
+@keyframes neonBadgeBreathe {
+  0% {
+    box-shadow: 0 0 8px rgba(56, 189, 248, 0.25);
+    border-color: rgba(56, 189, 248, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 18px rgba(168, 85, 247, 0.45), 0 0 30px rgba(236, 72, 153, 0.25);
+    border-color: rgba(168, 85, 247, 0.55);
+  }
+  100% {
+    box-shadow: 0 0 16px rgba(52, 211, 153, 0.4);
+    border-color: rgba(52, 211, 153, 0.45);
+  }
+}
+
 
 
